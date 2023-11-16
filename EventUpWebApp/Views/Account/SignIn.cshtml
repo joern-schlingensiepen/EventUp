@@ -4,18 +4,49 @@
 @{
     ViewBag.Title = "SignIn";
 }
+<head>
+    <!-- Otros elementos en head -->
 
-<h2>SignIn</h2>
+    <link rel="stylesheet" href="~/Content/Account.css" /> <!-- Cambia 'ruta_del_archivo_css' según la ubicación de tu archivo CSS -->
+    <link rel="stylesheet" href="~/Content/font-awesome.css"/>
 
-@using (Html.BeginForm("SignIn", "Account", FormMethod.Post))
-{
-    @Html.LabelFor(model => model.Email)
-    @Html.TextBoxFor(model => model.Email)
+    
+</head>
 
-    @Html.LabelFor(model => model.Password)
-    @Html.PasswordFor(model => model.Password)
+<body>
+    <div class="outer-container">
+        <div class="logo-container">
+            <!-- Aquí coloca tu logo -->
+            <img class="logo" src="~/Content/Images/logo1.png" alt="Logo de la empresa" />
+        </div>
 
-    <input type="submit" value="Sign In" />
-}
+            <div class="login-container">
+                <h2>My Account</h2>
 
-<p>Not registered? <a href="@Url.Action("Register", "Account")">Register here</a></p>
+
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
+                {
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-group">
+                            <i class="fa fa-envelope input-group-icon"></i>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <i class="fa fa-lock input-group-icon"></i>
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <input type="submit" value="Sign in" class="submit-button" />
+                }
+
+                <p>Dont't have an account? <a href="@Url.Action("Register", "Account")">Signup here</a></p>
+            </div>
+            </div>
+        </div>
+</body>

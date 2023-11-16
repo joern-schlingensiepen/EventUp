@@ -1,0 +1,99 @@
+﻿
+body {
+    background-color: #ffffff;
+    background-size: cover;
+    text-align:center;
+}
+
+h2 {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Cambia 'Segoe UI' a la fuente que desees */
+    font-size: 24px; /* Ajusta el tamaño de la fuente según sea necesario */
+    color: #333; /* Cambia el color del texto según sea necesario */
+}
+.outer-container {
+    background-color: #632033; /* Fondo del rectángulo mayor */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno para el contenido dentro del rectángulo mayor */
+    width: 70%;
+    margin: auto; /* Centra el contenedor */
+    overflow: hidden; /* Evita desbordamientos */
+    display: table; /* Utiliza un diseño de tabla para centrar verticalmente */
+    height: 50vh; /* Establece la altura al 100% de la ventana */
+}
+.login-container {
+    max-width: 400px;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    font-family: Tahoma;
+    font-size: 15px;
+    overflow: hidden; /* Evita desbordamientos */
+    display: table-cell; /* Alinea al centro verticalmente */
+    vertical-align: middle; /* Alinea al centro verticalmente */
+}
+
+.logo-container {
+    display: table-cell; /* Alinea al centro verticalmente */
+    vertical-align: middle; /* Alinea al centro verticalmente */
+    margin-right: 20px; /* Espacio entre el logo y el área de inicio de sesión */
+}
+
+.logo {
+    /* Estilos para tu logo, como tamaño y márgenes */
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px; /* Bordes redondeados del formulario */
+    padding: 20px; /* Espaciado interno del formulario */
+}
+.login-form label {
+        margin-bottom: 5px;
+}
+
+.login-form input {
+        margin-bottom: 10px;
+}
+
+/* Ajuste para redondear ambos lados del borde */
+
+.submit-button {
+    background-color: #c94e4e; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Quitado el borde del botón */
+    padding: 10px 20px; /* Espaciado interno del botón */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px; /* Bordes redondeados del botón */
+    cursor: pointer;
+}
+
+.form-control {
+    padding-left: 40px;
+    border-radius: 0;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+    color: dimgrey;
+    font-size: 16px;
+}
+
+.input-group-icon {
+    position: absolute;
+    left: 5px; /* Ajusta según sea necesario */
+    top: 40%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
