@@ -1,0 +1,21 @@
+﻿@using EventUpWebApp.Models
+@model SignInViewModel
+
+@{
+    ViewBag.Title = "SignIn";
+}
+
+<h2>SignIn</h2>
+
+@using (Html.BeginForm("SignIn", "Account", FormMethod.Post))
+{
+    @Html.LabelFor(model => model.Email)
+    @Html.TextBoxFor(model => model.Email)
+
+    @Html.LabelFor(model => model.Password)
+    @Html.PasswordFor(model => model.Password)
+
+    <input type="submit" value="Sign In" />
+}
+
+<p>Not registered? <a href="@Url.Action("Register", "Account")">Register here</a></p>

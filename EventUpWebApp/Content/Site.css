@@ -47,6 +47,7 @@ textarea {
     box-sizing: border-box;
     margin-right: 10px;
     background-size: cover;
+    color: #fcfcfc;
 }
 
     .column:last-child {
