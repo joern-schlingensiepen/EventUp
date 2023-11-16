@@ -9,9 +9,10 @@ using EventUpLib;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin;
 using EventUpWebApp.Models;
 
-namespace BibliothekWebApp.Controllers
+namespace EventUpWebApp.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -54,27 +55,27 @@ namespace BibliothekWebApp.Controllers
         }
 
         //
-        // GET: /Account/Login
+        // GET: /Account/SignIn
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult SignIn(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         //
-        // POST: /Account/Login
+        // POST: /Account/SignIn
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> SignIn(SignInViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
+            // This doesn't count SignIn failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
@@ -87,7 +88,7 @@ namespace BibliothekWebApp.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Invalid SignIn attempt.");
                     return View(model);
             }
         }
@@ -97,7 +98,7 @@ namespace BibliothekWebApp.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            // Require that the user has already logged in via username/password or external login
+            // Require that the user has already logged in via username/password or external SignIn
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
                 return View("Error");
@@ -152,9 +153,9 @@ namespace BibliothekWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var ctx = new BibliothekLib.BibliothekModelContainer())
+                using (var ctx = new EventUpLib.Model1Container())
                 {
-                    if (ctx.Users.Any(s => s.EMail == model.Email))
+                    if (ctx.Persons.Any(s => s.Email == model.Email))
                     {
                         AddErrors(
                             new IdentityResult(new string[] { "EMail schon vergeben!" })
@@ -167,15 +168,15 @@ namespace BibliothekWebApp.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        BibliothekLib.User aUser = new User()
+                        EventUpLib.Person aUser = new Person()
                         {
-                            EMail = model.Email
+                            Email = model.Email
                         };
-                        ctx.Users.Add(aUser);
+                        ctx.Persons.Add(aUser);
                         ctx.SaveChanges();
 
                         // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                        // Send an email with this link
+                        // Send an Email with this link
                         // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
@@ -290,14 +291,14 @@ namespace BibliothekWebApp.Controllers
         }
 
         //
-        // POST: /Account/ExternalLogin
+        // POST: /Account/ExternalSignIn
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
+        public ActionResult ExternalSignIn(string provider, string returnUrl)
         {
-            // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            // Request a redirect to the external SignIn provider
+            return new ChallengeResult(provider, Url.Action("ExternalSignInCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         //
@@ -336,18 +337,18 @@ namespace BibliothekWebApp.Controllers
         }
 
         //
-        // GET: /Account/ExternalLoginCallback
+        // GET: /Account/ExternalSignInCallback
         [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        public async Task<ActionResult> ExternalSignInCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
+            var SignInInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            if (SignInInfo == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToAction("SignIn");
             }
 
-            // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            // Sign in the user with this external SignIn provider if the user already has a SignIn
+            var result = await SignInManager.ExternalSignInAsync(SignInInfo, isPersistent: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -360,17 +361,17 @@ namespace BibliothekWebApp.Controllers
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    ViewBag.SignInProvider = SignInInfo.Login.LoginProvider;
+                    return View("ExternalSignInConfirmation", new ExternalLoginConfirmationViewModel { Email = SignInInfo.Email });
             }
         }
 
         //
-        // POST: /Account/ExternalLoginConfirmation
+        // POST: /Account/ExternalSignInConfirmation
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalSignInConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -379,11 +380,11 @@ namespace BibliothekWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                // Get the information about the user from the external login provider
+                // Get the information about the user from the external SignIn provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
-                    return View("ExternalLoginFailure");
+                    return View("ExternalSignInFailure");
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
@@ -414,9 +415,9 @@ namespace BibliothekWebApp.Controllers
         }
 
         //
-        // GET: /Account/ExternalLoginFailure
+        // GET: /Account/ExternalSignInFailure
         [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
+        public ActionResult ExternalSignInFailure()
         {
             return View();
         }
@@ -442,7 +443,7 @@ namespace BibliothekWebApp.Controllers
         }
 
         #region Helpers
-        // Used for XSRF protection when adding external logins
+        // Used for XSRF protection when adding external SignIns
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
@@ -479,12 +480,12 @@ namespace BibliothekWebApp.Controllers
 
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
-                LoginProvider = provider;
+                SignInProvider = provider;
                 RedirectUri = redirectUri;
                 UserId = userId;
             }
 
-            public string LoginProvider { get; set; }
+            public string SignInProvider { get; set; }
             public string RedirectUri { get; set; }
             public string UserId { get; set; }
 
@@ -495,7 +496,7 @@ namespace BibliothekWebApp.Controllers
                 {
                     properties.Dictionary[XsrfKey] = UserId;
                 }
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, SignInProvider);
             }
         }
         #endregion

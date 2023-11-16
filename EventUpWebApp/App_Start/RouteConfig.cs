@@ -18,18 +18,6 @@ namespace EventUpWebApp
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-
-            routes.MapRoute(
-                name: "SignIn",
-                url: "Account/SignIn",
-                defaults: new { controller = "Account", action = "SignIn" }
-            );
-
-            routes.MapRoute(
-                name: "Register",
-                url: "Account/Register",
-                defaults: new { controller = "Account", action = "Register" }
-            );
         }
     }
 }
