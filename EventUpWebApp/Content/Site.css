@@ -1,0 +1,90 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.custom-heading {
+    text-align: left;
+    font-family: 'Tahoma', cursive; /* Usando Tahoma */
+    margin-top: 20px; /* Ajusta según sea necesario */
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.cursive-text {
+    font-family: 'Tahoma', cursive; /* Puedes usar la misma fuente cursiva o elegir otra */
+    font-size: 24px; /* Ajusta el tamaño según sea necesario */
+}
+
+.row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.column {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-right: 10px;
+    background-size: cover;
+}
+
+    .column:last-child {
+        margin-right: 0; /* Elimina el margen derecho de la última columna */
+    }
+
+.column-title {
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Tahoma', cursive;
+    font-size: 24px;
+}
+
+.column-content {
+    margin-top: 10px;
+    font-family: 'Tahoma', cursive;
+    font-size: 20px;
+}
+
+.questions-content1 {
+    margin-top: 30px;
+    font-weight: bold;
+    font-family: 'Tahoma', cursive;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.questions-content2 {
+    font-weight: bold;
+    font-family: 'Tahoma', cursive;
+    font-size: 30px;
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.paragraph {
+    font-family: 'Tahoma', cursive;
+    font-size: 22px;
+}

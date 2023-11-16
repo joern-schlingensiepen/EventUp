@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventUpLib", "EventUpLib\EventUpLib.csproj", "{76525939-D668-46E9-8729-0E79CF2281C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventUpWebApp", "EventUpWebApp\EventUpWebApp.csproj", "{3A502712-EC98-4196-A1D7-9DE1B06A384E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{76525939-D668-46E9-8729-0E79CF2281C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76525939-D668-46E9-8729-0E79CF2281C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76525939-D668-46E9-8729-0E79CF2281C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A502712-EC98-4196-A1D7-9DE1B06A384E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A502712-EC98-4196-A1D7-9DE1B06A384E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A502712-EC98-4196-A1D7-9DE1B06A384E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A502712-EC98-4196-A1D7-9DE1B06A384E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
