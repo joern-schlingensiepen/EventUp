@@ -20,33 +20,38 @@
             <img class="logo" src="~/Content/Images/logo1.png" alt="Logo de la empresa" />
         </div>
 
-            <div class="login-container">
-                <h2>My Account</h2>
+        <div class="login-container">
+            <h2>My Account</h2>
 
 
-                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
-                {
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <div class="input-group">
-                            <i class="fa fa-envelope input-group-icon"></i>
-                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-                        </div>
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h3>Use a local account to log in.</h3>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-group">
+                        <i class="fa fa-envelope input-group-icon"></i>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <div class="input-group">
-                            <i class="fa fa-lock input-group-icon"></i>
-                            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                        </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <i class="fa fa-lock input-group-icon"></i>
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
                     </div>
+                </div>
 
-                    <input type="submit" value="Sign in" class="submit-button" />
-                }
 
-                <p>Dont't have an account? <a href="@Url.Action("Register", "Account")">Signup here</a></p>
-            </div>
-            </div>
+                <input type="submit" value="Sign in" class="submit-button" />
+            }
+
+            <p>Dont't have an account? <a href="@Url.Action("Register", "Account")">Signup here</a></p>
         </div>
+  </div>
+
 </body>

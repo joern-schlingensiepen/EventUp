@@ -11,6 +11,15 @@ h2 {
     font-size: 24px; /* Ajusta el tamaño de la fuente según sea necesario */
     color: #333; /* Cambia el color del texto según sea necesario */
 }
+
+h3 {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Cambia 'Segoe UI' a la fuente que desees */
+    font-size: 20px; /* Ajusta el tamaño de la fuente según sea necesario */
+    color: #333; /* Cambia el color del texto según sea necesario */
+}
+
+
 .outer-container {
     background-color: #632033; /* Fondo del rectángulo mayor */
     border-radius: 10px; /* Bordes redondeados */
@@ -19,7 +28,7 @@ h2 {
     margin: auto; /* Centra el contenedor */
     overflow: hidden; /* Evita desbordamientos */
     display: table; /* Utiliza un diseño de tabla para centrar verticalmente */
-    height: 50vh; /* Establece la altura al 100% de la ventana */
+    height: 70vh; /* Establece la altura al 100% de la ventana */
 }
 .login-container {
     max-width: 400px;
@@ -66,8 +75,8 @@ h2 {
 /* Ajuste para redondear ambos lados del borde */
 
 .submit-button {
-    background-color: #c94e4e; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
+    background-color: #632033; /* Color de fondo del botón */
+    color: bisque; /* Color del texto del botón */
     border: none; /* Quitado el borde del botón */
     padding: 10px 20px; /* Espaciado interno del botón */
     text-align: center;

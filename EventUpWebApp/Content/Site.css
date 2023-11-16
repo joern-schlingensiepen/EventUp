@@ -89,3 +89,16 @@ textarea {
     font-family: 'Tahoma', cursive;
     font-size: 22px;
 }
+
+.button {
+    font-family: 'Tahoma', cursive;
+    background-color: #632033; /* Color de fondo del botón */
+    color: bisque; /* Color del texto del botón */
+    border: none; /* Quitado el borde del botón */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px; /* Bordes redondeados del botón */
+    padding: 10px 20px; /* Espaciado interno del botón */
+}

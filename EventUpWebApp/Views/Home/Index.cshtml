@@ -1,4 +1,7 @@
-﻿<main>
+﻿<link rel="stylesheet" href="~/Content/Site.css" />
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
+
+<main>
     <section class="row" aria-labelledby="aspnetTitle">
 
         <h1 id="title" class="custom-heading">
@@ -34,7 +37,7 @@
             Join EventUp and expand your reach. Become the preferred choice for those looking to plan the best events.
         </p>
 
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Sign up here </a></p>
+        <p><a href="@Url.Action("Register", "Account")" class="button">Register here </a></p>
     </section>
     <br />
 

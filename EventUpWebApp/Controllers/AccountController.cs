@@ -498,7 +498,8 @@ namespace EventUpWebApp.Controllers
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, SignInProvider);
             }
-        }
+
+         }
         #endregion
     }
 }
