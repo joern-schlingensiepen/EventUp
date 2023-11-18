@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin;
 using EventUpWebApp.Models;
+using System.Data.Entity.Validation;
 
 namespace EventUpWebApp.Controllers
 {
@@ -136,15 +137,13 @@ namespace EventUpWebApp.Controllers
             }
         }
 
-        //
-        // GET: /Account/Register
+         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
-        //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
@@ -168,26 +167,44 @@ namespace EventUpWebApp.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        EventUpLib.Person aUser = new Person()
-                        {
-                            Email = model.Email
-                        };
-                        ctx.Persons.Add(aUser);
-                        ctx.SaveChanges();
 
-                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                        // Send an Email with this link
-                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                        return RedirectToAction("Edit", "Costumer");
+                        // Redirigir al usuario a la página de completar perfil
+                        return RedirectToAction("CompleteProfile", "Account");
                     }
+
                     AddErrors(result);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // Si llegamos aquí, algo falló; redirigir al usuario de nuevo a la vista de registro
+            return View(model);
+        }
+
+        // GET: /Account/CompleteProfile
+        [Authorize]
+        public ActionResult CompleteProfile()
+        {
+            // Puedes pasar cualquier información adicional que desees a la vista
+            return View();
+        }
+
+        // POST: /Account/CompleteProfile
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult CompleteProfile(CompleteProfileViewModel model)
+        {
+            // Procesa la información adicional y actualiza el perfil del usuario
+            if (ModelState.IsValid)
+            {
+                // Actualiza el perfil del usuario con la información proporcionada en model
+                // ...
+
+                // Redirige al usuario a la página principal después de completar el perfil
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Si llegamos aquí, algo falló; redirigir al usuario de nuevo a la vista de completar perfil
             return View(model);
         }
 

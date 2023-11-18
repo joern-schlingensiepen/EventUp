@@ -85,6 +85,25 @@ namespace EventUpWebApp.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class CompleteProfileViewModel
+    {
+        [Required(ErrorMessage = "The Name field is required.")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "The Family Name field is required.")]
+        public string FamilyName { get; set; }
+
+        [Required(ErrorMessage = "The Telephone Number field is required.")]
+        public string TelephoneNumber { get; set; }
+
+        public string Role { get; set; }
+
+
+        // Puedes agregar más propiedades según tus necesidades
+
+        public string Email { get; set; } // Puedes incluir el email si necesitas tenerlo en esta vista
+    }
+
     public class ResetPasswordViewModel
     {
         [Required]
