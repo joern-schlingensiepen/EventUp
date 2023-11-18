@@ -53,7 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class.cs" />
+    <Compile Include="ToStringExtensions.cs" />
+    <Compile Include="ExceptionHelper.cs" />
     <Compile Include="Event.cs">
       <DependentUpon>EventUpModel.tt</DependentUpon>
     </Compile>
