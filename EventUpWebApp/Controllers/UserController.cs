@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using EventUpLib;
 using EventUpWebApp.Models;
 using System.Net;
+using System.Collections.Generic;
 
 
 namespace EventUpWebApp.Controllers
@@ -120,7 +121,7 @@ namespace EventUpWebApp.Controllers
 
 
         private Model1Container db = new Model1Container();
-        // GET: /Person/Create
+        // GET: /User/Create
         public ActionResult Create()
         {
             var userName = User.Identity.GetUserName();
@@ -143,8 +144,31 @@ namespace EventUpWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                int rolesSeleccionados = new List<bool> { user.Role_Admin, user.Role_Supplier, user.Role_Planner }.Count(r => r);
+
+                if (rolesSeleccionados != 1)
+                {
+                    ModelState.AddModelError("", "Debe seleccionar exactamente un rol.");
+                    return View(user);
+                }
+
+                // Asigna el rol correspondiente
+                if (user.Role_Admin)
+                {
+                    ViewBag.SelectedRole = "Admin";
+                }
+                else if (user.Role_Supplier)
+                {
+                    ViewBag.SelectedRole = "Supplier";
+                }
+                else if (user.Role_Planner)
+                {
+                    ViewBag.SelectedRole = "Planner";
+                }
+
                 db.Users.Add(user);
                 db.SaveChanges();
+
                 return RedirectToAction("Index", "Home");
             }
 

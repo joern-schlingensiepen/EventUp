@@ -24,7 +24,7 @@
             <h2>My Account</h2>
 
 
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
+            @using (Html.BeginForm("SignIn", "Account", FormMethod.Post, new { @class = "login-form" }))
             {
                 @Html.AntiForgeryToken()
                 <h3>Use a local account to log in.</h3>
