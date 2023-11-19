@@ -12,6 +12,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin;
 using EventUpWebApp.Models;
 using System.Data.Entity.Validation;
+using System.Web.Helpers;
 
 namespace EventUpWebApp.Controllers
 {
@@ -137,76 +138,6 @@ namespace EventUpWebApp.Controllers
             }
         }
 
-         // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var ctx = new EventUpLib.Model1Container())
-                {
-                    if (ctx.Persons.Any(s => s.Email == model.Email))
-                    {
-                        AddErrors(
-                            new IdentityResult(new string[] { "EMail schon vergeben!" })
-                        );
-                        return View(model);
-                    }
-
-                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                    var result = await UserManager.CreateAsync(user, model.Password);
-                    if (result.Succeeded)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                        // Redirigir al usuario a la página de completar perfil
-                        return RedirectToAction("CompleteProfile", "Account");
-                    }
-
-                    AddErrors(result);
-                }
-            }
-
-            // Si llegamos aquí, algo falló; redirigir al usuario de nuevo a la vista de registro
-            return View(model);
-        }
-
-        // GET: /Account/CompleteProfile
-        [Authorize]
-        public ActionResult CompleteProfile()
-        {
-            // Puedes pasar cualquier información adicional que desees a la vista
-            return View();
-        }
-
-        // POST: /Account/CompleteProfile
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult CompleteProfile(CompleteProfileViewModel model)
-        {
-            // Procesa la información adicional y actualiza el perfil del usuario
-            if (ModelState.IsValid)
-            {
-                // Actualiza el perfil del usuario con la información proporcionada en model
-                // ...
-
-                // Redirige al usuario a la página principal después de completar el perfil
-                return RedirectToAction("Index", "Home");
-            }
-
-            // Si llegamos aquí, algo falló; redirigir al usuario de nuevo a la vista de completar perfil
-            return View(model);
-        }
 
         //
         // GET: /Account/ConfirmEmail

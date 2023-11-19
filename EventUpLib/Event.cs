@@ -24,14 +24,14 @@ namespace EventUpLib
         public string Name { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
-        public int NumberOfGuests { get; set; }
-        public double Budget { get; set; }
+        public int NumberOfGuest { get; set; }
+        public Nullable<double> Budget { get; set; }
+        public string Typ_Event { get; set; }
         public System.DateTime Start_DateTime { get; set; }
         public System.DateTime End_DateTime { get; set; }
-        public string Typ_Event { get; set; }
         public int isPlannedById { get; set; }
     
-        public virtual Person isPlannedBy { get; set; }
+        public virtual User isPlannedBy { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Service> have { get; set; }
     }

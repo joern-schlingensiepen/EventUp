@@ -12,21 +12,23 @@ namespace EventUpLib
     using System;
     using System.Collections.Generic;
     
-    public partial class Person
+    public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Person()
+        public User()
         {
             this.plans = new HashSet<Event>();
             this.offers = new HashSet<Service>();
         }
     
         public int Id { get; set; }
-        public string FamilyName { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
+        public string FamilyName { get; set; }
         public string TelephoneNumber { get; set; }
-        public string Role { get; set; }
+        public string Email { get; set; }
+        public bool Role_Admin { get; set; }
+        public bool Role_Supplier { get; set; }
+        public bool Role_Planner { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> plans { get; set; }

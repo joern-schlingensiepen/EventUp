@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/15/2023 11:34:08
--- Generated from EDMX file: C:\Users\Jessica.XPS\source\repos\EventUp\EventUpLib\EventUpModel.edmx
+-- Date Created: 11/19/2023 11:12:51
+-- Generated from EDMX file: C:\Users\Jessica.XPS\source\repos\EventUp\EventUpLib\Model1.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [EventUpBD];
+USE [EventUpDB];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -27,52 +27,53 @@ GO
 -- Creating all tables
 -- --------------------------------------------------
 
--- Creating table 'PersonSet'
-CREATE TABLE [dbo].[PersonSet] (
+-- Creating table 'Users'
+CREATE TABLE [dbo].[Users] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [FamilyName] nvarchar(max)  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
+    [Name] nvarchar(max)  NULL,
+    [FamilyName] nvarchar(max)  NULL,
+    [TelephoneNumber] nvarchar(max)  NULL,
     [Email] nvarchar(max)  NOT NULL,
-    [TelephoneNumber] nvarchar(max)  NOT NULL,
-    [Password] nvarchar(max)  NOT NULL,
-    [Role] nvarchar(max)  NOT NULL
+    [Role_Admin] bit  NOT NULL,
+    [Role_Supplier] bit  NOT NULL,
+    [Role_Planner] bit  NOT NULL
 );
 GO
 
--- Creating table 'EventSet'
-CREATE TABLE [dbo].[EventSet] (
+-- Creating table 'Services'
+CREATE TABLE [dbo].[Services] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [City] nvarchar(max)  NOT NULL,
-    [Address] nvarchar(max)  NOT NULL,
-    [NumberOfGuests] int  NOT NULL,
-    [Budget] float  NOT NULL,
-    [Start_DateTime] datetime  NOT NULL,
-    [End_DateTime] datetime  NOT NULL,
-    [Typ_Event] nvarchar(max)  NOT NULL,
-    [isPlannedById] int  NOT NULL
-);
-GO
-
--- Creating table 'ServiceSet'
-CREATE TABLE [dbo].[ServiceSet] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [City] nvarchar(max)  NOT NULL,
-    [FixCost] float  NOT NULL,
-    [HourCost] float  NOT NULL,
-    [PersonCost] float  NOT NULL,
-    [Capacity] int  NOT NULL,
-    [Address] nvarchar(max)  NOT NULL,
-    [Typ_Event] nvarchar(max)  NOT NULL,
+    [Address] nvarchar(max)  NULL,
     [Typ_Service] nvarchar(max)  NOT NULL,
-    [More] nvarchar(max)  NOT NULL,
+    [Typ_Event] nvarchar(max)  NULL,
+    [Capacity] int  NULL,
+    [FixCost] float  NULL,
+    [HourCost] float  NULL,
+    [PersonCost] float  NULL,
+    [City] nvarchar(max)  NOT NULL,
+    [More] nvarchar(max)  NULL,
     [isOfferedById] int  NOT NULL
 );
 GO
 
--- Creating table 'istBookedFor'
-CREATE TABLE [dbo].[istBookedFor] (
+-- Creating table 'Events'
+CREATE TABLE [dbo].[Events] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [City] nvarchar(max)  NOT NULL,
+    [Address] nvarchar(max)  NULL,
+    [NumberOfGuest] int  NOT NULL,
+    [Budget] float  NULL,
+    [Typ_Event] nvarchar(max)  NULL,
+    [Start_DateTime] datetime  NOT NULL,
+    [End_DateTime] datetime  NOT NULL,
+    [isPlannedById] int  NOT NULL
+);
+GO
+
+-- Creating table 'isBookedFor'
+CREATE TABLE [dbo].[isBookedFor] (
     [have_Id] int  NOT NULL,
     [isBookedFor_Id] int  NOT NULL
 );
@@ -82,27 +83,27 @@ GO
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
 
--- Creating primary key on [Id] in table 'PersonSet'
-ALTER TABLE [dbo].[PersonSet]
-ADD CONSTRAINT [PK_PersonSet]
+-- Creating primary key on [Id] in table 'Users'
+ALTER TABLE [dbo].[Users]
+ADD CONSTRAINT [PK_Users]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'EventSet'
-ALTER TABLE [dbo].[EventSet]
-ADD CONSTRAINT [PK_EventSet]
+-- Creating primary key on [Id] in table 'Services'
+ALTER TABLE [dbo].[Services]
+ADD CONSTRAINT [PK_Services]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'ServiceSet'
-ALTER TABLE [dbo].[ServiceSet]
-ADD CONSTRAINT [PK_ServiceSet]
+-- Creating primary key on [Id] in table 'Events'
+ALTER TABLE [dbo].[Events]
+ADD CONSTRAINT [PK_Events]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [have_Id], [isBookedFor_Id] in table 'istBookedFor'
-ALTER TABLE [dbo].[istBookedFor]
-ADD CONSTRAINT [PK_istBookedFor]
+-- Creating primary key on [have_Id], [isBookedFor_Id] in table 'isBookedFor'
+ALTER TABLE [dbo].[isBookedFor]
+ADD CONSTRAINT [PK_isBookedFor]
     PRIMARY KEY CLUSTERED ([have_Id], [isBookedFor_Id] ASC);
 GO
 
@@ -110,57 +111,57 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [isPlannedById] in table 'EventSet'
-ALTER TABLE [dbo].[EventSet]
+-- Creating foreign key on [isPlannedById] in table 'Events'
+ALTER TABLE [dbo].[Events]
 ADD CONSTRAINT [FK_plans]
     FOREIGN KEY ([isPlannedById])
-    REFERENCES [dbo].[PersonSet]
+    REFERENCES [dbo].[Users]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_plans'
 CREATE INDEX [IX_FK_plans]
-ON [dbo].[EventSet]
+ON [dbo].[Events]
     ([isPlannedById]);
 GO
 
--- Creating foreign key on [isOfferedById] in table 'ServiceSet'
-ALTER TABLE [dbo].[ServiceSet]
+-- Creating foreign key on [isOfferedById] in table 'Services'
+ALTER TABLE [dbo].[Services]
 ADD CONSTRAINT [FK_offers]
     FOREIGN KEY ([isOfferedById])
-    REFERENCES [dbo].[PersonSet]
+    REFERENCES [dbo].[Users]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_offers'
 CREATE INDEX [IX_FK_offers]
-ON [dbo].[ServiceSet]
+ON [dbo].[Services]
     ([isOfferedById]);
 GO
 
--- Creating foreign key on [have_Id] in table 'istBookedFor'
-ALTER TABLE [dbo].[istBookedFor]
-ADD CONSTRAINT [FK_istBookedFor_Service]
+-- Creating foreign key on [have_Id] in table 'isBookedFor'
+ALTER TABLE [dbo].[isBookedFor]
+ADD CONSTRAINT [FK_isBookedFor_Service]
     FOREIGN KEY ([have_Id])
-    REFERENCES [dbo].[ServiceSet]
+    REFERENCES [dbo].[Services]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [isBookedFor_Id] in table 'istBookedFor'
-ALTER TABLE [dbo].[istBookedFor]
-ADD CONSTRAINT [FK_istBookedFor_Event]
+-- Creating foreign key on [isBookedFor_Id] in table 'isBookedFor'
+ALTER TABLE [dbo].[isBookedFor]
+ADD CONSTRAINT [FK_isBookedFor_Event]
     FOREIGN KEY ([isBookedFor_Id])
-    REFERENCES [dbo].[EventSet]
+    REFERENCES [dbo].[Events]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_istBookedFor_Event'
-CREATE INDEX [IX_FK_istBookedFor_Event]
-ON [dbo].[istBookedFor]
+-- Creating non-clustered index for FOREIGN KEY 'FK_isBookedFor_Event'
+CREATE INDEX [IX_FK_isBookedFor_Event]
+ON [dbo].[isBookedFor]
     ([isBookedFor_Id]);
 GO
 

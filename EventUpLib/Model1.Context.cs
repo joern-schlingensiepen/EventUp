@@ -25,8 +25,8 @@ namespace EventUpLib
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Person> Persons { get; set; }
-        public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Service> Services { get; set; }
+        public virtual DbSet<Event> Events { get; set; }
     }
 }

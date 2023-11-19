@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Users" EntityType="Model1.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Services" EntityType="Model1.Store.Services" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Events" EntityType="Model1.Store.Events" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="isBookedFor" EntityType="Model1.Store.isBookedFor" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="plans" Association="Model1.Store.plans">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Event" EntitySet="Events" />
+    </AssociationSet>
+    <AssociationSet Name="offers" Association="Model1.Store.offers">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Service" EntitySet="Services" />
+    </AssociationSet>
+    <AssociationSet Name="FK_isBookedFor_Service" Association="Model1.Store.FK_isBookedFor_Service">
+      <End Role="Service" EntitySet="Services" />
+      <End Role="isBookedFor" EntitySet="isBookedFor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_isBookedFor_Event" Association="Model1.Store.FK_isBookedFor_Event">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="isBookedFor" EntitySet="isBookedFor" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="FamilyName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="TelephoneNumber" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Role_Admin" Type="bit" Nullable="false" />
+    <Property Name="Role_Supplier" Type="bit" Nullable="false" />
+    <Property Name="Role_Planner" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Services">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Typ_Service" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Typ_Event" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Capacity" Type="int" Nullable="true" />
+    <Property Name="FixCost" Type="float" Nullable="true" />
+    <Property Name="HourCost" Type="float" Nullable="true" />
+    <Property Name="PersonCost" Type="float" Nullable="true" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="More" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="isOfferedById" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Events">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="NumberOfGuest" Type="int" Nullable="false" />
+    <Property Name="Budget" Type="float" Nullable="true" />
+    <Property Name="Typ_Event" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Start_DateTime" Type="datetime" Nullable="false" />
+    <Property Name="End_DateTime" Type="datetime" Nullable="false" />
+    <Property Name="isPlannedById" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="isBookedFor">
+    <Key>
+      <PropertyRef Name="have_Id" />
+      <PropertyRef Name="isBookedFor_Id" />
+    </Key>
+    <Property Name="have_Id" Type="int" Nullable="false" />
+    <Property Name="isBookedFor_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="plans">
+    <End Role="User" Type="Model1.Store.Users" Multiplicity="1" />
+    <End Role="Event" Type="Model1.Store.Events" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="isPlannedById" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="offers">
+    <End Role="User" Type="Model1.Store.Users" Multiplicity="1" />
+    <End Role="Service" Type="Model1.Store.Services" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Service">
+        <PropertyRef Name="isOfferedById" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_isBookedFor_Service">
+    <End Role="Service" Type="Model1.Store.Services" Multiplicity="1" />
+    <End Role="isBookedFor" Type="Model1.Store.isBookedFor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Service">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="isBookedFor">
+        <PropertyRef Name="have_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_isBookedFor_Event">
+    <End Role="isBookedFor" Type="Model1.Store.isBookedFor" Multiplicity="*" />
+    <End Role="Event" Type="Model1.Store.Events" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="isBookedFor">
+        <PropertyRef Name="isBookedFor_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Model1.User" />
+          <EntitySet Name="Services" EntityType="Model1.Service" />
+          <EntitySet Name="Events" EntityType="Model1.Event" />
+          <AssociationSet Name="plans" Association="Model1.plans">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="offers" Association="Model1.offers">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Service" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="isBookedFor" Association="Model1.isBookedFor">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="true" />
+          <Property Name="FamilyName" Type="String" Nullable="true" />
+          <Property Name="TelephoneNumber" Type="String" Nullable="true" />
+          <Property Name="Email" Type="String" Nullable="false" />
+          <Property Name="Role_Admin" Type="Boolean" Nullable="false" />
+          <Property Name="Role_Supplier" Type="Boolean" Nullable="false" />
+          <Property Name="Role_Planner" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="plans" Relationship="Model1.plans" FromRole="User" ToRole="Event" />
+          <NavigationProperty Name="offers" Relationship="Model1.offers" FromRole="User" ToRole="Service" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="true" />
+          <Property Name="Typ_Service" Type="String" Nullable="false" />
+          <Property Name="Typ_Event" Type="String" Nullable="true" />
+          <Property Name="Capacity" Type="Int32" Nullable="true" />
+          <Property Name="FixCost" Type="Double" Nullable="true" />
+          <Property Name="HourCost" Type="Double" Nullable="true" />
+          <Property Name="PersonCost" Type="Double" Nullable="true" />
+          <Property Name="City" Type="String" Nullable="false" />
+          <Property Name="More" Type="String" Nullable="true" />
+          <NavigationProperty Name="isOfferedBy" Relationship="Model1.offers" FromRole="Service" ToRole="User" />
+          <Property Name="isOfferedById" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="isBookedFor" Relationship="Model1.isBookedFor" FromRole="Service" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="City" Type="String" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="true" />
+          <Property Name="NumberOfGuest" Type="Int32" Nullable="false" />
+          <Property Name="Budget" Type="Double" Nullable="true" />
+          <Property Name="Typ_Event" Type="String" Nullable="true" />
+          <Property Name="Start_DateTime" Type="DateTime" Nullable="false" />
+          <Property Name="End_DateTime" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="isPlannedBy" Relationship="Model1.plans" FromRole="Event" ToRole="User" />
+          <Property Name="isPlannedById" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="have" Relationship="Model1.isBookedFor" FromRole="Event" ToRole="Service" />
+        </EntityType>
+        <Association Name="plans">
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+          <End Type="Model1.Event" Role="Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="isPlannedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="offers">
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+          <End Type="Model1.Service" Role="Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Service">
+              <PropertyRef Name="isOfferedById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="isBookedFor">
+          <End Type="Model1.Service" Role="Service" Multiplicity="*" />
+          <End Type="Model1.Event" Role="Event" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
+          <ScalarProperty Name="TelephoneNumber" ColumnName="TelephoneNumber" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Role_Admin" ColumnName="Role_Admin" />
+          <ScalarProperty Name="Role_Supplier" ColumnName="Role_Supplier" />
+          <ScalarProperty Name="Role_Planner" ColumnName="Role_Planner" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Services">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Service)">
+        <MappingFragment StoreEntitySet="Services">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Typ_Service" ColumnName="Typ_Service" />
+          <ScalarProperty Name="Typ_Event" ColumnName="Typ_Event" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="FixCost" ColumnName="FixCost" />
+          <ScalarProperty Name="HourCost" ColumnName="HourCost" />
+          <ScalarProperty Name="PersonCost" ColumnName="PersonCost" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="More" ColumnName="More" />
+          <ScalarProperty Name="isOfferedById" ColumnName="isOfferedById" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Events">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Event)">
+        <MappingFragment StoreEntitySet="Events">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="NumberOfGuest" ColumnName="NumberOfGuest" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="Typ_Event" ColumnName="Typ_Event" />
+          <ScalarProperty Name="Start_DateTime" ColumnName="Start_DateTime" />
+          <ScalarProperty Name="End_DateTime" ColumnName="End_DateTime" />
+          <ScalarProperty Name="isPlannedById" ColumnName="isPlannedById" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="isBookedFor" TypeName="Model1.isBookedFor" StoreEntitySet="isBookedFor">
+      <EndProperty Name="Service">
+        <ScalarProperty Name="Id" ColumnName="have_Id" />
+      </EndProperty>
+      <EndProperty Name="Event">
+        <ScalarProperty Name="Id" ColumnName="isBookedFor_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -66,44 +66,6 @@ namespace EventUpWebApp.Models
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-    }
-
-    public class CompleteProfileViewModel
-    {
-        [Required(ErrorMessage = "The Name field is required.")]
-        public string Name { get; set; }
-
-        [Required(ErrorMessage = "The Family Name field is required.")]
-        public string FamilyName { get; set; }
-
-        [Required(ErrorMessage = "The Telephone Number field is required.")]
-        public string TelephoneNumber { get; set; }
-
-        public string Role { get; set; }
-
-
-        // Puedes agregar más propiedades según tus necesidades
-
-        public string Email { get; set; } // Puedes incluir el email si necesitas tenerlo en esta vista
-    }
-
     public class ResetPasswordViewModel
     {
         [Required]
