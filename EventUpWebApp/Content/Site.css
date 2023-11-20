@@ -102,3 +102,9 @@ textarea {
     border-radius: 5px; /* Bordes redondeados del botón */
     padding: 10px 20px; /* Espaciado interno del botón */
 }
+
+.social-icons-container a i {
+    color: black;
+    font-size: 40px; /* Puedes ajustar el tamaño según tus preferencias */
+    margin-right: 20px; /* Ajusta el espacio entre los iconos si es necesario */
+}
