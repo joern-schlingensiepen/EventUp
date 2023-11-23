@@ -12,6 +12,7 @@ using EventUpLib;
 using EventUpWebApp.Models;
 using System.Net;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace EventUpWebApp.Controllers
@@ -124,14 +125,17 @@ namespace EventUpWebApp.Controllers
         // GET: /User/Create
         public ActionResult Create()
         {
-            var userName = User.Identity.GetUserName();
+            var userName = User.Identity.GetUserName(); //se obtiene el nombre del usuario logueado
             User user = db.Users.FirstOrDefault(
                 u => u.Email == userName);
+                           
 
             if (user == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+          
             return View(user);
         }
 
@@ -151,29 +155,48 @@ namespace EventUpWebApp.Controllers
                     ModelState.AddModelError("", "Debe seleccionar exactamente un rol.");
                     return View(user);
                 }
-
-                // Asigna el rol correspondiente
-                if (user.Role_Admin)
-                {
-                    ViewBag.SelectedRole = "Admin";
-                }
-                else if (user.Role_Supplier)
-                {
-                    ViewBag.SelectedRole = "Supplier";
-                }
-                else if (user.Role_Planner)
-                {
-                    ViewBag.SelectedRole = "Planner";
-                }
-
+                               
                 db.Users.Add(user);
                 db.SaveChanges();
+                
+                var userFromDb = db.Users.FirstOrDefault(u => u.Email == user.Email); //ver si debo eliminarla
+                var userRole = GetSelectedRole(user); 
 
-                return RedirectToAction("Index", "Home");
+                Console.WriteLine($"SelectedRole: {userRole}");
+
+                // Redireccionar según el rol
+                return RedirectToAction("Index", "Home", new { selectedRole = userRole });
             }
 
             return View(user);
         }
+
+        // Método auxiliar para obtener el rol seleccionado
+        private string GetSelectedRole(User user)
+        {
+            
+            if (user.Role_Admin == true)
+            {
+                return "Admin";
+            }
+
+
+            if (user.Role_Planner == true)
+            {
+                return "Planner";
+            }
+
+
+            if (user.Role_Supplier == true)
+            {
+                return "Supplier";
+            }
+
+            return string.Empty;
+        }
+
+
+
 
         // GET: Users/Edit/5
         public ActionResult Edit(int? id)
@@ -206,6 +229,31 @@ namespace EventUpWebApp.Controllers
             return View(user);
         }
 
+        // GET: Users/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // POST: Users/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            User user = db.Users.Find(id);
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -213,5 +261,8 @@ namespace EventUpWebApp.Controllers
                 ModelState.AddModelError("", error);
             }
         }
+     
+
+
     }
 }

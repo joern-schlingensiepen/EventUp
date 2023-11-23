@@ -6,8 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="30b9d833878d42edac29a47dc4a1910d" Name="Diagram1" >
         <EntityTypeShape EntityType="Model1.User" Width="1.5" PointX="1.5" PointY="0.75" />
-        <EntityTypeShape EntityType="Model1.Service" Width="1.5" PointX="3.5" PointY="2.125" />
-        <EntityTypeShape EntityType="Model1.Event" Width="1.5" PointX="6.125" PointY="0.5" />
+        <EntityTypeShape EntityType="Model1.Service" Width="1.5" PointX="4.5" PointY="2.25" />
+        <EntityTypeShape EntityType="Model1.Event" Width="1.5" PointX="7" PointY="0.5" />
         <AssociationConnector Association="Model1.plans" />
         <AssociationConnector Association="Model1.offers" />
         <AssociationConnector Association="Model1.isBookedFor" />

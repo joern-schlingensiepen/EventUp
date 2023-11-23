@@ -13,12 +13,17 @@ using Microsoft.Owin;
 using EventUpWebApp.Models;
 using System.Data.Entity.Validation;
 using System.Web.Helpers;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+using System.Diagnostics;
+using EventUpWebApp.Controllers.Helpers;
+
 
 namespace EventUpWebApp.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private Model1Container db = new Model1Container();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -83,7 +88,9 @@ namespace EventUpWebApp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    var user = db.Users.FirstOrDefault(u => u.Email == model.Email);
+                    string selectedRole = UserRoleHelper.GetSelectedRole(user);
+                    return RedirectToLocalWithRole(returnUrl, selectedRole);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -94,6 +101,22 @@ namespace EventUpWebApp.Controllers
                     return View(model);
             }
         }
+
+        private ActionResult RedirectToLocalWithRole(string returnUrl, string userRole)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+
+            if (string.IsNullOrEmpty(userRole))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Index", "Home", new { selectedRole = userRole });
+        }
+
 
         //
         // GET: /Account/VerifyCode
@@ -375,7 +398,7 @@ namespace EventUpWebApp.Controllers
             if (disposing)
             {
                 if (_userManager != null)
-                {
+                { 
                     _userManager.Dispose();
                     _userManager = null;
                 }

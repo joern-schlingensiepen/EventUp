@@ -33,9 +33,11 @@ namespace EventUpWebApp.Models
 
             public string TelephoneNumber { get; set; }
 
-            public string Role { get; set; }
+            public string Role_Admin { get; set; }
+            public string Role_Planner { get; set; }
+            public string Role_Supplier { get; set; }
 
-        
+
     }
     public class Email_PasswordViewModel
     {
