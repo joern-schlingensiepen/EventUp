@@ -88,9 +88,23 @@ namespace EventUpWebApp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    var user = db.Users.FirstOrDefault(u => u.Email == model.Email);
-                    string selectedRole = UserRoleHelper.GetSelectedRole(user);
-                    return RedirectToLocalWithRole(returnUrl, selectedRole);
+
+                    var userFromUserManager = await UserManager.FindByEmailAsync(model.Email);
+                    var userEmail = userFromUserManager?.Email;
+                    var userInEventUpLib = db.Users.FirstOrDefault(u => u.Email == userEmail);
+                    if (userInEventUpLib != null)
+                    {
+                        Debug.WriteLine("Usuario encontrado en la base de datos local. ID: " + userInEventUpLib.Id);//probar!!
+                        string selectedRole = UserRoleHelper.GetSelectedRole(userInEventUpLib);
+                        return RedirectToAction("Index", "Home", new { selectedRole = selectedRole });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Usuario no encontrado");
+                        return View(model);
+                    }
+                   
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -102,21 +116,60 @@ namespace EventUpWebApp.Controllers
             }
         }
 
-        private ActionResult RedirectToLocalWithRole(string returnUrl, string userRole)
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Register()
         {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-
-            if (string.IsNullOrEmpty(userRole))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            return RedirectToAction("Index", "Home", new { selectedRole = userRole });
+            return View();
         }
 
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var ctx = new EventUpLib.Model1Container())
+                {
+                    if (ctx.Users.Any(s => s.Email == model.Email))
+                    {
+                        AddErrors(
+                            new IdentityResult(new string[] { "EMail schon vergeben!" })
+                        );
+                        return View(model);
+                    }
+
+                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                    var result = await UserManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        EventUpLib.User aUser = new EventUpLib.User()
+                        {
+                            Email = model.Email
+                        };
+                        ctx.Users.Add(aUser);
+                        ctx.SaveChanges();
+
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                        return RedirectToAction("Edit", "Register");
+                    }
+                    AddErrors(result);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
 
         //
         // GET: /Account/VerifyCode

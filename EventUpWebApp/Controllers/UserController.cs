@@ -13,6 +13,7 @@ using EventUpWebApp.Models;
 using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
+using EventUpWebApp.Controllers.Helpers;
 
 
 namespace EventUpWebApp.Controllers
@@ -24,6 +25,11 @@ namespace EventUpWebApp.Controllers
 
         public UserController()
         {
+        }
+
+        public ActionResult Index()
+        {
+            return View(db.Users.ToList());
         }
 
         public UserController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -56,73 +62,8 @@ namespace EventUpWebApp.Controllers
         }
 
 
-        //
-        // GET: /User/Email_Password
-        [AllowAnonymous]
-        public ActionResult Email_Password()
-        {
-            return View();
-        }
-
-        //
-        // POST: /User/Email_Password
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Email_Password(Email_PasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var ctx = new EventUpLib.Model1Container())
-                {
-                    if (ctx.Users.Any(s => s.Email == model.Email))
-                    {
-                        AddErrors(
-                            new IdentityResult(new string[] { "EMail schon vergeben!" })
-                        );
-                        return View(model);
-                    }
-
-                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                    var result = await UserManager.CreateAsync(user, model.Password);
-                    if (result.Succeeded)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        EventUpLib.User aUser = new User()
-                        {
-                            Email = model.Email
-                        };
-
-                        //try { 
-                      
-                        ctx.Users.Add(aUser);
-                        ctx.SaveChanges();
-                    
-                        //}
-                        //catch (Exception e)
-                        //{
-                        //    Console.WriteLine(e.Message);
-                        //}
-                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                        // Send an email with this link
-                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                        return RedirectToAction("Create", "User");
-                    }
-                    AddErrors(result);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-
-
         private Model1Container db = new Model1Container();
-        // GET: /User/Create
+        // GET: /User/Create (second register after email and password)
         public ActionResult Create()
         {
             var userName = User.Identity.GetUserName(); //se obtiene el nombre del usuario logueado
@@ -137,9 +78,9 @@ namespace EventUpWebApp.Controllers
 
           
             return View(user);
-        }
+        } 
 
-        // POST: Users/Create
+        // POST: Users/Create (second register after email and password)
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -159,44 +100,16 @@ namespace EventUpWebApp.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
                 
-                var userFromDb = db.Users.FirstOrDefault(u => u.Email == user.Email); //ver si debo eliminarla
-                var userRole = GetSelectedRole(user); 
-
-                Console.WriteLine($"SelectedRole: {userRole}");
+               
+                string selectedRole = UserRoleHelper.GetSelectedRole(user);
+                              
 
                 // Redireccionar según el rol
-                return RedirectToAction("Index", "Home", new { selectedRole = userRole });
+                return RedirectToAction("Index", "Home", new { selectedRole = selectedRole });
             }
 
             return View(user);
         }
-
-        // Método auxiliar para obtener el rol seleccionado
-        private string GetSelectedRole(User user)
-        {
-            
-            if (user.Role_Admin == true)
-            {
-                return "Admin";
-            }
-
-
-            if (user.Role_Planner == true)
-            {
-                return "Planner";
-            }
-
-
-            if (user.Role_Supplier == true)
-            {
-                return "Supplier";
-            }
-
-            return string.Empty;
-        }
-
-
-
 
         // GET: Users/Edit/5
         public ActionResult Edit(int? id)
@@ -218,7 +131,7 @@ namespace EventUpWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Familyname,Street,City,PostCode,EMail,RoleCostumer,RoleAdministrator,RoleStaff")] User user)
+        public ActionResult Edit([Bind(Include = "Id,Name,FamilyName,TelephoneNumber,Email,Role_Admin,Role_Supplier,Role_Planner")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -261,8 +174,7 @@ namespace EventUpWebApp.Controllers
                 ModelState.AddModelError("", error);
             }
         }
-     
 
-
+  
     }
 }
