@@ -41,7 +41,7 @@ namespace EventUpWebApp.Models
                 db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 string selectedRole = UserRoleHelper.GetSelectedRole(user);
-
+                Response.Cookies.Add(new HttpCookie("selectedRole", selectedRole));
                 // Redireccionar según el rol
                 return RedirectToAction("Index", "Home", new { selectedRole = selectedRole });
             }

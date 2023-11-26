@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EventUpLib;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace EventUpWebApp.Controllers
 {
@@ -16,7 +18,7 @@ namespace EventUpWebApp.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Events.ToList());
+           return View(db.Events.ToList());
         }
 
         // GET: Events
@@ -132,5 +134,8 @@ namespace EventUpWebApp.Controllers
             }
             base.Dispose(disposing);
         }
+
+       
+
     }
 }

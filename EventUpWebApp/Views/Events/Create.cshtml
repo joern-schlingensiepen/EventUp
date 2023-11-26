@@ -6,10 +6,10 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <h4>Event</h4>
     <hr />
@@ -79,10 +79,8 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.isPlannedById, "isPlannedById", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("isPlannedById", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.isPlannedById, "", new { @class = "text-danger" })
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Buscar Servicios", "Index", "Services")
         </div>
     </div>
 
@@ -91,9 +89,11 @@
             <input type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
+
 </div>
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+

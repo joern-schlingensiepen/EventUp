@@ -96,6 +96,7 @@ namespace EventUpWebApp.Controllers
                     {
                         Debug.WriteLine("Usuario encontrado en la base de datos local. ID: " + userInEventUpLib.Id);//probar!!
                         string selectedRole = UserRoleHelper.GetSelectedRole(userInEventUpLib);
+                        Response.Cookies.Add(new HttpCookie("selectedRole", selectedRole));
                         return RedirectToAction("Index", "Home", new { selectedRole = selectedRole });
                     }
                     else
@@ -160,7 +161,7 @@ namespace EventUpWebApp.Controllers
                         // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                        
                         return RedirectToAction("Edit", "Register");
                     }
                     AddErrors(result);
