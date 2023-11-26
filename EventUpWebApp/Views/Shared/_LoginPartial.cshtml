@@ -17,12 +17,12 @@
 
     @if (selectedRole == "Planner")
     {
-        <li class="nav-item">@Html.ActionLink("My Events", "Index", "Events", new { area = "" }, new { @class = "nav-link" })</li>
+        <li class="nav-item">@Html.ActionLink("My Events", "MyEvents", "Events", new { area = "" }, new { @class = "nav-link" })</li>
     }
 
     @if (selectedRole == "Supplier")
     {
-        <li class="nav-item">@Html.ActionLink("My Services", "Index", "Services", new { area = "" }, new { @class = "nav-link" })</li>
+        <li class="nav-item">@Html.ActionLink("My Services", "My Services", "Services", new { area = "" }, new { @class = "nav-link" })</li>
     }
 
     @if (selectedRole == "Admin")

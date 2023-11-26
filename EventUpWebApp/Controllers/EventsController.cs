@@ -46,6 +46,7 @@ namespace EventUpWebApp.Controllers
         public ActionResult Create()
         {
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name");
+           
             return View();
         }
 
@@ -58,12 +59,15 @@ namespace EventUpWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 db.Events.Add(@event);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
+            
+
             return View(@event);
         }
 
@@ -135,7 +139,16 @@ namespace EventUpWebApp.Controllers
             base.Dispose(disposing);
         }
 
-       
+        public ActionResult MyEvents()
+        {
+            // Obtener el ID del usuario actual
+            var currentUserId = User.Identity.GetUserId();
+
+            // Filtrar los eventos creados por el usuario actual
+            var myEvents = db.Events.Where(e => e.isPlannedById.ToString() == currentUserId).ToList();
+
+            return View(myEvents);
+        }
 
     }
 }
