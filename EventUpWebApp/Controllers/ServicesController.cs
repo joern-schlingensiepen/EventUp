@@ -75,7 +75,6 @@ namespace EventUpWebApp.Controllers
 
                 if (user == null)
                 {
-                    Debug.WriteLine("user is null");
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 

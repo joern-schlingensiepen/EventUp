@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Details";
 }
-
+@Html.HiddenFor(model => model.isPlannedById)
 <h2>Details</h2>
 
 <div>
@@ -74,17 +74,11 @@
             @Html.DisplayFor(model => model.End_DateTime)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.isPlannedBy.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.isPlannedBy.Name)
-        </dd>
+        
 
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "MyEvents")
 </p>
