@@ -9,6 +9,9 @@ using System.Web.Mvc;
 using EventUpLib;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using EventUpWebApp.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Diagnostics;
 
 namespace EventUpWebApp.Controllers
 {
@@ -39,14 +42,13 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(@event);
+            return View("MyEvents",@event);
         }
 
         // GET: Events/Create
         public ActionResult Create()
         {
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name");
-           
             return View();
         }
 
@@ -59,15 +61,12 @@ namespace EventUpWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                
                 db.Events.Add(@event);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("MyEvents");
             }
 
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
-            
-
             return View(@event);
         }
 
@@ -84,7 +83,7 @@ namespace EventUpWebApp.Controllers
                 return HttpNotFound();
             }
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
-            return View(@event);
+            return View("MyEvents", @event);
         }
 
         // POST: Events/Edit/5
@@ -98,7 +97,7 @@ namespace EventUpWebApp.Controllers
             {
                 db.Entry(@event).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("MyEvents");
             }
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
             return View(@event);
@@ -116,7 +115,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View(@event);
+            return View("MyEvents", @event);
         }
 
         // POST: Events/Delete/5
@@ -127,7 +126,7 @@ namespace EventUpWebApp.Controllers
             Event @event = db.Events.Find(id);
             db.Events.Remove(@event);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("MyEvents");
         }
 
         protected override void Dispose(bool disposing)
@@ -141,13 +140,40 @@ namespace EventUpWebApp.Controllers
 
         public ActionResult MyEvents()
         {
-            // Obtener el ID del usuario actual
-            var currentUserId = User.Identity.GetUserId();
+            // Obtener el Id del usuario actual
+            var userId = User.Identity.GetUserId();
 
-            // Filtrar los eventos creados por el usuario actual
-            var myEvents = db.Events.Where(e => e.isPlannedById.ToString() == currentUserId).ToList();
+            // Crear una instancia de UserManager (se refiere a la gestión de usuarios en ASP.NET Identity)
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
-            return View(myEvents);
+            // Utilizar UserManager para buscar el usuario en la base de datos mediante el identificador
+            var aspNetUser = userManager.FindById(userId);
+
+            // Declarar la variable user fuera del bloque if
+            User user = null;
+
+            if (aspNetUser != null)
+            {
+                // Ahora, "aspNetUser" es el usuario recuperado de ASP.NET Identity
+                // Puedes acceder a propiedades como Email, UserName, etc.
+                var userEmail = aspNetUser.Email;
+
+                // Imprimir el correo electrónico asociado al usuario actual
+                Debug.WriteLine($"User Email: {userEmail}");
+
+                // Buscar el usuario en tu base de datos
+                user = db.Users.FirstOrDefault(u => u.Email == userEmail);
+
+                if (user == null)
+                {
+                    Debug.WriteLine("user is null");
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            }
+
+            // Mover esta línea fuera del bloque if
+            ViewBag.PlansIds = user.plans.Select(o => o.Id).ToList();
+            return View("MyEvents", user.plans.ToList());
         }
 
     }

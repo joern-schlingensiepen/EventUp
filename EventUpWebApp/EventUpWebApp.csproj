@@ -452,6 +452,7 @@
     <Content Include="Views\Administrator\Admin.cshtml" />
     <Content Include="Views\Services\ListServices.cshtml" />
     <Content Include="Views\Events\MyEvents.cshtml" />
+    <Content Include="Views\Services\MyServices.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
