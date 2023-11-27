@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Delete";
 }
+@Html.HiddenFor(model => model.isOfferedById)
 
 <h2>Delete</h2>
 
@@ -11,6 +12,7 @@
     <h4>Service</h4>
     <hr />
     <dl class="dl-horizontal">
+
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -94,7 +96,8 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

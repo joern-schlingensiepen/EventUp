@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -24,6 +25,19 @@ namespace EventUpWebApp.Controllers
         {
             return View(db.Services.ToList());
         }
+        public ActionResult MyServices()
+        {
+            User user = GetUserById(User.Identity.GetUserId());
+
+            if (user == null)
+            {
+                Debug.WriteLine("user is null");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ViewBag.OffersIds = user.offers.Select(o => o.Id).ToList();
+            return View("MyServices", user.offers.ToList());
+        }
 
         // GET: Services/Details/5
         public ActionResult Details(int? id)
@@ -37,7 +51,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View("MyServices", service);
+            return View("Details", service);
         }
 
         // GET: Services/Create
@@ -57,30 +71,18 @@ namespace EventUpWebApp.Controllers
             if (ModelState.IsValid)
             {
 
-                var userId = User.Identity.GetUserId();
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-                var aspNetUser = userManager.FindById(userId);
-                              
-                User user = null;
+                User user = GetUserById(User.Identity.GetUserId());
 
-                if (aspNetUser != null)
+                if (user == null)
                 {
-                    var userEmail = aspNetUser.Email;
-                    user = db.Users.FirstOrDefault(u => u.Email == userEmail);
-
-                    if (user == null)
-                    {
-                        Debug.WriteLine("user is null");
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    }
+                    Debug.WriteLine("user is null");
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
                 service.isOfferedBy = user;
-                // Agregar el servicio a la base de datos
                 db.Services.Add(service);
                 db.SaveChanges();
 
-                // Redirigir a la acción que muestra los servicios del usuario
                 return RedirectToAction("MyServices");
 
             }
@@ -114,10 +116,30 @@ namespace EventUpWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(service).State = EntityState.Modified;
+                
+                var existingService = db.Services.Find(service.Id);
+                
+
+                if (existingService == null)
+                {
+                    return HttpNotFound();
+                }
+                
+                User user = GetUserById(User.Identity.GetUserId());
+
+                if (user == null)
+                {
+                  return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                existingService.isOfferedBy = user;
+                db.Entry(existingService).CurrentValues.SetValues(service);
                 db.SaveChanges();
+
+
                 return RedirectToAction("MyServices");
             }
+
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", service.isOfferedById);
             return View(service);
         }
@@ -134,7 +156,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            return View("MyServices", service);
+            return View("Delete", service);
         }
 
         // POST: Services/Delete/5
@@ -156,42 +178,33 @@ namespace EventUpWebApp.Controllers
             }
             base.Dispose(disposing);
         }
-        public ActionResult MyServices()
+       
+
+        private User GetUserById(string userId)
         {
-            // Obtener el Id del usuario actual
-            var userId = User.Identity.GetUserId();
-
-            // Crear una instancia de UserManager (se refiere a la gestión de usuarios en ASP.NET Identity)
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-
-            // Utilizar UserManager para buscar el usuario en la base de datos mediante el identificador
             var aspNetUser = userManager.FindById(userId);
-
-            // Declarar la variable user fuera del bloque if
-            User user = null;
 
             if (aspNetUser != null)
             {
-                // Ahora, "aspNetUser" es el usuario recuperado de ASP.NET Identity
-                // Puedes acceder a propiedades como Email, UserName, etc.
                 var userEmail = aspNetUser.Email;
+                Debug.WriteLine($"userEmail: {userEmail}");
 
-                // Imprimir el correo electrónico asociado al usuario actual
-                Debug.WriteLine($"User Email: {userEmail}");
+                // Verificar si el usuario existe en la base de datos
+                var user = db.Users.FirstOrDefault(u => u.Email == userEmail);
 
-                // Buscar el usuario en tu base de datos
-                user = db.Users.FirstOrDefault(u => u.Email == userEmail);
-
-                if (user == null)
+                if (user != null)
                 {
-                    Debug.WriteLine("user is null");
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    Debug.WriteLine($"User found in the database. UserID: {user.Id}");
+                    return user;
+                }
+                else
+                {
+                    Debug.WriteLine("User not found in the database.");
                 }
             }
 
-            // Mover esta línea fuera del bloque if
-            ViewBag.OffersIds = user.offers.Select(o => o.Id).ToList();
-            return View("MyServices", user.offers.ToList());
+            return null;
         }
 
         public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter)
