@@ -1,0 +1,99 @@
+﻿@model IEnumerable<EventUpLib.Service>
+
+@{
+    ViewBag.Title = "Reserved Services";
+}
+
+<h2>Reserved Services for Event</h2>
+
+<!-- Muestra todos los servicios que se han reservado para un evento -->
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Typ_Service)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Typ_Event)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Capacity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FixCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HourCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PersonCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.More)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isOfferedBy.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var service in Model)
+    {
+        <p>@service.Name</p>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => service.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.Typ_Service)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.Typ_Event)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.Capacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.FixCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.HourCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.PersonCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.More)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.isOfferedBy.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = service.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = service.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="text-center">
+    @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", null, new { @class = "btn btn-primary" })
+</div>
+
+

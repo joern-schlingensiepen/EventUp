@@ -10,7 +10,8 @@
 <!--Esta vista es donde se ven los servicios disponibles y donde el role_planner puede escoger-->
 <br />
 
-@using (Html.BeginForm("ListServices", "Services", FormMethod.Get, new { @class = "form-inline" }))
+
+@using (Html.BeginForm("SaveServicesForEvent", "EventServices", FormMethod.Post))
 {
     <div class="row">
         <div class="col-md-4">
@@ -40,7 +41,7 @@
 <br />
 <br />
 
-@using (Html.BeginForm("SaveServicesForEvent", "Events", FormMethod.Post))
+@using (Html.BeginForm("SaveServicesForEvent", "EventServices", FormMethod.Post))
 {
     <table class="table">
         <tr>
@@ -71,9 +72,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.City)
             </th>
-            <th>
-                Select
-            </th>
+
+
             <th></th>
         </tr>
 

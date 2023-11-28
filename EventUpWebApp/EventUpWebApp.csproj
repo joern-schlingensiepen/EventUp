@@ -248,6 +248,7 @@
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\Helpers\UserRoleHelper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\EventServicesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -450,9 +451,10 @@
     <Content Include="Views\Register\Edit.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Administrator\Admin.cshtml" />
-    <Content Include="Views\Services\ListServices.cshtml" />
+    <Content Include="Views\EventServices\ListServices.cshtml" />
     <Content Include="Views\Events\MyEvents.cshtml" />
     <Content Include="Views\Services\MyServices.cshtml" />
+    <Content Include="Views\EventServices\ReservedServices.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
