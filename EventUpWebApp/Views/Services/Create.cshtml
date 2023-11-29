@@ -1,4 +1,4 @@
-﻿@model EventUpLib.Service
+﻿@model EventUpWebApp.Models.ServiceViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -34,8 +34,13 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Typ_Service, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Typ_Service, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Typ_Service, "", new { @class = "text-danger" })
+                <p style="font-style: italic; margin-bottom: 5px;">(Please select the type of service you offer)</p>
+                <div style="display: flex; align-items: center;">
+                    <div style="flex-grow: 1;">
+                        @Html.DropDownListFor(model => model.Typ_Service, (List<SelectListItem>)ViewBag.TypServiceOptions, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Typ_Service, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
 

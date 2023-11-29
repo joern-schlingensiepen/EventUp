@@ -60,6 +60,24 @@ namespace EventUpWebApp.Controllers
         public ActionResult Create()
         {
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name");
+            // Crear las opciones solo si es una solicitud GET
+            if (HttpContext.Request.HttpMethod == "GET")
+            {
+                var typServiceOptions = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Decoration", Value = "Decoration" },
+            new SelectListItem { Text = "Entertainment", Value = "Entertainment" },
+            new SelectListItem { Text = "Food", Value = "Food" },
+            new SelectListItem { Text = "Music", Value = "Music" },
+            new SelectListItem { Text = "Place", Value = "Place" },
+            new SelectListItem { Text = "Photography", Value = "Photography" },
+            new SelectListItem { Text = "Transport", Value = "Transport" },
+            new SelectListItem { Text = "Other", Value = "Other" },
+            // Agrega más opciones según sea necesario
+        };
+
+                ViewBag.TypServiceOptions = typServiceOptions;
+            }
             return View();
         }
 
@@ -68,8 +86,11 @@ namespace EventUpWebApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Address,Typ_Service,Typ_Event,Capacity,FixCost,HourCost,PersonCost,City,More,isOfferedById")] Service service)
+        public ActionResult Create(ServiceViewModel serviceViewModel)
         {
+
+            serviceViewModel.TypServiceOptions = ViewBag.TypServiceOptions as List<SelectListItem>;
+
             if (ModelState.IsValid)
             {
                 var userName = User.Identity.Name;
@@ -81,6 +102,25 @@ namespace EventUpWebApp.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
+                
+
+                var service = new Service
+                {
+                    Id = serviceViewModel.Id,
+                    Name = serviceViewModel.Name,
+                    Address = serviceViewModel.Address,
+                    Typ_Service = serviceViewModel.Typ_Service,
+                    Typ_Event = serviceViewModel.Typ_Event,
+                    Capacity = serviceViewModel.Capacity,
+                    FixCost = serviceViewModel.FixCost,
+                    HourCost = serviceViewModel.HourCost,
+                    PersonCost = serviceViewModel.PersonCost,
+                    City = serviceViewModel.City,
+                    More = serviceViewModel.More,
+                    isOfferedBy = user,
+
+                };
+
                 service.isOfferedBy = user;
                 db.Services.Add(service);
                 db.SaveChanges();
@@ -89,8 +129,8 @@ namespace EventUpWebApp.Controllers
 
             }
 
-            ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", service.isOfferedById);
-            return View(service);
+            ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
+            return View(serviceViewModel);
         }
 
         // GET: Services/Edit/5
