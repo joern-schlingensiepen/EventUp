@@ -27,7 +27,9 @@ namespace EventUpWebApp.Controllers
         }
         public ActionResult MyServices()
         {
-            User user = GetUserById(User.Identity.GetUserId());
+            var userName = User.Identity.Name;
+            User user = db.Users.FirstOrDefault(u => u.Email == userName);
+            //User user = GetUserById(User.Identity.GetUserId());
 
             if (user == null)
             {
@@ -70,8 +72,9 @@ namespace EventUpWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                User user = GetUserById(User.Identity.GetUserId());
+                var userName = User.Identity.Name;
+                User user = db.Users.FirstOrDefault(u => u.Email == userName);
+                //User user = GetUserById(User.Identity.GetUserId());
 
                 if (user == null)
                 {
@@ -123,8 +126,9 @@ namespace EventUpWebApp.Controllers
                 {
                     return HttpNotFound();
                 }
-                
-                User user = GetUserById(User.Identity.GetUserId());
+                var userName = User.Identity.Name;
+                User user = db.Users.FirstOrDefault(u => u.Email == userName);
+                //User user = GetUserById(User.Identity.GetUserId());
 
                 if (user == null)
                 {
@@ -179,7 +183,7 @@ namespace EventUpWebApp.Controllers
         }
        
 
-        private User GetUserById(string userId)
+        /*private User GetUserById(string userId)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var aspNetUser = userManager.FindById(userId);
@@ -204,7 +208,7 @@ namespace EventUpWebApp.Controllers
             }
 
             return null;
-        }
+        }*/
 
         public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter)
         {

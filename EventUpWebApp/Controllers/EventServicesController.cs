@@ -67,15 +67,18 @@ namespace EventUpWebApp.Controllers
 
         private Event GetCurrentUserEvent()
         {
-            // Obtener el ID del usuario actual
-            string userId = User.Identity.GetUserId();
+            var userName = User.Identity.Name;
+            User user = db.Users.FirstOrDefault(u => u.Email == userName);
 
-            if (string.IsNullOrEmpty(userId))
+            // Obtener el ID del usuario actual
+            //string userId = User.Identity.GetUserId();
+
+            /*if (string.IsNullOrEmpty(userId))
             {
                 // El usuario no está autenticado
                 return null;
             }
-            User user = GetUserById(userId);
+            User user = GetUserById(userId);*/
            
             // Buscar el evento asociado al usuario actual
             var userEvent = db.Events.FirstOrDefault(e => e.isPlannedBy != null && e.isPlannedBy.Id == user.Id);
@@ -83,7 +86,7 @@ namespace EventUpWebApp.Controllers
             return userEvent;
         }
 
-        private User GetUserById(string userId)
+        /*private User GetUserById(string userId)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var aspNetUser = userManager.FindById(userId);
@@ -108,7 +111,7 @@ namespace EventUpWebApp.Controllers
             }
 
             return null;
-        }
+        }*/
         public ActionResult ReservedServices(int id) //muestra los servicios reservados para un evento
         {
 

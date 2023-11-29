@@ -27,7 +27,9 @@ namespace EventUpWebApp.Controllers
 
         public ActionResult MyEvents()
         {
-            User user = GetUserById(User.Identity.GetUserId());
+            var userName = User.Identity.Name;
+            User user = db.Users.FirstOrDefault(u => u.Email == userName);
+            //User user = GetUserById(User.Identity.GetUserId());
 
             if (user == null)
             {
@@ -70,8 +72,9 @@ namespace EventUpWebApp.Controllers
        {
             if (ModelState.IsValid)
             {
-
-                User user = GetUserById(User.Identity.GetUserId());
+                var userName = User.Identity.Name;
+                User user = db.Users.FirstOrDefault(u => u.Email == userName);
+                //User user = GetUserById(User.Identity.GetUserId());
 
                 if (user == null)
                 {
@@ -120,7 +123,8 @@ namespace EventUpWebApp.Controllers
                     return HttpNotFound();
                 }
 
-                User user = GetUserById(User.Identity.GetUserId());
+                var userName= User.Identity.Name;
+                User user = db.Users.FirstOrDefault(u => u.Email == userName); //GetUserById(User.Identity.GetUserId());
                 if (user == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -170,7 +174,7 @@ namespace EventUpWebApp.Controllers
             base.Dispose(disposing);
         }
 
-        private User GetUserById(string userId)
+        /*private User GetUserById(string userId)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var aspNetUser = userManager.FindById(userId);
@@ -195,7 +199,7 @@ namespace EventUpWebApp.Controllers
             }
 
             return null;
-        }
+        }*/
 
      
 
