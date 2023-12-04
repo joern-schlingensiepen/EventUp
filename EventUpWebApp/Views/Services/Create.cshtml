@@ -37,7 +37,7 @@
                 <p style="font-style: italic; margin-bottom: 5px;">(Please select the type of service you offer)</p>
                 <div style="display: flex; align-items: center;">
                     <div style="flex-grow: 1;">
-                        @Html.DropDownListFor(model => model.Typ_Service, (List<SelectListItem>)ViewBag.TypServiceOptions, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Typ_Service, ((List<SelectListItem>)ViewBag.TypServiceOptions) ?? new List<SelectListItem>(), new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Typ_Service, "", new { @class = "text-danger" })
                     </div>
                 </div>

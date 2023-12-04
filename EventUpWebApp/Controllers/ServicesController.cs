@@ -61,23 +61,9 @@ namespace EventUpWebApp.Controllers
         {
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name");
             // Crear las opciones solo si es una solicitud GET
-            if (HttpContext.Request.HttpMethod == "GET")
-            {
-                var typServiceOptions = new List<SelectListItem>
-        {
-            new SelectListItem { Text = "Decoration", Value = "Decoration" },
-            new SelectListItem { Text = "Entertainment", Value = "Entertainment" },
-            new SelectListItem { Text = "Food", Value = "Food" },
-            new SelectListItem { Text = "Music", Value = "Music" },
-            new SelectListItem { Text = "Place", Value = "Place" },
-            new SelectListItem { Text = "Photography", Value = "Photography" },
-            new SelectListItem { Text = "Transport", Value = "Transport" },
-            new SelectListItem { Text = "Other", Value = "Other" },
-            // Agrega más opciones según sea necesario
-        };
-
-                ViewBag.TypServiceOptions = typServiceOptions;
-            }
+            
+            ViewBag.TypServiceOptions = GetTypServiceOptions();
+            
             return View();
         }
 
@@ -89,7 +75,7 @@ namespace EventUpWebApp.Controllers
         public ActionResult Create(ServiceViewModel serviceViewModel)
         {
 
-            serviceViewModel.TypServiceOptions = ViewBag.TypServiceOptions as List<SelectListItem>;
+            serviceViewModel.TypServiceOptions = GetTypServiceOptions();
 
             if (ModelState.IsValid)
             {
@@ -101,8 +87,6 @@ namespace EventUpWebApp.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-
-                
 
                 var service = new Service
                 {
@@ -145,8 +129,31 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
+            // Reutiliza la lógica de creación de opciones de la lista desplegable
+            ViewBag.TypServiceOptions = GetTypServiceOptions();
+
+            // Mapea los valores del servicio al modelo
+            var serviceViewModel = new ServiceViewModel
+            {
+                Id = service.Id,
+                Name = service.Name,
+                Address = service.Address,
+                Typ_Service = service.Typ_Service,
+                Typ_Event = service.Typ_Event,
+                Capacity = service.Capacity,
+                FixCost = service.FixCost,
+                HourCost = service.HourCost,
+                PersonCost = service.PersonCost,
+                City = service.City,
+                More = service.More,
+                isOfferedById = service.isOfferedBy.Id
+            };
+
+            // Asigna la lista desplegable al modelo
+            serviceViewModel.TypServiceOptions = ViewBag.TypServiceOptions as List<SelectListItem>;
+
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", service.isOfferedById);
-            return View(service);
+            return View(serviceViewModel);
         }
 
         // POST: Services/Edit/5
@@ -154,13 +161,13 @@ namespace EventUpWebApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Address,Typ_Service,Typ_Event,Capacity,FixCost,HourCost,PersonCost,City,More,isOfferedById")] Service service)
+        public ActionResult Edit(ServiceViewModel serviceViewModel)
         {
             if (ModelState.IsValid)
             {
-                
-                var existingService = db.Services.Find(service.Id);
-                
+
+                var existingService = db.Services.Find(serviceViewModel.Id);
+
 
                 if (existingService == null)
                 {
@@ -168,24 +175,40 @@ namespace EventUpWebApp.Controllers
                 }
                 var userName = User.Identity.Name;
                 User user = db.Users.FirstOrDefault(u => u.Email == userName);
-                //User user = GetUserById(User.Identity.GetUserId());
-
+               
                 if (user == null)
                 {
-                  return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
                 existingService.isOfferedBy = user;
-                db.Entry(existingService).CurrentValues.SetValues(service);
+                db.Entry(existingService).CurrentValues.SetValues(serviceViewModel);
                 db.SaveChanges();
 
 
                 return RedirectToAction("MyServices");
             }
 
-            ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", service.isOfferedById);
-            return View(service);
+            ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
+            return View(serviceViewModel);
         }
+
+        // Método para obtener las opciones de la lista desplegable
+        private List<SelectListItem> GetTypServiceOptions()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Decoration", Value = "Decoration" },
+                new SelectListItem { Text = "Entertainment", Value = "Entertainment" },
+                new SelectListItem { Text = "Food", Value = "Food" },
+                new SelectListItem { Text = "Music", Value = "Music" },
+                new SelectListItem { Text = "Place", Value = "Place" },
+                new SelectListItem { Text = "Photography", Value = "Photography" },
+                new SelectListItem { Text = "Transport", Value = "Transport" },
+                new SelectListItem { Text = "Other", Value = "Other" },
+            };
+        }
+
 
         // GET: Services/Delete/5
         public ActionResult Delete(int? id)
