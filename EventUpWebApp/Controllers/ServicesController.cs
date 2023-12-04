@@ -61,9 +61,12 @@ namespace EventUpWebApp.Controllers
         {
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name");
             // Crear las opciones solo si es una solicitud GET
-            
             ViewBag.TypServiceOptions = GetTypServiceOptions();
-            
+            ViewBag.TypEventOptions = GetTypEventOptions();
+
+
+
+
             return View();
         }
 
@@ -76,6 +79,7 @@ namespace EventUpWebApp.Controllers
         {
 
             serviceViewModel.TypServiceOptions = GetTypServiceOptions();
+            serviceViewModel.TypEventOptions = GetTypEventOptions();
 
             if (ModelState.IsValid)
             {
@@ -94,13 +98,14 @@ namespace EventUpWebApp.Controllers
                     Name = serviceViewModel.Name,
                     Address = serviceViewModel.Address,
                     Typ_Service = serviceViewModel.Typ_Service,
-                    Typ_Event = serviceViewModel.Typ_Event,
+                    Typ_Event = serviceViewModel.Typ_Event, 
                     Capacity = serviceViewModel.Capacity,
                     FixCost = serviceViewModel.FixCost,
                     HourCost = serviceViewModel.HourCost,
                     PersonCost = serviceViewModel.PersonCost,
                     City = serviceViewModel.City,
                     More = serviceViewModel.More,
+                    
                     isOfferedBy = user,
 
                 };
@@ -131,6 +136,7 @@ namespace EventUpWebApp.Controllers
             }
             // Reutiliza la lógica de creación de opciones de la lista desplegable
             ViewBag.TypServiceOptions = GetTypServiceOptions();
+            ViewBag.TypEventsOptions = GetTypEventOptions();
 
             // Mapea los valores del servicio al modelo
             var serviceViewModel = new ServiceViewModel
@@ -151,6 +157,7 @@ namespace EventUpWebApp.Controllers
 
             // Asigna la lista desplegable al modelo
             serviceViewModel.TypServiceOptions = ViewBag.TypServiceOptions as List<SelectListItem>;
+            serviceViewModel.TypEventOptions = ViewBag.TypEventOptions as List<SelectListItem>;
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", service.isOfferedById);
             return View(serviceViewModel);
@@ -209,6 +216,23 @@ namespace EventUpWebApp.Controllers
             };
         }
 
+        // Método para obtener las opciones de la lista desplegable
+        private List<SelectListItem> GetTypEventOptions()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Baby shower", Value = "Baby shower" },
+                new SelectListItem { Text = "Birthday", Value = "Birthday" },
+                new SelectListItem { Text = "Children's birthday", Value = "Children's birthday" },
+                new SelectListItem { Text = "Concerts", Value = "Concerts" },
+                new SelectListItem { Text = "Corporate event", Value = "Corporate event" },
+
+                new SelectListItem { Text = "All", Value = "All" },
+                new SelectListItem { Text = "Other", Value = "Other" },
+            };
+        }
+
+       
 
         // GET: Services/Delete/5
         public ActionResult Delete(int? id)

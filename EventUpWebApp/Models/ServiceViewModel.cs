@@ -25,6 +25,8 @@ namespace EventUpWebApp.Models
         // Lista de opciones para Typ_Service
         public List<SelectListItem> TypServiceOptions { get; set; }
         public string Typ_Event { get; set; }
+        public List<SelectListItem> TypEventOptions { get; set; }
+        
         public Nullable<int> Capacity { get; set; }
         public Nullable<double> FixCost { get; set; }
         public Nullable<double> HourCost { get; set; }
