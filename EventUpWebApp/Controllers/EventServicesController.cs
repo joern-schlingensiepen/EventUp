@@ -127,7 +127,7 @@ namespace EventUpWebApp.Controllers
 
                 // Obtén la lista de servicios seleccionados desde la base de datos
                 var selectedServicesList = db.Services.Where(s => selectedServiceIds.Contains(s.Id)).ToList();
-                
+
 
                 foreach (var service in selectedServicesList)
                 {
@@ -147,14 +147,14 @@ namespace EventUpWebApp.Controllers
         {
             var userName = User.Identity.Name;
             User user = db.Users.FirstOrDefault(u => u.Email == userName);
-          
+
             // Buscar el evento asociado al usuario actual
             var userEvent = db.Events.FirstOrDefault(e => e.isPlannedBy != null && e.isPlannedBy.Id == user.Id);
 
             return userEvent;
         }
 
-       
+
         public ActionResult ReservedServices(int id) //muestra los servicios reservados para un evento
         {
 
@@ -164,7 +164,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             // Mapear la lista de servicios a ServiceViewModel
             var reservedServicesViewModel = selectedEvent.have.Select(service => new ServiceViewModel
             {
@@ -186,6 +186,63 @@ namespace EventUpWebApp.Controllers
 
             // Pasar la lista de servicios asociados a la vista
             return View(reservedServicesViewModel);
+        }
+
+        // GET: Services/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Service service = db.Services.Find(id);
+            if (service == null)
+            {
+                return HttpNotFound();
+            }
+            return View("Details", service);
+        }
+        // GET: Services/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Service service = db.Services.Find(id);
+            if (service == null)
+            {
+                return HttpNotFound();
+            }
+            return View("Delete", service);
+        }
+
+        // POST: Services/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            // Obtén el evento actual del usuario
+            var currentEvent = GetCurrentUserEvent();
+
+            if (currentEvent == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Busca el servicio en la lista de servicios del evento
+            var serviceToRemove = currentEvent.have.FirstOrDefault(s => s.Id == id);
+
+            if (serviceToRemove != null)
+            {
+                // Elimina el servicio solo del evento, no de la base de datos
+                currentEvent.have.Remove(serviceToRemove);
+                db.SaveChanges(); // Guarda los cambios en la base de datos
+
+                return RedirectToAction("ReservedServices", new { id = currentEvent.Id });
+            }
+
+            return HttpNotFound(); // El servicio no se encontró en la lista del evento
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventUpLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -38,6 +39,10 @@ namespace EventUpWebApp.Models
 
         public string More { get; set; }
         public int isOfferedById { get; set; }
+
+        public virtual User isOfferedBy { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Event> isBookedFor { get; set; }
     }
    
 }
