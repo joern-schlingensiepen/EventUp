@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Diagnostics;
 using System.Web.Services.Description;
 
+
 namespace EventUpWebApp.Controllers
 {
     public class EventsController : Controller
@@ -122,8 +123,29 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
+
+            var typEventOptions = GetTypEventOptions();
+
+            // Mapea los valores del servicio al modelo
+            var eventViewModel = new EventViewModel
+            {
+                Id = @event.Id,
+                Name = @event.Name,
+                Address = @event.Address,
+                Typ_Event = @event.Typ_Event,
+                NumberOfGuest = @event.NumberOfGuest,
+                Budget = @event.Budget,
+                Start_DateTime = @event.Start_DateTime,
+                End_DateTime = @event.End_DateTime,
+                City = @event.City,
+
+                isPlannedById = @event.isPlannedBy.Id,
+            };
+
+            // Asigna la lista desplegable al modelo
+            eventViewModel.TypEventOptions = typEventOptions;
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
-            return View(@event);
+            return View(eventViewModel);
         }
 
         // POST: Events/Edit/5
@@ -131,31 +153,33 @@ namespace EventUpWebApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,City,Address,NumberOfGuest,Budget,Typ_Event,Start_DateTime,End_DateTime,isPlannedById")] Event @event)
+        public ActionResult Edit(EventViewModel eventViewModel)
         {
             if (ModelState.IsValid)
             {
-                var existingEvent= db.Events.Find(@event.Id); 
+                var existingEvent= db.Events.Find(eventViewModel.Id); 
 
                 if (existingEvent == null)
                 {
                     return HttpNotFound();
                 }
 
-                var userName= User.Identity.Name;
-                User user = db.Users.FirstOrDefault(u => u.Email == userName); //GetUserById(User.Identity.GetUserId());
+                var userName = User.Identity.Name;
+                User user = db.Users.FirstOrDefault(u => u.Email == userName);
+
                 if (user == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
                 existingEvent.isPlannedBy = user;
-                db.Entry(existingEvent).CurrentValues.SetValues(@event);
+                db.Entry(existingEvent).CurrentValues.SetValues(eventViewModel);
                 db.SaveChanges();
                 return RedirectToAction("MyEvents");
             }
-            ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
-            return View(@event);
+            eventViewModel.TypEventOptions = GetTypEventOptions();
+            ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
+            return View(eventViewModel);
         }
         private List<SelectListItem> GetTypEventOptions()
         {
@@ -166,7 +190,6 @@ namespace EventUpWebApp.Controllers
                 new SelectListItem { Text = "Children's birthday", Value = "Children's birthday" },
                 new SelectListItem { Text = "Concerts", Value = "Concerts" },
                 new SelectListItem { Text = "Corporate event", Value = "Corporate event" },
-
                 new SelectListItem { Text = "All", Value = "All" },
                 new SelectListItem { Text = "Other", Value = "Other" },
             };

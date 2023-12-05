@@ -106,7 +106,7 @@ namespace EventUpWebApp.Controllers
                     City = serviceViewModel.City,
                     More = serviceViewModel.More,
                     
-                    //isOfferedBy = user,
+                    isOfferedBy = user,
 
                 };
 
@@ -135,8 +135,8 @@ namespace EventUpWebApp.Controllers
                 return HttpNotFound();
             }
             // Reutiliza la lógica de creación de opciones de la lista desplegable
-            ViewBag.TypServiceOptions = GetTypServiceOptions();
-            ViewBag.TypEventsOptions = GetTypEventOptions();
+            var typServiceOptions = GetTypServiceOptions();
+            var typEventOptions = GetTypEventOptions();
 
             // Mapea los valores del servicio al modelo
             var serviceViewModel = new ServiceViewModel
@@ -152,12 +152,12 @@ namespace EventUpWebApp.Controllers
                 PersonCost = service.PersonCost,
                 City = service.City,
                 More = service.More,
-                //isOfferedById = service.isOfferedBy.Id
+                isOfferedById = service.isOfferedBy.Id
             };
 
             // Asigna la lista desplegable al modelo
-            serviceViewModel.TypServiceOptions = ViewBag.TypServiceOptions as List<SelectListItem>;
-            serviceViewModel.TypEventOptions = ViewBag.TypEventOptions as List<SelectListItem>;
+            serviceViewModel.TypServiceOptions = typServiceOptions;
+            serviceViewModel.TypEventOptions = typEventOptions;
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", service.isOfferedById);
             return View(serviceViewModel);
@@ -195,6 +195,10 @@ namespace EventUpWebApp.Controllers
 
                 return RedirectToAction("MyServices");
             }
+
+            // Si hay un error, volvemos a cargar las opciones de la lista desplegable
+            serviceViewModel.TypServiceOptions = GetTypServiceOptions();
+            serviceViewModel.TypEventOptions = GetTypEventOptions();
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
             return View(serviceViewModel);
