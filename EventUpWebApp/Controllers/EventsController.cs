@@ -60,6 +60,7 @@ namespace EventUpWebApp.Controllers
         public ActionResult Create()
         {
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name");
+            ViewBag.TypEventOptions = GetTypEventOptions();
             return View();
         }
 
@@ -68,8 +69,9 @@ namespace EventUpWebApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,City,Address,NumberOfGuest,Budget,Typ_Event,Start_DateTime,End_DateTime,isPlannedById")] Event @event)
+        public ActionResult Create(EventViewModel eventViewModel)
        {
+            eventViewModel.TypEventOptions = GetTypEventOptions();
             if (ModelState.IsValid)
             {
                 var userName = User.Identity.Name;
@@ -81,14 +83,31 @@ namespace EventUpWebApp.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
+                //mapeo de datos según el ViewModel antes de guardar los datos en sql
+                var @event = new Event
+                {
+                    Id = eventViewModel.Id,
+                    Name = eventViewModel.Name,
+                    Address = eventViewModel.Address,
+                    Typ_Event = eventViewModel.Typ_Event,
+                    NumberOfGuest = eventViewModel.NumberOfGuest,
+                    Budget = eventViewModel.Budget,
+                    Start_DateTime = eventViewModel.Start_DateTime,
+                    End_DateTime = eventViewModel.End_DateTime,
+                    City = eventViewModel.City,
+
+                    isPlannedBy = user,
+
+                };
+
                 @event.isPlannedBy = user;
                 db.Events.Add(@event);
                 db.SaveChanges();
                 return RedirectToAction("MyEvents");
             }
 
-            ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
-            return View(@event);
+            ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
+            return View(eventViewModel);
         }
 
         // GET: Events/Edit/5
@@ -138,7 +157,20 @@ namespace EventUpWebApp.Controllers
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
             return View(@event);
         }
+        private List<SelectListItem> GetTypEventOptions()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Baby shower", Value = "Baby shower" },
+                new SelectListItem { Text = "Birthday", Value = "Birthday" },
+                new SelectListItem { Text = "Children's birthday", Value = "Children's birthday" },
+                new SelectListItem { Text = "Concerts", Value = "Concerts" },
+                new SelectListItem { Text = "Corporate event", Value = "Corporate event" },
 
+                new SelectListItem { Text = "All", Value = "All" },
+                new SelectListItem { Text = "Other", Value = "Other" },
+            };
+        }
         // GET: Events/Delete/5
         public ActionResult Delete(int? id)
         {

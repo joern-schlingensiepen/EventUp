@@ -106,7 +106,7 @@ namespace EventUpWebApp.Controllers
                     City = serviceViewModel.City,
                     More = serviceViewModel.More,
                     
-                    isOfferedBy = user,
+                    //isOfferedBy = user,
 
                 };
 
@@ -152,7 +152,7 @@ namespace EventUpWebApp.Controllers
                 PersonCost = service.PersonCost,
                 City = service.City,
                 More = service.More,
-                isOfferedById = service.isOfferedBy.Id
+                //isOfferedById = service.isOfferedBy.Id
             };
 
             // Asigna la lista desplegable al modelo
