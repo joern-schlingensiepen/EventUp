@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EventUpLib.Service>
+﻿@model List<EventUpWebApp.Models.ServiceViewModel>
 
 @{
     ViewBag.Title = "ListServices";
@@ -11,22 +11,22 @@
 <br />
 
 
-@using (Html.BeginForm("SaveServicesForEvent", "EventServices", FormMethod.Post))
+@using (Html.BeginForm("ListServices", "EventServices", FormMethod.Post))
 {
     <div class="row">
         <div class="col-md-4">
             <label class="mr-2" for="cityFilter">City:</label>
-            @Html.DropDownList("cityFilter", ViewBag.CityList as SelectList, "All Cities", new { @class = "form-control mr-2" })
+            @Html.DropDownList("cityFilter", ViewBag.CityList as SelectList, ViewBag.CityFilter as string, new { @class = "form-control mr-2" })
         </div>
 
         <div class="col-md-4">
             <label class="mr-2" for="typServiceFilter">Service:</label>
-            @Html.DropDownList("typServiceFilter", ViewBag.Typ_ServiceList as SelectList, "All Services", new { @class = "form-control mr-2" })
+            @Html.DropDownList("typServiceFilter", ViewBag.TypServiceOptions as SelectList, "All Services", new { @class = "form-control mr-2" })
         </div>
 
         <div class="col-md-4">
             <label class="mr-2" for="typEventFilter">Event:</label>
-            @Html.DropDownList("typEventFilter", ViewBag.Typ_EventList as SelectList, "All Events", new { @class = "form-control mr-2" })
+            @Html.DropDownList("typEventFilter", ViewBag.TypEventOptions as SelectList, "All Events", new { @class = "form-control mr-2" })
         </div>
     </div>
 
@@ -37,88 +37,94 @@
     </div>
 
 
-<br />
-<br />
-<br />
+    <br />
+    <br />
+    <br />
 
 
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.First().Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.First().Address)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Typ_Service)
+                @Html.DisplayNameFor(model => model.First().Typ_Service)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Typ_Event)
+                @Html.DisplayNameFor(model => model.First().Typ_Event)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Capacity)
+                @Html.DisplayNameFor(model => model.First().Capacity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FixCost)
+                @Html.DisplayNameFor(model => model.First().FixCost)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HourCost)
+                @Html.DisplayNameFor(model => model.First().HourCost)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PersonCost)
+                @Html.DisplayNameFor(model => model.First().PersonCost)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                @Html.DisplayNameFor(model => model.First().City)
             </th>
 
 
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+        @for (int i = 0; i < Model.Count; i++)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => Model[i].Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Address)
+                    @Html.DisplayFor(modelItem => Model[i].Address))
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Typ_Service)
+                    @Html.DisplayFor(modelItem => Model[i].Typ_Service)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Typ_Event)
+                    @Html.DisplayFor(modelItem => Model[i].Typ_Event)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Capacity)
+                    @Html.DisplayFor(modelItem => Model[i].Capacity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FixCost)
+                    @Html.DisplayFor(modelItem => Model[i].FixCost)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.HourCost)
+                    @Html.DisplayFor(modelItem => Model[i].HourCost)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PersonCost)
+                    @Html.DisplayFor(modelItem => Model[i].PersonCost)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.City)
+                    @Html.DisplayFor(modelItem => Model[i].City)
                 </td>
                 <td>
-                    @Html.CheckBox("selectedServices", false, new { value = item.Id })
+                    @Html.CheckBoxFor(modelItem => Model[i].IsSelected, new { @class = "service-checkbox", data_id = Model[i].Id })
+                    @Html.HiddenFor(modelItem => Model[i].Id)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = Model[i].Id }) |
                 </td>
             </tr>
         }
     </table>
-
     <div class="row mt-2">
         <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">Save services for my Event</button>
+            <button type="submit" formaction="@Url.Action("SaveServicesForEvent", "EventServices")" class="btn btn-primary">Save services for my Event</button>
         </div>
     </div>
+
+
 }
+
+
+
+

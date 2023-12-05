@@ -11,6 +11,7 @@ namespace EventUpWebApp.Models
 
     {
         public int Id { get; set; }
+        public bool IsSelected { get; set; } = false;
 
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }

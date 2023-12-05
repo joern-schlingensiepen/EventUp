@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EventUpLib.Service>
+﻿@model IEnumerable<EventUpWebApp.Models.ServiceViewModel>
 
 @{
     ViewBag.Title = "Reserved Services";
@@ -7,6 +7,17 @@
 <h2>Reserved Services for Event</h2>
 
 <!-- Muestra todos los servicios que se han reservado para un evento -->
+
+@if (Model != null && Model.Any())
+{
+    
+    <p>Here the services you have already saved </p>
+    
+}
+else
+{
+    <p>No reserved services for this event.</p>
+}
 
 <table class="table">
     <tr>
@@ -40,15 +51,13 @@
         <th>
             @Html.DisplayNameFor(model => model.More)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isOfferedBy.Name)
-        </th>
+
         <th></th>
     </tr>
 
     @foreach (var service in Model)
     {
-        
+
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => service.Name)
@@ -80,9 +89,7 @@
             <td>
                 @Html.DisplayFor(modelItem => service.More)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => service.isOfferedBy.Name)
-            </td>
+
             <td>
                 @Html.ActionLink("Details", "Details", new { id = service.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = service.Id })
