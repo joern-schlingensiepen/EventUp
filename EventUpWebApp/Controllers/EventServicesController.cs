@@ -19,27 +19,27 @@ namespace EventUpWebApp.Controllers
     {
         private Model1Container db = new Model1Container();
 
-
-        public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter)
+        [HttpGet]
+        public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
         {
-            // Obtener ciudades únicas de la base de datos
-            var uniqueCities = db.Services.Select(s => s.City).Distinct().ToList();
-            ViewBag.CityList = new SelectList(uniqueCities);
+            Debug.WriteLine("entra al get");
+            return View(BuildServiceViewModels(cityFilter, typServiceFilter, typEventFilter, selectedEventId));
+        }
 
-            // Obtener tipos de servicio únicos de la base de datos
-            var uniqueTypServices = db.Services.Select(s => s.Typ_Service).Distinct().ToList();
-            ViewBag.TypServiceOptions = new SelectList(GetTypServiceOptions(), "Value", "Text", typServiceFilter);
+        [HttpPost]
+        public ActionResult ListServicesPost(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
+        {
+            Debug.WriteLine("entra al post");
+            ViewBag.SelectedEventId = selectedEventId;
+            ViewBag.SelectedEventName = GetSelectedEvent(selectedEventId)?.Name;
 
-            // Obtener tipos de evento únicos de la base de datos
-            var uniqueTypEvents = db.Services.Select(s => s.Typ_Event).Distinct().ToList();
-            ViewBag.TypEventOptions = new SelectList(GetTypEventOptions(), "Value", "Text", typEventFilter);
+            var serviceViewModels = BuildServiceViewModels(cityFilter, typServiceFilter, typEventFilter, selectedEventId);
+            return View(serviceViewModels);
+        }
 
-            // Obtener el evento actual
-            var currentEvent = GetCurrentUserEvent();
-
-            // Establecer la ciudad del evento como valor predeterminado en el filtro
-            ViewBag.CityFilter = currentEvent?.City;
-
+        private List<ServiceViewModel> BuildServiceViewModels(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
+        {
+            // Lógica común para obtener la lista de servicios
             var filteredServices = db.Services.ToList();
 
             if (!string.IsNullOrEmpty(cityFilter))
@@ -57,15 +57,19 @@ namespace EventUpWebApp.Controllers
                 filteredServices = filteredServices.Where(s => s.Typ_Event == typEventFilter).ToList();
             }
 
-            var serviceViewModels = filteredServices.Select(service => new ServiceViewModel
+            ViewBag.CityFilter = GetSelectedEvent(selectedEventId)?.City;
+            ViewBag.CityList = new SelectList(filteredServices.Select(s => s.City).Distinct().ToList());
+            ViewBag.TypServiceOptions = new SelectList(GetTypServiceOptions(), "Value", "Text", typServiceFilter);
+            ViewBag.TypEventOptions = new SelectList(GetTypEventOptions(), "Value", "Text", typEventFilter);
+            ViewBag.SelectedEventId = selectedEventId;
+
+            return filteredServices.Select(service => new ServiceViewModel
             {
                 Id = service.Id,
                 Name = service.Name,
                 Address = service.Address,
                 Typ_Service = service.Typ_Service,
-                TypServiceOptions = GetTypServiceOptions(),
                 Typ_Event = service.Typ_Event,
-                TypEventOptions = GetTypEventOptions(),
                 Capacity = service.Capacity,
                 FixCost = service.FixCost,
                 HourCost = service.HourCost,
@@ -74,8 +78,6 @@ namespace EventUpWebApp.Controllers
                 More = service.More,
                 isOfferedById = service.isOfferedById
             }).ToList();
-
-            return View(serviceViewModels);
         }
         // Método para obtener las opciones de la lista desplegable
         private List<SelectListItem> GetTypServiceOptions()
@@ -110,13 +112,17 @@ namespace EventUpWebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveServicesForEvent(IEnumerable<ServiceViewModel> selectedServices)
+        [ActionName("SaveServicesForEvent")]
+        public ActionResult SaveServicesForEventPost(IEnumerable<ServiceViewModel> selectedServices, int selectedEventId)
         {
+            
             // Obtener el evento actual (puedes ajustar cómo obtienes el evento según tu lógica)
-            var currentEvent = GetCurrentUserEvent();  // Necesitarás implementar esta función
+            var currentEvent = GetSelectedEvent(selectedEventId);
+            Debug.WriteLine($"SaveServicesForEvent - selectedEventId: {selectedEventId}");
 
             if (currentEvent == null)
             {
+                Debug.WriteLine("SaveServicesForEvent - currentEvent is null");
                 return HttpNotFound();
             }
 
@@ -143,6 +149,12 @@ namespace EventUpWebApp.Controllers
             return RedirectToAction("ReservedServices", new { id = currentEvent.Id });
         }
 
+        private Event GetSelectedEvent(int eventId)
+        {
+            // Obtener el evento por el Id proporcionado
+            return db.Events.Find(eventId);
+        }
+
         private Event GetCurrentUserEvent()
         {
             var userName = User.Identity.Name;
@@ -157,7 +169,7 @@ namespace EventUpWebApp.Controllers
 
         public ActionResult ReservedServices(int id) //muestra los servicios reservados para un evento
         {
-
+            
             var selectedEvent = db.Events.Include(e => e.have).FirstOrDefault(e => e.Id == id);
 
             if (selectedEvent == null)
@@ -183,7 +195,8 @@ namespace EventUpWebApp.Controllers
                 More = service.More,
                 isOfferedById = service.isOfferedById
             }).ToList();
-
+            ViewBag.SelectedEventId = id;
+            ViewBag.SelectedEventName = selectedEvent.Name;
             // Pasar la lista de servicios asociados a la vista
             return View(reservedServicesViewModel);
         }

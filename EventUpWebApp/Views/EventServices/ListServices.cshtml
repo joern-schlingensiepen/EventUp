@@ -9,10 +9,12 @@
 <h2>Find here the services you need for your event...</h2>
 <!--Esta vista es donde se ven los servicios disponibles y donde el role_planner puede escoger-->
 <br />
-
-
-@using (Html.BeginForm("ListServices", "EventServices", FormMethod.Post))
+<h2>@ViewBag.SelectedEventName</h2>
+<br />
+<p>SelectedEventId: @ViewBag.SelectedEventId</p>
+@using (Html.BeginForm("ListServicesPost", "EventServices", FormMethod.Post))
 {
+
     <div class="row">
         <div class="col-md-4">
             <label class="mr-2" for="cityFilter">City:</label>
@@ -40,7 +42,8 @@
     <br />
     <br />
     <br />
-
+    <input type="hidden" name="selectedEventId" value="@((int?)ViewBag.SelectedEventId ?? 0)" />
+    <!--Esto es necesario para que el valor de selectedEventId se incluya en la solicitud POST cuando se envía el formulario. Dado que estás utilizando esta variable en tu acción [HttpPost], es apropiado mantener este campo oculto.-->
 
     <table class="table">
         <tr>
@@ -83,7 +86,7 @@
                     @Html.DisplayFor(modelItem => Model[i].Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model[i].Address))
+                    @Html.DisplayFor(modelItem => Model[i].Address)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => Model[i].Typ_Service)
@@ -111,7 +114,7 @@
                     @Html.HiddenFor(modelItem => Model[i].Id)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = Model[i].Id }) |
+                    @Html.ActionLink("Details", "Details", "EventServices", new { id = Model[i].Id, selectedEventId = ViewBag.SelectedEventId }, null) |
                 </td>
             </tr>
         }

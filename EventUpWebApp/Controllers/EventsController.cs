@@ -26,7 +26,7 @@ namespace EventUpWebApp.Controllers
            return View(db.Events.ToList());
         }
 
-        public ActionResult MyEvents()
+        public ActionResult MyEvents(int? selectedEventId)
         {
             var userName = User.Identity.Name;
             User user = db.Users.FirstOrDefault(u => u.Email == userName);
@@ -39,6 +39,9 @@ namespace EventUpWebApp.Controllers
             }
 
             ViewBag.PlansIds = user.plans.Select(o => o.Id).ToList();
+            // Pasa el selectedEventId directamente a la vista
+            ViewBag.SelectedEventId = selectedEventId;
+
             return View("MyEvents", user.plans.ToList());
         }
 

@@ -5,14 +5,16 @@
 }
 
 <h2>Reserved Services for Event</h2>
-
+<br />
+<h2>@ViewBag.SelectedEventName</h2>
+<br />
 <!-- Muestra todos los servicios que se han reservado para un evento -->
 
 @if (Model != null && Model.Any())
 {
-    
+
     <p>Here the services you have already saved </p>
-    
+
 }
 else
 {
@@ -91,8 +93,8 @@ else
             </td>
 
             <td>
-                @Html.ActionLink("Details", "Details", new { id = service.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = service.Id })
+                @Html.ActionLink("Details", "Details", "EventServices", new { id = service.Id, selectedEventId = ViewBag.SelectedEventId }, null) |
+                @Html.ActionLink("Delete", "Delete", "EventServices", new { id = service.Id, selectedEventId = ViewBag.SelectedEventId }, null)
             </td>
         </tr>
     }
@@ -100,7 +102,7 @@ else
 </table>
 
 <div class="text-center">
-    @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", new { selectedEventId = ViewBag.SelectedEventId }, new { @class = "btn btn-primary" })
 </div>
 
 
