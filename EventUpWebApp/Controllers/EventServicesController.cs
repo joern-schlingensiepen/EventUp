@@ -23,6 +23,16 @@ namespace EventUpWebApp.Controllers
         public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
         {
             Debug.WriteLine("entra al get");
+
+            // Obtén todas las ciudades disponibles desde la base de datos
+            var allCities = db.Services.Select(s => s.City).Distinct().ToList();
+
+            // Si hay una ciudad filtrada, úsala; de lo contrario, usa la ciudad del evento seleccionado
+            var selectedCity = string.IsNullOrEmpty(cityFilter) ? GetSelectedEvent(selectedEventId)?.City : cityFilter;
+
+            // Construye la lista de ciudades sin aplicar el filtro
+            ViewBag.CityList = new SelectList(allCities, selectedCity);
+
             return View(BuildServiceViewModels(cityFilter, typServiceFilter, typEventFilter, selectedEventId));
         }
 
@@ -33,8 +43,15 @@ namespace EventUpWebApp.Controllers
             ViewBag.SelectedEventId = selectedEventId;
             ViewBag.SelectedEventName = GetSelectedEvent(selectedEventId)?.Name;
 
+            // Obtén todas las ciudades disponibles desde la base de datos
+            var allCities = db.Services.Select(s => s.City).Distinct().ToList();
+
+            // Restablece la lista de ciudades con el filtro aplicado
+            ViewBag.CityList = new SelectList(allCities);
+
+            // Filtra la lista de servicios según los filtros seleccionados
             var serviceViewModels = BuildServiceViewModels(cityFilter, typServiceFilter, typEventFilter, selectedEventId);
-            return View(serviceViewModels);
+            return View("ListServices", serviceViewModels);
         }
 
         private List<ServiceViewModel> BuildServiceViewModels(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
@@ -42,7 +59,7 @@ namespace EventUpWebApp.Controllers
             // Lógica común para obtener la lista de servicios
             var filteredServices = db.Services.ToList();
 
-            if (!string.IsNullOrEmpty(cityFilter))
+            if (!string.IsNullOrEmpty(cityFilter) && cityFilter != "All Cities")
             {
                 filteredServices = filteredServices.Where(s => s.City == cityFilter).ToList();
             }
@@ -57,7 +74,14 @@ namespace EventUpWebApp.Controllers
                 filteredServices = filteredServices.Where(s => s.Typ_Event == typEventFilter).ToList();
             }
 
-            ViewBag.CityFilter = GetSelectedEvent(selectedEventId)?.City;
+            // Considera todos los filtros al mismo tiempo
+            if (!string.IsNullOrEmpty(cityFilter) && !string.IsNullOrEmpty(typServiceFilter) && !string.IsNullOrEmpty(typEventFilter))
+            {
+                filteredServices = filteredServices
+                    .Where(s => s.City == cityFilter && s.Typ_Service == typServiceFilter && s.Typ_Event == typEventFilter)
+                    .ToList();
+            }
+            
             ViewBag.CityList = new SelectList(filteredServices.Select(s => s.City).Distinct().ToList());
             ViewBag.TypServiceOptions = new SelectList(GetTypServiceOptions(), "Value", "Text", typServiceFilter);
             ViewBag.TypEventOptions = new SelectList(GetTypEventOptions(), "Value", "Text", typEventFilter);
@@ -118,11 +142,9 @@ namespace EventUpWebApp.Controllers
             
             // Obtener el evento actual (puedes ajustar cómo obtienes el evento según tu lógica)
             var currentEvent = GetSelectedEvent(selectedEventId);
-            Debug.WriteLine($"SaveServicesForEvent - selectedEventId: {selectedEventId}");
-
+           
             if (currentEvent == null)
             {
-                Debug.WriteLine("SaveServicesForEvent - currentEvent is null");
                 return HttpNotFound();
             }
 
@@ -171,6 +193,8 @@ namespace EventUpWebApp.Controllers
         {
             
             var selectedEvent = db.Events.Include(e => e.have).FirstOrDefault(e => e.Id == id);
+            // Aquí estableces la ViewBag.SelectedEventCity con la ciudad del evento actual
+            ViewBag.SelectedEventCity = selectedEvent?.City;
 
             if (selectedEvent == null)
             {

@@ -102,7 +102,7 @@ else
 </table>
 
 <div class="text-center">
-    @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", new { selectedEventId = ViewBag.SelectedEventId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", new { selectedEventId = ViewBag.SelectedEventId, cityFilter = ViewBag.SelectedEventCity}, new { @class = "btn btn-primary" })
 </div>
 
 
