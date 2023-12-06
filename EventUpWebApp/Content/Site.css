@@ -108,3 +108,14 @@ textarea {
     font-size: 40px; /* Puedes ajustar el tamaño según tus preferencias */
     margin-right: 20px; /* Ajusta el espacio entre los iconos si es necesario */
 }
+
+.btn-primary {
+    background-color: #CD5C5C !important;
+    color: white !important;
+    text-align: center !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    border: none !important;
+    /* Agrega otras propiedades según sea necesario */
+}

@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<EventUpLib.Event>
-
+<link rel="stylesheet" href="~/Content/Site.css" />
 <h2>My Events</h2>
 
 <!--Muestra todos los eventos registrados para la sesión de usuario actual-->
@@ -40,8 +40,9 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                @Html.ActionLink("See reserved services", "ReservedServices", "EventServices", new { id = item.Id, selectedEventId = ViewBag.SelectedEventId }, null)
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.ActionLink("See reserved services", "ReservedServices", "EventServices", new { id = item.Id, selectedEventId = ViewBag.SelectedEventId }, new { @class = "btn btn-primary" })
             </td>
         </tr>
     }

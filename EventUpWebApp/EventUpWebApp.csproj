@@ -459,6 +459,7 @@
     <Content Include="Views\EventServices\ReservedServices.cshtml" />
     <Content Include="Views\EventServices\Delete.cshtml" />
     <Content Include="Views\EventServices\Details.cshtml" />
+    <Content Include="Views\EventServices\ServiceIsBookedFor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

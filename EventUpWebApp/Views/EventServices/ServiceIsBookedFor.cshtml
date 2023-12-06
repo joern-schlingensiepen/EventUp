@@ -1,0 +1,93 @@
+﻿@model IEnumerable<EventUpLib.Event>
+
+@{
+    ViewBag.Title = "ServiceIsBookedFor";
+}
+
+<br />
+<h2>Reserved Events</h2>
+<br />
+
+
+<!-- Muestra todos los eventos en los que se ha reservado el servicio -->
+
+@if (Model != null && Model.Any())
+{
+
+    <p>here the events for which the service  @ViewBag.SelectedServiceName has been booked:</p>
+
+}
+else
+{
+    <p>No event has booked the service</p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfGuest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Budget)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Start_DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.End_DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Typ_Event)
+        </th>
+       
+        <th></th>
+    </tr>
+
+    @foreach (var @event in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => @event.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.NumberOfGuest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.Budget)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.Start_DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.End_DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @event.Typ_Event)
+            </td>
+          
+            <td>
+                <!--@Html.ActionLink("Details", "Details", "EventServices", new { id = @event.Id, selectedEventId = ViewBag.SelectedEventId }, null) |  -->
+                <!--@Html.ActionLink("Delete", "Delete", "EventServices", new { id = @event.Id, selectedEventId = ViewBag.SelectedEventId }, null) -->
+            </td>
+        </tr>
+    }
+
+</table>
+
+

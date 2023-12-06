@@ -281,5 +281,21 @@ namespace EventUpWebApp.Controllers
 
             return HttpNotFound(); // El servicio no se encontró en la lista del evento
         }
+
+        public ActionResult ServiceIsBookedFor(int id) //muestra los eventos para los que ha sido reservado el servicio
+        {
+            var service = db.Services.Find(id);
+            if (service == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.SelectedServiceName = service.Name;
+            ViewBag.SelectedEventId = id;
+
+            var events = service.isBookedFor.ToList();
+            return View(events);
+
+        }
     }
 }

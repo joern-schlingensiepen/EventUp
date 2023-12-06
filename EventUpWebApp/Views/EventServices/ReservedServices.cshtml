@@ -4,16 +4,17 @@
     ViewBag.Title = "Reserved Services";
 }
 
-<h2>Reserved Services for Event</h2>
 <br />
-<h2>@ViewBag.SelectedEventName</h2>
+
+<h2>Reserved Services for Event: @ViewBag.SelectedEventName</h2>
 <br />
+
 <!-- Muestra todos los servicios que se han reservado para un evento -->
 
 @if (Model != null && Model.Any())
 {
 
-    <p>Here the services you have already saved </p>
+    <p>Here the services you have already saved. </p>
 
 }
 else
