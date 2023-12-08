@@ -4,37 +4,84 @@
     ViewBag.Title = "Admin";
 }
 
+<style>
+    #dashboardContainer {
+        display: flex;
+    }
+
+    #filtersPanel {
+        margin-right: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    #servicesTable {
+        width: 100%;
+    }
+</style>
+
 <h2>Admin Dashboard</h2>
 
+<div id="dashboardContainer">
+    <div id="filtersPanel">
+        <label for="cityFilter">Filter by City:</label>
+        <select id="cityFilter">
+            <option value="">All Cities</option>
+            @foreach (var city in Model.Select(service => service.City).Distinct())
+            {
+                <option value="@city">@city</option>
+            }
+        </select>
+        <br />
+        <br />
+        <label for="typeFilter">Filter by Service Type:</label>
+        <select id="typeFilter">
+            <option value="">All Types</option>
+            @foreach (var type in Model.Select(service => service.Typ_Service).Distinct())
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+        <br />
+        <br />
+        <button id="applyFilter">Apply Filter</button>
+    </div>
 
-<table class="table">
-    <tr>
-        <th>Service Name</th>
-        <th>City</th>
-        <th>Service Type</th>
-        <th>Reserved Events</th>
-    </tr>
+    <table id="servicesTable" class="table display">
+        <thead>
+            <tr>
+                <th>Service Name </th>
+                <th>City</th>
+                <th>Service Type</th>
+                <th>Reserved Events</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in Model)
+            {
+                <tr>
+                    <td><a href="@Url.Action("DetailsService", new { id = service.Id })">@service.Name</a></td>
+                    <td>@service.City</td>
+                    <td>@service.Typ_Service</td>
+                    <td>
+                        @if (service.isBookedFor != null && service.isBookedFor.Any())
+                        {
+                            <p>@string.Join(", ", service.isBookedFor.Select(e => $"{e.Name} - {e.Typ_Event}"))</p>
+                        }
+                        else
+                        {
+                            <p>No events reserved for this service.</p>
+                        }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
-    @foreach (var service in Model)
-    {
-        <tr>
-            <td>@service.Name</td>
-            <td>@service.City</td>
-            <td>@service.Typ_Service</td>
-            <td>
-                @if (service.isBookedFor != null && service.isBookedFor.Any())
-                {
-                    foreach (var bookedEvent in service.isBookedFor)
-                    {
-                        <p>@bookedEvent.Name - @bookedEvent.Typ_Event</p>
-                    }
-                }
-                else
-                {
-                    <p>No events reserved for this service.</p>
-                }
-            </td>
-        </tr>
-    }
-</table>
-
+@section scripts {
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+    <script src="~/Scripts/dashboard.js"></script>
+}

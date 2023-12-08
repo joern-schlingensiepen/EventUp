@@ -1,0 +1,160 @@
+﻿@model EventUpLib.Service
+
+@{
+    ViewBag.Title = "DetailsService";
+}
+
+<style>
+    .details-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .details-column {
+        flex: 1;
+        margin-right: 20px;
+       
+    }
+
+    .details-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .details-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .details-value {
+        margin-left: 10px;
+    }
+</style>
+
+<h2>More information about the service</h2>
+<br />
+<div class="details-container">
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">Name:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Name)</div>
+        </div>
+
+
+        <div class="details-item">
+            <div class="details-label">City:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.City)</div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Address:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Address))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Address)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Service Type:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Typ_Service)</div>
+        </div>
+
+        <!-- Agrega más campos según sea necesario -->
+    </div>
+
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">Capacity:</div>
+            <div class="details-value">
+                @if (Model.Capacity == null || Model.Capacity == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Capacity)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Fix cost [Euro]:</div>
+            <div class="details-value">
+                @if (Model.FixCost == null || Model.FixCost == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.FixCost)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Hour cost [Euro/hour]:</div>
+            <div class="details-value">
+                @if (Model.HourCost == null || Model.HourCost == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.HourCost)
+                }
+            </div>
+
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Person cost [Euro/person]:</div>
+            <div class="details-value">
+                @if (Model.PersonCost == null || Model.PersonCost == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.PersonCost)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">More:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.More))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.More)
+                }
+            </div>
+        </div>
+
+            <div class="details-item">
+                <div class="details-label">Offered By:</div>
+                <div class="details-value">@Html.DisplayFor(model => model.isOfferedBy.Name)</div>
+                <div class="details-value">@Html.DisplayFor(model => model.isOfferedBy.FamilyName)</div>
+            </div>
+            <div class="details-item">
+                <div class="details-label">Contact data:</div>
+                <div class="details-value">Email: @Html.DisplayFor(model => model.isOfferedBy.Email) | </div>
+                <div class="details-value">Telephone: @Html.DisplayFor(model => model.isOfferedBy.TelephoneNumber)</div>
+            </div>
+        </div>
+    </div>
+
+
+<p>
+    @Html.ActionLink("Back to List", "Index", "Admin")
+</p>

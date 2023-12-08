@@ -313,6 +313,7 @@
     <Content Include="Scripts\esm\popper-utils.js.map" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\dateANDhour.js" />
+    <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.js" />
@@ -461,6 +462,7 @@
     <Content Include="Views\EventServices\Delete.cshtml" />
     <Content Include="Views\EventServices\Details.cshtml" />
     <Content Include="Views\EventServices\ServiceIsBookedFor.cshtml" />
+    <Content Include="Views\Admin\DetailsService.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

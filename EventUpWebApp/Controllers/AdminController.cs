@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,7 +20,7 @@ namespace EventUpWebApp.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            var servicesWithReservedEvents = db.Services.Include("isBookedFor").ToList();
+            var servicesWithReservedEvents = db.Services.Include("isBookedFor").OrderBy(service => service.Name).ToList();
             return View(servicesWithReservedEvents);
         }
 
@@ -30,6 +31,24 @@ namespace EventUpWebApp.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpGet]
+        public ActionResult DetailsService(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var service = db.Services.Find(id);
+
+            if (service == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(service);
         }
     }
 }
