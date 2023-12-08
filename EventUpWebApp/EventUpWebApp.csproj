@@ -245,6 +245,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\Helpers\UserRoleHelper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -452,7 +453,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Register\Edit.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Administrator\Admin.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\EventServices\ListServices.cshtml" />
     <Content Include="Views\Events\MyEvents.cshtml" />
     <Content Include="Views\Services\MyServices.cshtml" />
