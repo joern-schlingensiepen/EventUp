@@ -7,94 +7,157 @@
 <h2>Details</h2>
 @Html.HiddenFor(model => model.isOfferedById)
 
-<div>
-    <h4>Service</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<style>
+    .about-supplier {
+        border: 2px solid purple;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px; /* Agrega un margen superior según tus preferencias */
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    .details-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
+    .details-column {
+        flex: 1;
+        margin-right: 20px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
+        .details-column h3 {
+            color: #632033; /* Color del texto del h3 */
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Typ_Service)
-        </dt>
+    .details-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Typ_Service)
-        </dd>
+    .details-item {
+        display: flex;
+        align-items: stretch;
+        margin-bottom: 10px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Typ_Event)
-        </dt>
+    .details-value {
+        margin-left: 10px;
+    }
+</style>
 
-        <dd>
-            @Html.DisplayFor(model => model.Typ_Event)
-        </dd>
+<br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Capacity)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Capacity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FixCost)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FixCost)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.HourCost)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HourCost)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PersonCost)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PersonCost)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.More)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.More)
-        </dd>
+<div class="details-container">
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">Service name:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Name)</div>
+        </div>
 
 
+        <div class="details-item">
+            <div class="details-label">City:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.City)</div>
+        </div>
 
-    </dl>
+        <div class="details-item">
+            <div class="details-label">Address:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Address))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Address)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Service Type:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Typ_Service)</div>
+        </div>
+
+        <!-- Agrega más campos según sea necesario -->
+    </div>
+
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">Capacity:</div>
+            <div class="details-value">
+                @if (Model.Capacity == null || Model.Capacity == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Capacity)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Fix cost [Euro]:</div>
+            <div class="details-value">
+                @if (Model.FixCost == null || Model.FixCost == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.FixCost)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Hour cost [Euro/hour]:</div>
+            <div class="details-value">
+                @if (Model.HourCost == null || Model.HourCost == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.HourCost)
+                }
+            </div>
+
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Person cost [Euro/person]:</div>
+            <div class="details-value">
+                @if (Model.PersonCost == null || Model.PersonCost == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.PersonCost)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">More:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.More))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.More)
+                }
+            </div>
+        </div>
+    </div>
+    
 </div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "MyServices")

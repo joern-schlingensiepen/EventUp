@@ -226,18 +226,22 @@ namespace EventUpWebApp.Controllers
         }
 
         // GET: Services/Details/5
+        [HttpGet]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Service service = db.Services.Find(id);
+
+            var service = db.Services.Find(id);
+
             if (service == null)
             {
                 return HttpNotFound();
             }
-            return View("Details", service);
+
+            return View(service);
         }
         // GET: Services/Delete/5
         public ActionResult Delete(int? id)

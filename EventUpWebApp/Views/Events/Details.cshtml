@@ -6,77 +6,123 @@
 @Html.HiddenFor(model => model.isPlannedById)
 <h2>Details</h2>
 
-<div>
-    <h4>Event</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<style>
+    .about-planner {
+        border: 2px solid purple;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px; /* Agrega un margen superior según tus preferencias */
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    .details-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
+    .details-column {
+        flex: 1;
+        margin-right: 20px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
+        .details-column h3 {
+            color: #632033; /* Color del texto del h3 */
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
+    .details-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
+    .details-item {
+        display: flex;
+        align-items: stretch;
+        margin-bottom: 10px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.NumberOfGuest)
-        </dt>
+    .details-value {
+        margin-left: 10px;
+    }
+</style>
 
-        <dd>
-            @Html.DisplayFor(model => model.NumberOfGuest)
-        </dd>
+<br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Budget)
-        </dt>
+<div class="details-container">
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">Event name:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Name)</div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Budget)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Typ_Event)
-        </dt>
+        <div class="details-item">
+            <div class="details-label">City:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.City)</div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Typ_Event)
-        </dd>
+        <div class="details-item">
+            <div class="details-label">Address:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Address))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Address)
+                }
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Start_DateTime)
-        </dt>
+        <div class="details-item">
+            <div class="details-label">Event Typ:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Typ_Event))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Typ_Event)
+                }
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Start_DateTime)
-        </dd>
+        <!-- Agrega más campos según sea necesario -->
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.End_DateTime)
-        </dt>
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">No. of Guest:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.NumberOfGuest)</div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.End_DateTime)
-        </dd>
+        <div class="details-item">
+            <div class="details-label">Budget [Euro]:</div>
+            <div class="details-value">
+                @if (Model.Budget == null || Model.Budget == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Budget)
+                }
+            </div>
+        </div>
 
-        
+        <div class="details-item">
+            <div class="details-label">Start date and hour:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Start_DateTime)</div>
 
-    </dl>
+        </div>
+        <div class="details-item">
+            <div class="details-label">End date and hour:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.End_DateTime)</div>
+
+        </div>
+    </div>
+    
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
