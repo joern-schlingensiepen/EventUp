@@ -7,85 +7,131 @@
 <h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Event</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NumberOfGuest)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NumberOfGuest)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Budget)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Budget)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Typ_Event)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Typ_Event)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Start_DateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Start_DateTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.End_DateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.End_DateTime)
-        </dd>
-
-
-
-    </dl>
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "MyEvents")
-        </div>
+<style>
+    .about-planner {
+        border: 2px solid purple;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px; /* Agrega un margen superior según tus preferencias */
     }
+
+    .details-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .details-column {
+        flex: 1;
+        margin-right: 20px;
+    }
+
+        .details-column h3 {
+            color: #632033; /* Color del texto del h3 */
+        }
+
+    .details-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .details-item {
+        display: flex;
+        align-items: stretch;
+        margin-bottom: 10px;
+    }
+
+    .details-value {
+        margin-left: 10px;
+    }
+</style>
+
+<br />
+
+<div class="details-container">
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">Event name:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Name)</div>
+        </div>
+
+
+        <div class="details-item">
+            <div class="details-label">City:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.City)</div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Address:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Address))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Address)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Event Typ:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Typ_Event))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Typ_Event)
+                }
+            </div>
+        </div>
+
+        <!-- Agrega más campos según sea necesario -->
+    </div>
+
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">No. of Guest:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.NumberOfGuest)</div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Budget [Euro]:</div>
+            <div class="details-value">
+                @if (Model.Budget == null || Model.Budget == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Budget)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Start date and hour:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Start_DateTime)</div>
+
+        </div>
+        <div class="details-item">
+            <div class="details-label">End date and hour:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.End_DateTime)</div>
+
+        </div>
+    </div>
+</div>
+<div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Delete" class="btn btn-primary" /> |
+        @Html.ActionLink("Back to List", "MyEvents")
+    </div>
+}
 </div>
