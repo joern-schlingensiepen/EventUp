@@ -5,6 +5,14 @@
 }
 
 <style>
+    .about-supplier {
+        border: 2px solid purple;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px; /* Agrega un margen superior según tus preferencias */
+    }
+
     .details-container {
         display: flex;
         flex-wrap: wrap;
@@ -16,6 +24,9 @@
        
     }
 
+    .details-column h3 {
+        color: #632033; /* Color del texto del h3 */
+    }
     .details-label {
         font-weight: bold;
         margin-bottom: 5px;
@@ -23,7 +34,7 @@
 
     .details-item {
         display: flex;
-        align-items: center;
+        align-items: stretch;
         margin-bottom: 10px;
     }
 
@@ -32,12 +43,14 @@
     }
 </style>
 
+<br />
 <h2>More information about the service</h2>
 <br />
+
 <div class="details-container">
     <div class="details-column">
         <div class="details-item">
-            <div class="details-label">Name:</div>
+            <div class="details-label">Service name:</div>
             <div class="details-value">@Html.DisplayFor(model => model.Name)</div>
         </div>
 
@@ -140,20 +153,24 @@
                 }
             </div>
         </div>
-
-            <div class="details-item">
-                <div class="details-label">Offered By:</div>
-                <div class="details-value">@Html.DisplayFor(model => model.isOfferedBy.Name)</div>
-                <div class="details-value">@Html.DisplayFor(model => model.isOfferedBy.FamilyName)</div>
-            </div>
-            <div class="details-item">
-                <div class="details-label">Contact data:</div>
-                <div class="details-value">Email: @Html.DisplayFor(model => model.isOfferedBy.Email) | </div>
-                <div class="details-value">Telephone: @Html.DisplayFor(model => model.isOfferedBy.TelephoneNumber)</div>
-            </div>
+    </div>
+    <div class="details-column about-supplier">
+        <h3>About Supplier</h3>
+        <div class="details-item">
+            <div class="details-label">Name:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isOfferedBy.Name) @Html.DisplayFor(model => model.isOfferedBy.FamilyName)</div>
+            
+        </div>
+        <div class="details-item">
+            <div class="details-label">Email:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isOfferedBy.Email)</div>
+        </div>
+        <div class="details-item">
+            <div class="details-label">Telephone:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isOfferedBy.TelephoneNumber)</div>
         </div>
     </div>
-
+</div>
 
 <p>
     @Html.ActionLink("Back to List", "Index", "Admin")

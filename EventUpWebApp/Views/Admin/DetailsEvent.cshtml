@@ -1,0 +1,144 @@
+﻿@model EventUpLib.Event
+@{
+    ViewBag.Title = "DetailsEvent";
+}
+
+<style>
+    .about-planner {
+        border: 2px solid purple;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px; /* Agrega un margen superior según tus preferencias */
+    }
+
+    .details-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .details-column {
+        flex: 1;
+        margin-right: 20px;
+    }
+
+        .details-column h3 {
+            color: #632033; /* Color del texto del h3 */
+        }
+
+    .details-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .details-item {
+        display: flex;
+        align-items: stretch;
+        margin-bottom: 10px;
+    }
+
+    .details-value {
+        margin-left: 10px;
+    }
+</style>
+
+<br />
+<h2>More information about the Event</h2>
+<br />
+
+<div class="details-container">
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">Event name:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Name)</div>
+        </div>
+
+
+        <div class="details-item">
+            <div class="details-label">City:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.City)</div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Address:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Address))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Address)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Event Typ:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Typ_Event))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Typ_Event)
+                }
+            </div>
+        </div>
+
+        <!-- Agrega más campos según sea necesario -->
+    </div>
+
+    <div class="details-column">
+        <div class="details-item">
+            <div class="details-label">No. of Guest:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.NumberOfGuest)</div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Budget [Euro]:</div>
+            <div class="details-value">
+                @if (Model.Budget == null || Model.Budget == 0)
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Budget)
+                }
+            </div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Start date and hour:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Start_DateTime)</div>
+
+        </div>
+        <div class="details-item">
+            <div class="details-label">End date and hour:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.End_DateTime)</div>
+
+        </div>
+    </div>
+    <div class="details-column about-planner">
+        <h3>About the event planner</h3>
+        <div class="details-item">
+            <div class="details-label">Name:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isPlannedBy.Name) @Html.DisplayFor(model => model.isPlannedBy.FamilyName)</div>
+
+        </div>
+        <div class="details-item">
+            <div class="details-label">Email:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isPlannedBy.Email)</div>
+        </div>
+        <div class="details-item">
+            <div class="details-label">Telephone:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isPlannedBy.TelephoneNumber)</div>
+        </div>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index", "Admin")
+</p>

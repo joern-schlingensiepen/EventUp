@@ -20,7 +20,30 @@ namespace EventUpWebApp.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+            // Obtener el número de servicios en la plataforma
+            ViewBag.NoOfServices = db.Services.Count();
+
+            // Obtener el número de eventos en la plataforma
+            ViewBag.NoOfEvents = db.Events.Count();
+
+            // Obtener el número de coincidencias (matches)
+            int noOfMatches = 0;
+
             var servicesWithReservedEvents = db.Services.Include("isBookedFor").OrderBy(service => service.Name).ToList();
+
+            foreach (var service in servicesWithReservedEvents)
+            {
+                var reservedEvents = service.isBookedFor;
+                if (reservedEvents != null && reservedEvents.Any())
+                {
+                    noOfMatches += reservedEvents.Select(e => e.Id).Distinct().Count();
+                }
+            }
+
+            ViewBag.NoOfMatches = noOfMatches;
+
+
+
             return View(servicesWithReservedEvents);
         }
 
@@ -47,8 +70,30 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
+                      
+
 
             return View(service);
+        }
+
+        [HttpGet]
+        public ActionResult DetailsEvent(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var @event = db.Events.Find(id);
+
+            if (@event == null)
+            {
+                return HttpNotFound();
+            }
+
+
+
+            return View(@event);
         }
     }
 }

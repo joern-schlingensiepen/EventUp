@@ -463,6 +463,7 @@
     <Content Include="Views\EventServices\Details.cshtml" />
     <Content Include="Views\EventServices\ServiceIsBookedFor.cshtml" />
     <Content Include="Views\Admin\DetailsService.cshtml" />
+    <Content Include="Views\Admin\DetailsEvent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,6 +11,8 @@
 
     #filtersPanel {
         margin-right: 20px;
+        padding-right: 20px; /* Agrega un relleno a la derecha para separar la línea vertical */
+        border-right: 2px solid #632033; /* Agrega una línea vertical a la derecha del panel de filtros */
     }
 
     label {
@@ -21,10 +23,58 @@
     #servicesTable {
         width: 100%;
     }
+
+    .dashboard-stats-container {
+        border: 2px solid #632033;
+        border-radius: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        padding: 10px;
+        margin-bottom: 20px; /* Ajusta el margen inferior según tus preferencias */
+
+        color: black;
+    }
+
+    .dashboard-stats {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .stats-item {
+        flex: 1;
+        text-align: center;
+    }
+
+    .stats-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .stats-value {
+        margin-bottom: 5px;
+    }
 </style>
 
 <h2>Admin Dashboard</h2>
-
+<br />
+<div class="dashboard-stats-container">
+    <div class="dashboard-stats">
+        <div class="stats-item">
+            <div class="stats-label">No. of services on the platform:</div>
+            <div class="stats-value">@ViewBag.NoOfServices</div>
+        </div>
+        <div class="stats-item">
+            <div class="stats-label">No. of events on the platform:</div>
+            <div class="stats-value">@ViewBag.NoOfEvents</div>
+        </div>
+        <div class="stats-item">
+            <div class="stats-label">No. of matches:</div>
+            <div class="stats-value">@ViewBag.NoOfMatches</div>
+        </div>
+    </div>
+</div>
 <div id="dashboardContainer">
     <div id="filtersPanel">
         <label for="cityFilter">Filter by City:</label>
@@ -47,7 +97,7 @@
         </select>
         <br />
         <br />
-        <button id="applyFilter">Apply Filter</button>
+        <button id="applyFilter" class="btn btn-primary">Apply Filter</button>
     </div>
 
     <table id="servicesTable" class="table display">
@@ -69,12 +119,22 @@
                     <td>
                         @if (service.isBookedFor != null && service.isBookedFor.Any())
                         {
-                            <p>@string.Join(", ", service.isBookedFor.Select(e => $"{e.Name} - {e.Typ_Event}"))</p>
+                            <ul>
+                                @foreach (var bookedEvent in service.isBookedFor)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("DetailsEvent", new { id = bookedEvent.Id })">
+                                            @bookedEvent.Name - @bookedEvent.Typ_Event
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
                         }
                         else
                         {
                             <p>No events reserved for this service.</p>
                         }
+                    </td>
                 </tr>
             }
         </tbody>
