@@ -34,12 +34,6 @@ else
             @Html.DisplayNameFor(model => model.City)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NumberOfGuest)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Budget)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Start_DateTime)
         </th>
         <th>
@@ -65,12 +59,7 @@ else
             <td>
                 @Html.DisplayFor(modelItem => @event.City)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => @event.NumberOfGuest)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => @event.Budget)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => @event.Start_DateTime)
             </td>
@@ -82,8 +71,8 @@ else
             </td>
           
             <td>
-                <!--@Html.ActionLink("Details", "Details", "EventServices", new { id = @event.Id, selectedEventId = ViewBag.SelectedEventId }, null) |  -->
-                <!--@Html.ActionLink("Delete", "Delete", "EventServices", new { id = @event.Id, selectedEventId = ViewBag.SelectedEventId }, null) -->
+                @Html.ActionLink("Details Event", "DetailsEvent", "EventServices", new { id = @event.Id, selectedEventId = ViewBag.SelectedEventId }, null)
+                
             </td>
         </tr>
     }

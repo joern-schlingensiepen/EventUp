@@ -219,10 +219,21 @@ namespace EventUpWebApp.Controllers
                 More = service.More,
                 isOfferedById = service.isOfferedById
             }).ToList();
+
             ViewBag.SelectedEventId = id;
             ViewBag.SelectedEventName = selectedEvent.Name;
             // Pasar la lista de servicios asociados a la vista
             return View(reservedServicesViewModel);
+        }
+
+        private double CalculateTotalEventValue(Service service, EventViewModel selectedEvent)
+        {
+            // Calcular el valor total del evento según la fórmula dada
+            double totalEventValue = service.FixCost +
+                (service.HourCost * (selectedEvent.End_DateTime - selectedEvent.Start_DateTime).TotalHours) +
+                (service.PersonCost * selectedEvent.NumberOfGuest);
+
+            return totalEventValue;
         }
 
         // GET: Services/Details/5
@@ -242,6 +253,23 @@ namespace EventUpWebApp.Controllers
             }
 
             return View(service);
+        }
+
+        public ActionResult DetailsEvent(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var @event = db.Events.Find(id);
+
+            if (@event == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(@event);
         }
         // GET: Services/Delete/5
         public ActionResult Delete(int? id)

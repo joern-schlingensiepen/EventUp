@@ -1,14 +1,13 @@
-﻿@model EventUpLib.Service
+﻿@model EventUpLib.Event
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "DetailsEvent";
 }
-
+@Html.HiddenFor(model => model.isPlannedById)
 <h2>Details</h2>
-@Html.HiddenFor(model => model.isOfferedById)
 
 <style>
-    .about-supplier {
+    .about-planner {
         border: 2px solid purple;
         border-radius: 15px;
         padding: 15px;
@@ -51,7 +50,7 @@
 <div class="details-container">
     <div class="details-column">
         <div class="details-item">
-            <div class="details-label">Service name:</div>
+            <div class="details-label">Event name:</div>
             <div class="details-value">@Html.DisplayFor(model => model.Name)</div>
         </div>
 
@@ -76,8 +75,17 @@
         </div>
 
         <div class="details-item">
-            <div class="details-label">Service Type:</div>
-            <div class="details-value">@Html.DisplayFor(model => model.Typ_Service)</div>
+            <div class="details-label">Event Typ:</div>
+            <div class="details-value">
+                @if (string.IsNullOrWhiteSpace(Model.Typ_Event))
+                {
+                    @Html.Raw("----------")
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Typ_Event)
+                }
+            </div>
         </div>
 
         <!-- Agrega más campos según sea necesario -->
@@ -85,80 +93,52 @@
 
     <div class="details-column">
         <div class="details-item">
-            <div class="details-label">Capacity:</div>
+            <div class="details-label">No. of Guest:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.NumberOfGuest)</div>
+        </div>
+
+        <div class="details-item">
+            <div class="details-label">Budget [Euro]:</div>
             <div class="details-value">
-                @if (Model.Capacity == null || Model.Capacity == 0)
+                @if (Model.Budget == null || Model.Budget == 0)
                 {
                     @Html.Raw("----------")
                 }
                 else
                 {
-                    @Html.DisplayFor(model => model.Capacity)
+                    @Html.DisplayFor(model => model.Budget)
                 }
             </div>
         </div>
 
         <div class="details-item">
-            <div class="details-label">Fix cost [Euro]:</div>
-            <div class="details-value">
-                @if (Model.FixCost == null || Model.FixCost == 0)
-                {
-                    @Html.Raw("----------")
-                }
-                else
-                {
-                    @Html.DisplayFor(model => model.FixCost)
-                }
-            </div>
-        </div>
-
-        <div class="details-item">
-            <div class="details-label">Hour cost [Euro/hour]:</div>
-            <div class="details-value">
-                @if (Model.HourCost == null || Model.HourCost == 0)
-                {
-                    @Html.Raw("----------")
-                }
-                else
-                {
-                    @Html.DisplayFor(model => model.HourCost)
-                }
-            </div>
+            <div class="details-label">Start date and hour:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.Start_DateTime)</div>
 
         </div>
-
         <div class="details-item">
-            <div class="details-label">Person cost [Euro/person]:</div>
-            <div class="details-value">
-                @if (Model.PersonCost == null || Model.PersonCost == 0)
-                {
-                    @Html.Raw("----------")
-                }
-                else
-                {
-                    @Html.DisplayFor(model => model.PersonCost)
-                }
-            </div>
-        </div>
+            <div class="details-label">End date and hour:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.End_DateTime)</div>
 
-        <div class="details-item">
-            <div class="details-label">More Information:</div>
-            <div class="details-value">
-                @if (string.IsNullOrWhiteSpace(Model.More))
-                {
-                    @Html.Raw("----------")
-                }
-                else
-                {
-                    @Html.DisplayFor(model => model.More)
-                }
-            </div>
         </div>
     </div>
-    
-</div>
+    <div class="details-column about-planner">
+        <h3>About the event planner</h3>
+        <div class="details-item">
+            <div class="details-label">Name:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isPlannedBy.Name) @Html.DisplayFor(model => model.isPlannedBy.FamilyName)</div>
 
+        </div>
+        <div class="details-item">
+            <div class="details-label">Email:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isPlannedBy.Email)</div>
+        </div>
+        <div class="details-item">
+            <div class="details-label">Telephone:</div>
+            <div class="details-value">@Html.DisplayFor(model => model.isPlannedBy.TelephoneNumber)</div>
+        </div>
+    </div>
+</div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "MyServices")
+    @Html.ActionLink("Back to List", "ServiceIsBookedFor", "EventServices", new { id = Model.Id }, null)
 </p>

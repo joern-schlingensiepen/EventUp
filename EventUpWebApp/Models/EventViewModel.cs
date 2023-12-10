@@ -28,10 +28,11 @@ namespace EventUpWebApp.Models
 
         [DisplayName("Budget [Euro]")]
         public Nullable<double> Budget { get; set; }
+
+        [Display(Name = "Event type")]
         public string Typ_Event { get; set; }
         public List<SelectListItem> TypEventOptions { get; set; }
-        //public System.DateTime Start_DateTime { get; set; }
-        //public System.DateTime End_DateTime { get; set; }
+        
         public int isPlannedById { get; set; }
 
      
