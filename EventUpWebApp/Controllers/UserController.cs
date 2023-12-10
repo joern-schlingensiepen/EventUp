@@ -17,6 +17,7 @@ using EventUpWebApp.Controllers.Helpers;
 using System.Web.Services.Description;
 
 
+
 namespace EventUpWebApp.Controllers
 {
     public class UserController : Controller
@@ -182,6 +183,8 @@ namespace EventUpWebApp.Controllers
             {
                 db.Events.Remove(plannedEvent);
             }
+
+            
 
             db.Users.Remove(user);
             db.SaveChanges();

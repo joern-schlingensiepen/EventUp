@@ -4,10 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="30b9d833878d42edac29a47dc4a1910d" Name="Diagram1" >
+      <Diagram DiagramId="30b9d833878d42edac29a47dc4a1910d" Name="Diagram1" ZoomLevel="74" >
         <EntityTypeShape EntityType="Model1.User" Width="1.5" PointX="1.5" PointY="0.75" />
-        <EntityTypeShape EntityType="Model1.Service" Width="1.5" PointX="4.375" PointY="3.125" />
-        <EntityTypeShape EntityType="Model1.Event" Width="1.5" PointX="7" PointY="0.5" />
+        <EntityTypeShape EntityType="Model1.Service" Width="1.5" PointX="4.125" PointY="2.25" />
+        <EntityTypeShape EntityType="Model1.Event" Width="1.5" PointX="7" PointY="0.75" />
         <AssociationConnector Association="Model1.plans" />
         <AssociationConnector Association="Model1.offers" />
         <AssociationConnector Association="Model1.isBookedFor" />

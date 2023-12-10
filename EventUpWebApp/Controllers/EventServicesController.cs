@@ -226,7 +226,7 @@ namespace EventUpWebApp.Controllers
             // Calcular el valor total del evento sumando los valores de todos los servicios
             double totalEventValue = reservedServicesViewModel.Sum(service => service.TotalEventValue);
             ViewBag.TotalEventValue = totalEventValue;
-
+            ViewBag.Budget = selectedEvent.Budget;
             ViewBag.SelectedEventId = id;
             ViewBag.SelectedEventName = selectedEvent.Name;
             // Calcular el valor total del evento y guardarlo en ViewBag
