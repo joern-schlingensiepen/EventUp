@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="~/Content/font-awesome.css" />
 <script src="~/Scripts/jquery-3.7.1.min.js"></script>
 
-<h2>Edit</h2>
+<h2>User data</h2>
 
 
 @using (Html.BeginForm())
@@ -15,7 +15,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>User</h4>
+        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -84,7 +84,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </div>
     </div>
