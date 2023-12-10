@@ -343,8 +343,31 @@ namespace EventUpWebApp.Controllers
             ViewBag.SelectedEventId = id;
 
             var events = service.isBookedFor.ToList();
+            // Calcular el valor total del servicio y guardarlo en ViewBag
+            double totalServiceValue = CalculateTotalServiceValue(events, service);
+            ViewBag.TotalServiceValue = totalServiceValue;
             return View(events);
 
+        }
+
+        private double CalculateTotalServiceValue(List<Event> events, Service selectedService)
+        {
+            double totalValue = 0.0;
+
+            foreach (var selectedEvent in events)
+            {
+                double fixCost = selectedService.FixCost ?? 0.0;
+                double hourCost = selectedService.HourCost ?? 0.0;
+                double personCost = selectedService.PersonCost ?? 0.0;
+
+                DateTime startDateTime = selectedEvent.Start_DateTime;
+                DateTime endDateTime = selectedEvent.End_DateTime;
+                int numberOfGuest = selectedEvent.NumberOfGuest;
+
+                totalValue += fixCost + (hourCost * (endDateTime - startDateTime).TotalHours) + (personCost * numberOfGuest);
+            }
+
+            return totalValue;
         }
     }
 }
