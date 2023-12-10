@@ -4,9 +4,26 @@
     ViewBag.Title = "ServiceIsBookedFor";
 }
 
+<style>
+    .total-value-container {
+        border: 2px solid purple;
+        padding: 10px;
+        float: right;
+    }
+</style>
+
 <br />
-<h2>Reserved Events</h2>
-<br />
+<div style="overflow: hidden;">
+    <div style="float: left;">
+        <h2>Events already booked your service</h2>
+    </div>
+
+    <!-- Contenedor para el valor total del evento -->
+    <div class="total-value-container">
+        <strong>Total Services Value [Euro]:</strong>
+        <span id="totalEventValue">@ViewBag.TotalEventValue</span>
+    </div>
+</div>
 
 
 <!-- Muestra todos los eventos en los que se ha reservado el servicio -->
@@ -14,7 +31,7 @@
 @if (Model != null && Model.Any())
 {
 
-    <p>here the events for which the service  @ViewBag.SelectedServiceName has been booked:</p>
+    <p>Service @ViewBag.SelectedServiceName has been booked for:</p>
 
 }
 else
@@ -39,10 +56,7 @@ else
         <th>
             @Html.DisplayNameFor(model => model.End_DateTime)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Typ_Event)
-        </th>
-       
+
         <th></th>
     </tr>
 
@@ -66,17 +80,18 @@ else
             <td>
                 @Html.DisplayFor(modelItem => @event.End_DateTime)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => @event.Typ_Event)
-            </td>
-          
+
             <td>
                 @Html.ActionLink("Details Event", "DetailsEvent", "EventServices", new { id = @event.Id, selectedEventId = ViewBag.SelectedEventId }, null)
-                
+
             </td>
         </tr>
     }
 
 </table>
+
+<div>
+    @Html.ActionLink("Back to My Services", "MyServices", "Services")
+</div>
 
 

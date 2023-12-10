@@ -4,18 +4,33 @@
     ViewBag.Title = "Reserved Services";
 }
 
-<br />
+<style>
+    .total-value-container {
+        border: 2px solid purple;
+        padding: 10px;
+        float: right;
+    }
+</style>
 
-<h2>Reserved Services for Event: @ViewBag.SelectedEventName</h2>
 <br />
+<div style="overflow: hidden;">
+    <div style="float: left;">
+        <h2>Reserved Services for Event: @ViewBag.SelectedEventName</h2>
+    </div>
 
-<!-- Muestra todos los servicios que se han reservado para un evento -->
+    <!-- Contenedor para el valor total del evento -->
+    <div class="total-value-container">
+        <strong>Total Event Value [Euro]:</strong>
+        <span id="totalEventValue">@ViewBag.TotalEventValue</span>
+    </div>
+</div>
 
 @if (Model != null && Model.Any())
 {
 
     <p>The services you have already saved: </p>
-
+    
+   
 }
 else
 {
@@ -36,7 +51,7 @@ else
         <th>
             @Html.DisplayNameFor(model => model.Typ_Service)
         </th>
- 
+
         <th>
             @Html.DisplayNameFor(model => model.Capacity)
         </th>
@@ -97,7 +112,12 @@ else
 </table>
 
 <div class="text-center">
-    @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", new { selectedEventId = ViewBag.SelectedEventId, cityFilter = ViewBag.SelectedEventCity}, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", new { selectedEventId = ViewBag.SelectedEventId, cityFilter = ViewBag.SelectedEventCity }, new { @class = "btn btn-primary" })
 </div>
+
+<div>
+    @Html.ActionLink("Back to My Events", "MyEvents", "Events")
+</div>
+
 
 

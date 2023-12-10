@@ -53,6 +53,8 @@ namespace EventUpWebApp.Models
         public virtual User isOfferedBy { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> isBookedFor { get; set; }
+
+        public double TotalEventValue { get; set; }
     }
    
 }

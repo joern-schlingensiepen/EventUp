@@ -189,9 +189,8 @@ namespace EventUpWebApp.Controllers
         }
 
 
-        public ActionResult ReservedServices(int id) //muestra los servicios reservados para un evento
+        public ActionResult ReservedServices(int id) // muestra los servicios reservados para un evento
         {
-            
             var selectedEvent = db.Events.Include(e => e.have).FirstOrDefault(e => e.Id == id);
             // Aquí estableces la ViewBag.SelectedEventCity con la ciudad del evento actual
             ViewBag.SelectedEventCity = selectedEvent?.City;
@@ -202,38 +201,56 @@ namespace EventUpWebApp.Controllers
             }
 
             // Mapear la lista de servicios a ServiceViewModel
-            var reservedServicesViewModel = selectedEvent.have.Select(service => new ServiceViewModel
+            var reservedServicesViewModel = selectedEvent.have.Select(service =>
             {
-                Id = service.Id,
-                Name = service.Name,
-                Address = service.Address,
-                Typ_Service = service.Typ_Service,
-                //TypServiceOptions = GetTypServiceOptions(),
-                Typ_Event = service.Typ_Event,
-                //TypEventOptions = GetTypEventOptions(),
-                Capacity = service.Capacity,
-                FixCost = service.FixCost,
-                HourCost = service.HourCost,
-                PersonCost = service.PersonCost,
-                City = service.City,
-                More = service.More,
-                isOfferedById = service.isOfferedById
+                var viewModel = new ServiceViewModel
+                {
+                    Id = service.Id,
+                    Name = service.Name,
+                    Address = service.Address,
+                    Typ_Service = service.Typ_Service,
+                    Typ_Event = service.Typ_Event,
+                    Capacity = service.Capacity,
+                    FixCost = service.FixCost,
+                    HourCost = service.HourCost,
+                    PersonCost = service.PersonCost,
+                    City = service.City,
+                    More = service.More,
+                    isOfferedById = service.isOfferedById,
+                    TotalEventValue = CalculateTotalEventValue(service, selectedEvent)
+                };
+
+                return viewModel;
             }).ToList();
+
+            // Calcular el valor total del evento sumando los valores de todos los servicios
+            double totalEventValue = reservedServicesViewModel.Sum(service => service.TotalEventValue);
+            ViewBag.TotalEventValue = totalEventValue;
 
             ViewBag.SelectedEventId = id;
             ViewBag.SelectedEventName = selectedEvent.Name;
-            // Pasar la lista de servicios asociados a la vista
+            // Calcular el valor total del evento y guardarlo en ViewBag
+            
+            
             return View(reservedServicesViewModel);
         }
 
-        private double CalculateTotalEventValue(Service service, EventViewModel selectedEvent)
+        private double CalculateTotalEventValue(Service service, Event selectedEvent)
         {
-            // Calcular el valor total del evento según la fórmula dada
-            double totalEventValue = service.FixCost +
-                (service.HourCost * (selectedEvent.End_DateTime - selectedEvent.Start_DateTime).TotalHours) +
-                (service.PersonCost * selectedEvent.NumberOfGuest);
+            // Obtener los valores necesarios del servicio, si es null , retorna 0
+            double fixCost = service.FixCost ?? 0.0;
+            double hourCost = service.HourCost ?? 0.0;
+            double personCost = service.PersonCost ?? 0.0;
 
-            return totalEventValue;
+            // Obtener los valores necesarios del evento
+            DateTime startDateTime = selectedEvent.Start_DateTime;
+            DateTime endDateTime = selectedEvent.End_DateTime;
+            int numberOfGuest = selectedEvent.NumberOfGuest;
+
+            // Realizar los cálculos necesarios
+            double totalValue = fixCost + (hourCost * (endDateTime - startDateTime).TotalHours) + (personCost * numberOfGuest);
+
+            return totalValue;
         }
 
         // GET: Services/Details/5

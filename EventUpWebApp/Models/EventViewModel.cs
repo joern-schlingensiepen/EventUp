@@ -35,6 +35,7 @@ namespace EventUpWebApp.Models
         
         public int isPlannedById { get; set; }
 
-     
+       
+
     }
 }

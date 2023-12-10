@@ -98,20 +98,6 @@
         </div>
 
         <div class="details-item">
-            <div class="details-label">Budget [Euro]:</div>
-            <div class="details-value">
-                @if (Model.Budget == null || Model.Budget == 0)
-                {
-                    @Html.Raw("----------")
-                }
-                else
-                {
-                    @Html.DisplayFor(model => model.Budget)
-                }
-            </div>
-        </div>
-
-        <div class="details-item">
             <div class="details-label">Start date and hour:</div>
             <div class="details-value">@Html.DisplayFor(model => model.Start_DateTime)</div>
 
