@@ -14,6 +14,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
 using EventUpWebApp.Controllers.Helpers;
+using System.Web.Services.Description;
 
 
 namespace EventUpWebApp.Controllers
@@ -163,6 +164,25 @@ namespace EventUpWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             User user = db.Users.Find(id);
+            // Elimina las relaciones entre eventos y servicios asociados a este usuario
+            foreach (var service in user.offers.ToList())
+            {
+                // Elimina las reservas asociadas a cada servicio
+                foreach (var booking in service.isBookedFor.ToList())
+                {
+                    service.isBookedFor.Remove(booking);
+                }
+
+                // Elimina el servicio
+                db.Services.Remove(service);
+            }
+
+            // Elimina los eventos planeados por el usuario
+            foreach (var plannedEvent in user.plans.ToList())
+            {
+                db.Events.Remove(plannedEvent);
+            }
+
             db.Users.Remove(user);
             db.SaveChanges();
             return RedirectToAction("Index");

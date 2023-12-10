@@ -19,7 +19,7 @@ namespace EventUpWebApp.Controllers
     public class ServicesController : Controller
     {
         private Model1Container db = new Model1Container();
-
+       
         // GET: Services
         public ActionResult Index()
         {
@@ -259,6 +259,14 @@ namespace EventUpWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Service service = db.Services.Find(id);
+            // Accede a la propiedad isBookedFor a través de la instancia de ServiceViewModel
+            var bookings = service.isBookedFor.ToList();
+
+            // Elimina las reservas asociadas
+            foreach (var booking in bookings)
+            {
+                service.isBookedFor.Remove(booking);
+            }
             db.Services.Remove(service);
             db.SaveChanges();
             return RedirectToAction("MyServices");

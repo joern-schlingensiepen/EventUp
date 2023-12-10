@@ -3,7 +3,9 @@
 @{
     ViewBag.Title = "Edit";
 }
+
 <link rel="stylesheet" href="~/Content/font-awesome.css" />
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
 
 <h2>Edit</h2>
 
@@ -11,7 +13,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>User</h4>
         <hr />
@@ -89,5 +91,31 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Register", "Register", "Account")
 </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            console.log('Script is running');
+
+            $('#Role_Admin').change(function () {
+                console.log('Change event triggered');
+
+                var email = $('#Email').val();
+                var isAdmin = $('#Role_Admin').is(':checked');
+
+                console.log('Email value:', email);
+                console.log('Is Admin checked:', isAdmin);
+
+                if (isAdmin && email.toLowerCase().endsWith('admineventup.com')) {
+                    console.log('Condition met. Allow admin role.');
+                } else {
+                    console.log('Condition not met. Deny admin role.');
+                    alert('Admin role only possible with authorization');
+                    $('#Role_Admin').prop('checked', false);
+                }
+            });
+        });
+    </script>
+}

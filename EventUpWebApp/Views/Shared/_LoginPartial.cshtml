@@ -28,7 +28,8 @@
     @if (selectedRole == "Admin")
     {
         <li class="nav-item">@Html.ActionLink("Admin", "Index", "Admin", new { area = "" }, new { @class = "nav-link" })</li>
-        
+        <li class="nav-item">@Html.ActionLink("Users", "Index", "User", new { area = "" }, new { @class = "nav-link" })</li>
+
     }
     <li class="nav-item">
         <!--@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })-->

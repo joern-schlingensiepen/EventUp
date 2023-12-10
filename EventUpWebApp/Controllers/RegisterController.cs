@@ -38,6 +38,7 @@ namespace EventUpWebApp.Models
         {
             if (ModelState.IsValid)
             {
+                
                 db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 string selectedRole = UserRoleHelper.GetSelectedRole(user);
