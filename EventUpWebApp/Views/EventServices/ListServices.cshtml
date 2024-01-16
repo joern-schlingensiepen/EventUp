@@ -112,7 +112,7 @@
                     @Html.HiddenFor(modelItem => Model[i].Id)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", "EventServices", new { id = Model[i].Id, selectedEventId = ViewBag.SelectedEventId }, null) 
+                    @Html.ActionLink("Details", "Details", "EventServices", new { id = Model[i].Id, selectedEventId = ViewBag.SelectedEventId }, null)
                 </td>
             </tr>
         }

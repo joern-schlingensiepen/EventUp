@@ -55,6 +55,9 @@ namespace EventUpWebApp.Models
         public virtual ICollection<Event> isBookedFor { get; set; }
 
         public double TotalEventValue { get; set; }
+        public string Status { get; set; }
+
+       
     }
    
 }

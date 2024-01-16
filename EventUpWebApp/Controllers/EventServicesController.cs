@@ -23,6 +23,7 @@ namespace EventUpWebApp.Controllers
         public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
         {
             Debug.WriteLine("entra al get");
+           
 
             // Obtén todas las ciudades disponibles desde la base de datos
             var allCities = db.Services.Select(s => s.City).Distinct().ToList();
@@ -42,7 +43,7 @@ namespace EventUpWebApp.Controllers
             Debug.WriteLine("entra al post");
             ViewBag.SelectedEventId = selectedEventId;
             ViewBag.SelectedEventName = GetSelectedEvent(selectedEventId)?.Name;
-
+            
             // Obtén todas las ciudades disponibles desde la base de datos
             var allCities = db.Services.Select(s => s.City).Distinct().ToList();
 
@@ -229,9 +230,9 @@ namespace EventUpWebApp.Controllers
             ViewBag.Budget = selectedEvent.Budget;
             ViewBag.SelectedEventId = id;
             ViewBag.SelectedEventName = selectedEvent.Name;
-            // Calcular el valor total del evento y guardarlo en ViewBag
-            
-            
+
+          
+
             return View(reservedServicesViewModel);
         }
 
@@ -253,23 +254,24 @@ namespace EventUpWebApp.Controllers
             return totalValue;
         }
 
+            
+
         // GET: Services/Details/5
         [HttpGet]
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? selectedEventId)  
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            var service = db.Services.Find(id);
-
+            Service service = db.Services.Find(id);
             if (service == null)
             {
                 return HttpNotFound();
             }
 
-            return View(service);
+            // Aquí no necesitas TempData para el selectedEventId
+            return View("Details", service);
         }
 
         public ActionResult DetailsEvent(int? id)
@@ -333,23 +335,27 @@ namespace EventUpWebApp.Controllers
 
         public ActionResult ServiceIsBookedFor(int id) //muestra los eventos para los que ha sido reservado el servicio
         {
-            var service = db.Services.Find(id);
-            if (service == null)
             {
-                return HttpNotFound();
+                var service = db.Services.Find(id);
+
+                if (service == null)
+                {
+                    return HttpNotFound();
+                }
+
+                ViewBag.SelectedServiceName = service.Name;
+                ViewBag.SelectedEventId = service.Id;
+                ViewBag.SelectedServiceId = id;
+
+                var events = service.isBookedFor.ToList();
+                // Calcular el valor total del servicio y guardarlo en ViewBag
+                double totalServiceValue = CalculateTotalServiceValue(events, service);
+                ViewBag.TotalServiceValue = totalServiceValue;
+
+                return View(events);
+
             }
-
-            ViewBag.SelectedServiceName = service.Name;
-            ViewBag.SelectedEventId = id;
-
-            var events = service.isBookedFor.ToList();
-            // Calcular el valor total del servicio y guardarlo en ViewBag
-            double totalServiceValue = CalculateTotalServiceValue(events, service);
-            ViewBag.TotalServiceValue = totalServiceValue;
-            return View(events);
-
         }
-
         private double CalculateTotalServiceValue(List<Event> events, Service selectedService)
         {
             double totalValue = 0.0;

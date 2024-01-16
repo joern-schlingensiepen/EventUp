@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using EventUpWebApp.Models;
 
 namespace EventUpWebApp.Models
 {
@@ -35,7 +36,13 @@ namespace EventUpWebApp.Models
         
         public int isPlannedById { get; set; }
 
-       
+        public enum ServiceStatus
+        {
+            Confirmed,
+            NotConfirmed,
+            Denied
+        }
+        public ServiceStatus Status { get; set; }
 
     }
 }

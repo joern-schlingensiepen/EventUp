@@ -6,6 +6,7 @@
 
 <br />
 <h2>Details</h2>
+@Html.HiddenFor(model => model.isOfferedById)
 
 <style>
     .about-supplier {
@@ -47,7 +48,6 @@
 </style>
 
 <br />
-
 
 <div class="details-container">
     <div class="details-column">
@@ -143,7 +143,7 @@
         </div>
 
         <div class="details-item">
-            <div class="details-label">More:</div>
+            <div class="details-label">More Information:</div>
             <div class="details-value">
                 @if (string.IsNullOrWhiteSpace(Model.More))
                 {
@@ -156,6 +156,7 @@
             </div>
         </div>
     </div>
+
     <div class="details-column about-supplier">
         <h3>About Supplier</h3>
         <div class="details-item">
@@ -174,7 +175,13 @@
     </div>
 </div>
 
+
 <p>
-    @Html.ActionLink("Back to List", "ReservedServices", "EventServices")
+    @Html.ActionLink("Back to List", "ListServices", "EventServices", new { cityFilter = ViewBag.CityList.SelectedValue, typServiceFilter = ViewBag.TypServiceOptions.SelectedValue, typEventFilter = ViewBag.TypEventOptions.SelectedValue, selectedEventId = ViewBag.SelectedEventId }, null)
+
 </p>
+   
+   
+
+
 

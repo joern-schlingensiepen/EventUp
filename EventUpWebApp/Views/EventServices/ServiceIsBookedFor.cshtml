@@ -56,7 +56,9 @@ else
         <th>
             @Html.DisplayNameFor(model => model.End_DateTime)
         </th>
-
+        <th>
+            Status
+        </th>
         <th></th>
     </tr>
 
@@ -80,6 +82,8 @@ else
             <td>
                 @Html.DisplayFor(modelItem => @event.End_DateTime)
             </td>
+
+
 
             <td>
                 @Html.ActionLink("Details Event", "DetailsEvent", "EventServices", new { id = @event.Id, selectedEventId = ViewBag.SelectedEventId }, null)
