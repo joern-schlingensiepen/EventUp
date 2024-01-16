@@ -192,6 +192,7 @@ namespace EventUpWebApp.Controllers
 
         public ActionResult ReservedServices(int id) // muestra los servicios reservados para un evento
         {
+            
             var selectedEvent = db.Events.Include(e => e.have).FirstOrDefault(e => e.Id == id);
             // Aquí estableces la ViewBag.SelectedEventCity con la ciudad del evento actual
             ViewBag.SelectedEventCity = selectedEvent?.City;
@@ -234,6 +235,8 @@ namespace EventUpWebApp.Controllers
           
 
             return View(reservedServicesViewModel);
+            
+            
         }
 
         private double CalculateTotalEventValue(Service service, Event selectedEvent)

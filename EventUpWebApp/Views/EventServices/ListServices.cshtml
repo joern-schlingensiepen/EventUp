@@ -12,7 +12,6 @@
 
 @using (Html.BeginForm("ListServicesPost", "EventServices", FormMethod.Post))
 {
-
     <div class="row">
         <div class="col-md-4">
             <label class="mr-2" for="cityFilter">City:</label>
@@ -36,21 +35,19 @@
         </div>
     </div>
 
-
-  
+    <br />
     <br />
     <input type="hidden" name="selectedEventId" value="@((int?)ViewBag.SelectedEventId ?? 0)" />
-    <!--Esto es necesario para que el valor de selectedEventId se incluya en la solicitud POST cuando se envía el formulario. Dado que estás utilizando esta variable en tu acción [HttpPost], es apropiado mantener este campo oculto.-->
+    <!-- Esto es necesario para que el valor de selectedEventId se incluya en la solicitud POST cuando se envía el formulario. Dado que estás utilizando esta variable en tu acción [HttpPost], es apropiado mantener este campo oculto. -->
 
-    <p>Select the services you want:</p>
+    <h5>Select the events by clicking on the checkbox at the end of each row. To see other details associated with the service, click on "details".</h5>
+    <br />
     <table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.First().Name)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Address)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.First().Typ_Service)
             </th>
@@ -60,19 +57,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.First().Capacity)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().FixCost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().HourCost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().PersonCost)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.First().City)
             </th>
-
 
             <th></th>
         </tr>
@@ -83,9 +71,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => Model[i].Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model[i].Address)
-                </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => Model[i].Typ_Service)
                 </td>
@@ -95,25 +81,31 @@
                 <td>
                     @Html.DisplayFor(modelItem => Model[i].Capacity)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model[i].FixCost)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model[i].HourCost)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model[i].PersonCost)
-                </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => Model[i].City)
                 </td>
+
                 <td>
                     @Html.CheckBoxFor(modelItem => Model[i].IsSelected, new { @class = "service-checkbox", data_id = Model[i].Id })
                     @Html.HiddenFor(modelItem => Model[i].Id)
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    @Html.ActionLink("Details", "Details", "EventServices", new { id = Model[i].Id, selectedEventId = ViewBag.SelectedEventId }, null)
+                    <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#details_@Model[i].Id">Details</button>
+                    <div class="collapse details-container" id="details_@Model[i].Id">
+                        <ul class="list-group">
+                            <!-- Agrega más detalles según sea necesario -->
+                            <li class="list-group-item">
+                                <pre style="white-space: pre-wrap; max-width: 100%;">@Html.Raw(Model[i].Description)</pre>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
+            </tr>
+            <tr>
+                <td colspan="6" style="border-bottom: 1px solid #000;"></td>
             </tr>
         }
     </table>
@@ -125,10 +117,34 @@
     <div>
         @Html.ActionLink("Back to Reserved services", "ReservedServices", "EventServices")
     </div>
-
-
 }
 
+<!-- JavaScript para manejar el despliegue de detalles -->
+<script>
+    function toggleDetails(serviceId) {
+        var detailsContainer = document.getElementById('details_' + serviceId);
+        if (detailsContainer.style.display === 'none') {
+            detailsContainer.style.display = 'block';
+        } else {
+            detailsContainer.style.display = 'none';
+        }
+    }
+</script>
 
 
+<!-- Estilo adicional con Bootstrap para que el contenedor tenga el mismo ancho que la fila -->
+<style>
+    .details-container {
+        border: 1px;
+        margin: 5px 0; /* Ajusta el margen según sea necesario */
+    }
+
+        .details-container .list-group-item {
+            background-color: #ffcc80; /* Fondo color #CD5C5C para los elementos de la lista */
+            color: black; /* Texto blanco para los elementos de la lista */
+            border: none; /* Sin bordes para los elementos de la lista */
+            font-size: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+        }
+</style>
 

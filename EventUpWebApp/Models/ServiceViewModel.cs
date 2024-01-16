@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -55,9 +56,45 @@ namespace EventUpWebApp.Models
         public virtual ICollection<Event> isBookedFor { get; set; }
 
         public double TotalEventValue { get; set; }
-        public string Status { get; set; }
 
-       
+        public string Description
+        {
+            get { return BuildDescription(); }
+        }
+
+        private string BuildDescription()
+        {
+            // Lógica para construir la descripción según tus necesidades
+            StringBuilder descriptionBuilder = new StringBuilder();
+
+            // Agregar los parámetros que no estén vacíos
+            if (!string.IsNullOrEmpty(Address))
+            {
+                descriptionBuilder.AppendLine($"Address: {Address}<br/>");
+            }
+
+            if (FixCost.HasValue)
+            {
+                descriptionBuilder.AppendLine($"Fix Cost[Euro]: {FixCost}<br/>");
+            }
+
+            if (HourCost.HasValue)
+            {
+                descriptionBuilder.AppendLine($"Hour Cost[Euro/h]: {HourCost}<br/>");
+            }
+
+            if (PersonCost.HasValue)
+            {
+                descriptionBuilder.AppendLine($"Person Cost[Euro/Person]: {PersonCost}<br/>");
+            }
+
+            // Agregar otros parámetros según sea necesario
+
+            // Retornar la descripción construida
+            return descriptionBuilder.ToString();
+        }
+
+
     }
    
 }
