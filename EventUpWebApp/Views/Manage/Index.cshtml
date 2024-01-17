@@ -1,29 +1,33 @@
 ﻿@model EventUpWebApp.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = "Account Settings";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
     <h4>Change your account settings</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>External Logins:</dt>
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>Password:</dt>
+                <dd>
+                    [
+                    @if (Model.HasPassword)
+                    {
+                        @Html.ActionLink("Change your password", "ChangePassword")
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Create", "SetPassword")
+                    }
+                    ]
+                </dd>
+            </dl>
+        </div>
+        <!-- <dt>External Logins:</dt>
         <dd>
             @Model.Logins.Count [
             @Html.ActionLink("Manage", "ManageLogins") ]
@@ -82,11 +86,15 @@
                         </text>
                     }
                 }*@
-        </dd>
-        <dt>Edit user data:</dt>
-        <dd>
-            @Html.ActionLink("Edit", "Edit", "Register");
-        </dd>
+        </dd>-->
 
-    </dl>
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>Edit user data:</dt>
+                <dd>
+                    @Html.ActionLink("Edit", "Edit", "Manage")
+                </dd>
+            </dl>
+        </div>
+    </div>
 </div>

@@ -11,19 +11,25 @@ namespace EventUpWebApp.Models
 {
     public class EventViewModel
     {
-        [DisplayName("When Starts?")] // Cambia el nombre de visualización aquí
+        [Required(ErrorMessage = "Start hour is required")]
+        [DisplayName("When Starts?")] 
         public DateTime Start_DateTime { get; set; }
 
-
-        [DisplayName("When Ends?")] // Cambia el nombre de visualización aquí
+        [Required(ErrorMessage = "End hour is required")]
+        [DisplayName("When Ends?")] 
         public DateTime End_DateTime { get; set; }
 
 
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "City is required")]
         public string City { get; set; }
         public string Address { get; set; }
 
+        [Required(ErrorMessage = "Number of guest is required")]
         [DisplayName("Number of guest")]
         public int NumberOfGuest { get; set; }
 
@@ -36,13 +42,6 @@ namespace EventUpWebApp.Models
         
         public int isPlannedById { get; set; }
 
-        public enum ServiceStatus
-        {
-            Confirmed,
-            NotConfirmed,
-            Denied
-        }
-        public ServiceStatus Status { get; set; }
 
     }
 }

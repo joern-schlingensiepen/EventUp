@@ -89,6 +89,13 @@ namespace EventUpWebApp.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
+                if (eventViewModel.Start_DateTime == null || eventViewModel.End_DateTime == null ||eventViewModel.NumberOfGuest == 0|| eventViewModel.City==null || eventViewModel.Name==null)
+                {
+                    ViewBag.TypEventOptions = GetTypEventOptions();
+                    return View(eventViewModel);
+                }
+                 
+
                 //mapeo de datos según el ViewModel antes de guardar los datos en sql
                 var @event = new Event
                 {
@@ -111,7 +118,7 @@ namespace EventUpWebApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("MyEvents");
             }
-
+            ViewBag.TypEventOptions = GetTypEventOptions();
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
             return View(eventViewModel);
         }

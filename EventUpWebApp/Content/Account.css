@@ -42,7 +42,7 @@ h3 {
     justify-content: center;
     text-align: left;
     font-family: Tahoma;
-    font-size: 15px;
+    font-size: 16px;
     overflow: hidden; /* Evita desbordamientos */
     display: table-cell; /* Alinea al centro verticalmente */
     vertical-align: middle; /* Alinea al centro verticalmente */
@@ -91,6 +91,13 @@ h3 {
     padding-left: 40px;
     border-radius: 0;
 }
+
+.form-control-edit {
+    padding-left: 40px; 
+    width: 500px; 
+    border-radius: 5px; 
+}
+
 
 .input-group {
     position: relative;

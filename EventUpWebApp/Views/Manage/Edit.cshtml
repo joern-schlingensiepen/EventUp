@@ -1,0 +1,151 @@
+﻿@model EventUpLib.User
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+
+<head>
+    <!-- Otros elementos en head -->
+
+    <link rel="stylesheet" href="~/Content/Account.css" /> <!-- Cambia 'ruta_del_archivo_css' según la ubicación de tu archivo CSS -->
+</head>
+
+<body>
+    <div class="outer-container">
+        <div class="logo-container">
+            <!-- Puedes agregar tu logo aquí -->
+            <img class="logo" src="~/Content/Images/logo1.png" alt="Logo de la empresa" />
+        </div>
+
+        <div class="login-container">
+            <h2>User Data</h2>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Id)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="input-group">
+
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control-edit" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FamilyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                @Html.EditorFor(model => model.FamilyName, new { htmlAttributes = new { @class = "form-control-edit" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.FamilyName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TelephoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                @Html.EditorFor(model => model.TelephoneNumber, new { htmlAttributes = new { @class = "form-control-edit" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.TelephoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control-edit" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Role_Admin, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.EditorFor(model => model.Role_Admin)
+
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Role_Admin, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Role_Supplier, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.EditorFor(model => model.Role_Supplier)
+
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Role_Supplier, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Role_Planner, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.EditorFor(model => model.Role_Planner)
+
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Role_Planner, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+                    <input type="submit" value="Save" class="submit-button" />
+                    
+
+                </div>
+
+            }
+        </div>
+    </div>
+    @section scripts {
+        <script>
+                    $(document).ready(function () {
+                        console.log('Script is running');
+
+                        $('#Role_Admin').change(function () {
+                            console.log('Change event triggered');
+
+                            var email = $('#Email').val();
+                            var isAdmin = $('#Role_Admin').is(':checked');
+
+                            console.log('Email value:', email);
+                            console.log('Is Admin checked:', isAdmin);
+
+                            if (isAdmin && email.toLowerCase().endsWith('admineventup.com')) {
+                                console.log('Condition met. Allow admin role.');
+                            } else {
+                                console.log('Condition not met. Deny admin role.');
+                                alert('Admin role only possible with authorization');
+                                $('#Role_Admin').prop('checked', false);
+                            }
+                        });
+                    });
+        </script>
+    }
+</body>
+
