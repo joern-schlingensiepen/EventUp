@@ -175,14 +175,18 @@
     </div>
 </div>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-<p>
+    <div class="form-actions no-color">
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a href="@Url.Action("ReservedServices", "EventServices", new { id = ViewBag.SelectedEventId })" class="btn btn-primary">Back to List</a>
+    </div>
+}
 
-    @Html.ActionLink("Back to List", "ReservedServices", "EventServices", new { id = ViewBag.SelectedEventId })
 
-</p>
-   
-   
+
 
 
 

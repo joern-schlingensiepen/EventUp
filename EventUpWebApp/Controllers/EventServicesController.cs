@@ -22,9 +22,8 @@ namespace EventUpWebApp.Controllers
         [HttpGet]
         public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
         {
-            Debug.WriteLine("entra al get");
-           
-
+            
+            ViewBag.SelectedEventId = selectedEventId; //permite que la accion almacene el id del evento seleccionado
             // Obtén todas las ciudades disponibles desde la base de datos
             var allCities = db.Services.Select(s => s.City).Distinct().ToList();
 
@@ -192,8 +191,7 @@ namespace EventUpWebApp.Controllers
 
         public ActionResult ReservedServices(int id) // muestra los servicios reservados para un evento
         {
-            ViewBag.SelectedEventId = id;
-            Debug.WriteLine($"Entró a ReservedServices con el ID: {id}");
+            
             var selectedEvent = db.Events.Include(e => e.have).FirstOrDefault(e => e.Id == id);
             // Aquí estableces la ViewBag.SelectedEventCity con la ciudad del evento actual
             ViewBag.SelectedEventCity = selectedEvent?.City;
@@ -232,7 +230,7 @@ namespace EventUpWebApp.Controllers
             double totalEventValue = reservedServicesViewModel.Sum(service => service.TotalEventValue);
             ViewBag.TotalEventValue = totalEventValue;
             ViewBag.Budget = selectedEvent.Budget;
-            
+            ViewBag.SelectedEventId = id; //permite que la accion almacene el id del evento seleccionado
             ViewBag.SelectedEventName = selectedEvent.Name;
 
           
@@ -276,7 +274,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SelectedEventId = selectedEventId;
+            ViewBag.SelectedEventId = selectedEventId; //permite que la accion almacene el id del evento seleccionado
             return View("Details", service);
         }
 
@@ -308,7 +306,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SelectedEventId = selectedEventId;
+            ViewBag.SelectedEventId = selectedEventId; //permite que la accion almacene el id del evento seleccionado
             return View("Delete", service);
         }
 
