@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Details";
 }
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 @Html.HiddenFor(model => model.isPlannedById)
 <h2>Details</h2>
 
@@ -122,9 +123,22 @@
 
         </div>
     </div>
-    
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "MyEvents")
-</p>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="text-center">
+            <div class="form-actions no-color">
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+        <br />
+        <div class="form-actions no-color">
+            <a href="@Url.Action("MyEvents", "Events", new { id = ViewBag.SelectedEventId })">
+                <i class="fa fa-arrow-left"></i> Back to list
+            </a>
+        </div>
+    }
+
+

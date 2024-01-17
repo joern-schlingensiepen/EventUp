@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 <h2>Edit</h2>
 
 @using (Html.BeginForm())
@@ -58,9 +58,7 @@
                     </div>
                 </div>
                 <br />
-                <div>
-                    @Html.ActionLink("Back to List", "MyEvents")
-                </div>
+                
             </div>
             <div class="col-md-6">
                 <!-- Columna derecha -->
@@ -97,19 +95,33 @@
                     </div>
                 </div>
                 <br />
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                    </div>
-                </div>
             </div>
         </div>
-
-        <br />
-
 
     </div>
 
 }
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="text-center">
+        <div class="form-actions no-color">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+    <br />
+    <div class="form-actions no-color">
+        <a href="@Url.Action("MyEvents", "Events", new { id = ViewBag.SelectedEventId })">
+            <i class="fa fa-arrow-left"></i> Back to list
+        </a>
+    </div>
+}
+
+
+
+
 
 

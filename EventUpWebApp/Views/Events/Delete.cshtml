@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Delete";
 }
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
+
 @Html.HiddenFor(model => model.isPlannedById)
 <h2>Delete</h2>
 
@@ -125,13 +127,22 @@
     </div>
 </div>
 <div>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
 
-    <div class="form-actions no-color">
-        <input type="submit" value="Delete" class="btn btn-primary" /> |
-        @Html.ActionLink("Back to List", "MyEvents")
-    </div>
-}
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="text-center">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+            </div>
+        </div>
+        <br />
+        <div class="form-actions no-color">
+            <a href="@Url.Action("MyEvents", "Events", new { id = ViewBag.SelectedEventId })">
+                <i class="fa fa-arrow-left"></i> Back to list
+            </a>
+        </div>
+    }
+   
 </div>

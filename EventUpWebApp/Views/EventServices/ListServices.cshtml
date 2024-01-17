@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "ListServices";
 }
-
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 <br />
 
 <h2>Find the services you need for your event...</h2>
@@ -119,8 +119,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            <a href="@Url.Action("ReservedServices", "EventServices", new { id = ViewBag.SelectedEventId })" class="btn btn-primary">Back to reserved services</a>
+           
+            <a href="@Url.Action("ReservedServices", "EventServices", new { id = ViewBag.SelectedEventId })"><i class="fa fa-arrow-left"></i>Back to reserved services</a>
         </div>
     }
 }

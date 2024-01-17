@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Reserved Services";
 }
-
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 <style>
     .total-value-container {
         border: 2px solid purple;
@@ -44,8 +44,8 @@
 {
 
     <p>The services you have already saved: </p>
-    
-   
+
+
 }
 else
 {
@@ -118,7 +118,7 @@ else
 
 
             <td>
-                @Html.ActionLink("Details", "Details", "EventServices", new { id = service.Id, selectedEventId = ViewBag.SelectedEventId }, null)
+                @Html.ActionLink("Details", "Details", "EventServices", new { id = service.Id, selectedEventId = ViewBag.SelectedEventId }, null) |
                 @Html.ActionLink("Delete", "Delete", "EventServices", new { id = service.Id, selectedEventId = ViewBag.SelectedEventId }, null)
             </td>
         </tr>
@@ -126,13 +126,24 @@ else
 
 </table>
 
-<div class="text-center">
-    @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", new { selectedEventId = ViewBag.SelectedEventId, cityFilter = ViewBag.SelectedEventCity }, new { @class = "btn btn-primary" })
-</div>
 
-<div>
-    @Html.ActionLink("Back to My Events", "MyEvents", "Events")
-</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="text-center">
+        <div class="form-actions no-color">
+            @Html.ActionLink("Add more services for your event", "ListServices", "EventServices", new { selectedEventId = ViewBag.SelectedEventId, cityFilter = ViewBag.SelectedEventCity }, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+    <br />
+    <div class="form-actions no-color">
+        <a href="@Url.Action("MyEvents", "Events", new { id = ViewBag.SelectedEventId })">
+            <i class="fa fa-arrow-left"></i> Back to My Events
+        </a>
+    </div>
+}
 
 
 

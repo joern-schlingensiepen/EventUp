@@ -24,11 +24,11 @@ h3 {
     background-color: #632033; /* Fondo del rectángulo mayor */
     border-radius: 10px; /* Bordes redondeados */
     padding: 20px; /* Espaciado interno para el contenido dentro del rectángulo mayor */
-    width: 70%;
+    width: 80%;
     margin: auto; /* Centra el contenedor */
     overflow: hidden; /* Evita desbordamientos */
     display: table; /* Utiliza un diseño de tabla para centrar verticalmente */
-    height: 70vh; /* Establece la altura al 100% de la ventana */
+    height: 60vh; /* Establece la altura al 100% de la ventana */
 }
 .login-container {
     max-width: 400px;
@@ -106,3 +106,4 @@ h3 {
     transform: translateY(-50%);
     z-index: 1;
 }
+

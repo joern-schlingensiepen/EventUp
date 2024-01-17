@@ -8,8 +8,7 @@
     <!-- Otros elementos en head -->
 
     <link rel="stylesheet" href="~/Content/Account.css" /> <!-- Cambia 'ruta_del_archivo_css' según la ubicación de tu archivo CSS -->
-    <link rel="stylesheet" href="~/Content/font-awesome.css"/>
-
+    <link rel="stylesheet" href="~/Content/font-awesome.css" />
     
 </head>
 
@@ -45,6 +44,8 @@
                         @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
                     </div>
                 </div>
+
+               
 
 
                 <input type="submit" value="SignIn" class="submit-button" />
