@@ -119,6 +119,8 @@ namespace EventUpWebApp.Controllers
             }
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
+            ViewBag.TypServiceOptions = GetTypServiceOptions();  // Restaura las opciones de TypService
+            ViewBag.TypEventOptions = GetTypEventOptions();  // Restaura las opciones de TypEvent
             return View(serviceViewModel);
         }
 
