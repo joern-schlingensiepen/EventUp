@@ -192,19 +192,22 @@ namespace EventUpWebApp.Controllers
 
         public ActionResult ReservedServices(int id) // muestra los servicios reservados para un evento
         {
-            
+            ViewBag.SelectedEventId = id;
+            Debug.WriteLine($"Entró a ReservedServices con el ID: {id}");
             var selectedEvent = db.Events.Include(e => e.have).FirstOrDefault(e => e.Id == id);
             // Aquí estableces la ViewBag.SelectedEventCity con la ciudad del evento actual
             ViewBag.SelectedEventCity = selectedEvent?.City;
 
             if (selectedEvent == null)
             {
+                
                 return HttpNotFound();
             }
 
             // Mapear la lista de servicios a ServiceViewModel
             var reservedServicesViewModel = selectedEvent.have.Select(service =>
             {
+               
                 var viewModel = new ServiceViewModel
                 {
                     Id = service.Id,
@@ -221,7 +224,7 @@ namespace EventUpWebApp.Controllers
                     isOfferedById = service.isOfferedById,
                     TotalEventValue = CalculateTotalEventValue(service, selectedEvent)
                 };
-
+                
                 return viewModel;
             }).ToList();
 
@@ -229,7 +232,7 @@ namespace EventUpWebApp.Controllers
             double totalEventValue = reservedServicesViewModel.Sum(service => service.TotalEventValue);
             ViewBag.TotalEventValue = totalEventValue;
             ViewBag.Budget = selectedEvent.Budget;
-            ViewBag.SelectedEventId = id;
+            
             ViewBag.SelectedEventName = selectedEvent.Name;
 
           
@@ -252,7 +255,7 @@ namespace EventUpWebApp.Controllers
             int numberOfGuest = selectedEvent.NumberOfGuest;
 
             // Realizar los cálculos necesarios
-            double totalValue = fixCost + (hourCost * (endDateTime - startDateTime).TotalHours) + (personCost * numberOfGuest);
+            double totalValue = fixCost + (hourCost * (endDateTime - startDateTime).TotalHours) + (personCost * numberOfGuest); //calcula el valor total del evento sin problema
 
             return totalValue;
         }
@@ -267,13 +270,13 @@ namespace EventUpWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Service service = db.Services.Find(id);
             if (service == null)
             {
                 return HttpNotFound();
             }
-
-            // Aquí no necesitas TempData para el selectedEventId
+            ViewBag.SelectedEventId = selectedEventId;
             return View("Details", service);
         }
 
@@ -294,7 +297,7 @@ namespace EventUpWebApp.Controllers
             return View(@event);
         }
         // GET: Services/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, int? selectedEventId)
         {
             if (id == null)
             {
@@ -305,6 +308,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.SelectedEventId = selectedEventId;
             return View("Delete", service);
         }
 

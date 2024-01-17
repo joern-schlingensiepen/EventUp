@@ -80,6 +80,8 @@ else
             @Html.DisplayNameFor(model => model.PersonCost)
         </th>
 
+
+
         <th></th>
     </tr>
 
@@ -112,15 +114,11 @@ else
             <td>
                 @Html.DisplayFor(modelItem => service.PersonCost)
             </td>
-            <td>
-                <div class="@ViewBag.ServiceStatus.ToLower()">
-                    @ViewBag.ServiceStatus
-                </div>
-            </td>
+
 
 
             <td>
-                @Html.ActionLink("Details", "Details", "EventServices", new { id = service.Id, selectedEventId = ViewBag.SelectedEventId }, null) |
+                @Html.ActionLink("Details", "Details", "EventServices", new { id = service.Id, selectedEventId = ViewBag.SelectedEventId }, null)
                 @Html.ActionLink("Delete", "Delete", "EventServices", new { id = service.Id, selectedEventId = ViewBag.SelectedEventId }, null)
             </td>
         </tr>

@@ -177,7 +177,8 @@
 
 
 <p>
-    @Html.ActionLink("Back to List", "ListServices", "EventServices", new { cityFilter = ViewBag.CityList.SelectedValue, typServiceFilter = ViewBag.TypServiceOptions.SelectedValue, typEventFilter = ViewBag.TypEventOptions.SelectedValue, selectedEventId = ViewBag.SelectedEventId }, null)
+
+    @Html.ActionLink("Back to List", "ReservedServices", "EventServices", new { id = ViewBag.SelectedEventId })
 
 </p>
    

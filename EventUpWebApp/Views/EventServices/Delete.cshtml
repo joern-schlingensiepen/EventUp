@@ -107,7 +107,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "ReservedServices", "EventServices", new { id = Model.Id }, new { @class = "btn btn-primary" })
+            <p>SelectedEventId: @ViewBag.SelectedEventId</p>|
+            <a href="@Url.Action("ReservedServices", "EventServices", new { id = ViewBag.SelectedEventId })" class="btn btn-primary">Back to List</a>
         </div>
     }
-</div>

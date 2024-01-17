@@ -13,6 +13,8 @@ using EventUpWebApp.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Diagnostics;
 using System.Web.Services.Description;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+
 
 
 namespace EventUpWebApp.Controllers
@@ -29,7 +31,7 @@ namespace EventUpWebApp.Controllers
         public ActionResult MyEvents(int? selectedEventId)
         {
             var userName = User.Identity.Name;
-            User user = db.Users.FirstOrDefault(u => u.Email == userName);
+            EventUpLib.User user = db.Users.FirstOrDefault(u => u.Email == userName);
             //User user = GetUserById(User.Identity.GetUserId());
 
             if (user == null)
@@ -79,7 +81,7 @@ namespace EventUpWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var userName = User.Identity.Name;
-                User user = db.Users.FirstOrDefault(u => u.Email == userName);
+                EventUpLib.User user = db.Users.FirstOrDefault(u => u.Email == userName);
                 //User user = GetUserById(User.Identity.GetUserId());
 
                 if (user == null)
@@ -168,7 +170,7 @@ namespace EventUpWebApp.Controllers
                 }
 
                 var userName = User.Identity.Name;
-                User user = db.Users.FirstOrDefault(u => u.Email == userName);
+                EventUpLib.User user = db.Users.FirstOrDefault(u => u.Email == userName);
 
                 if (user == null)
                 {
@@ -218,6 +220,14 @@ namespace EventUpWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Event @event = db.Events.Find(id);
+            // Accede a la propiedad isBookedFor a través de la instancia de ServiceViewModel
+            var reservedServices = @event.have.ToList();
+
+            // Elimina las reservas asociadas
+            foreach (var reservedService in reservedServices)
+            {
+                @event.have.Remove(reservedService);
+            }
             db.Events.Remove(@event);
             db.SaveChanges();
             return RedirectToAction("MyEvents");
