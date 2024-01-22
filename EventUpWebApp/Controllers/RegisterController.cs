@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EventUpLib;
-using EventUpWebApp.Models;
 using EventUpWebApp.Controllers.Helpers;
 
 namespace EventUpWebApp.Models
@@ -43,7 +40,7 @@ namespace EventUpWebApp.Models
                 db.SaveChanges();
                 string selectedRole = UserRoleHelper.GetSelectedRole(user);
                 Response.Cookies.Add(new HttpCookie("selectedRole", selectedRole));
-                // Redireccionar según el rol
+                
                 return RedirectToAction("Index", "Home", new { selectedRole = selectedRole });
             }
             

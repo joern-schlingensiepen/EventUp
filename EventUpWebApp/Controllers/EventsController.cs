@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using EventUpLib;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNet.Identity;
 using EventUpWebApp.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Diagnostics;
-using System.Web.Services.Description;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+
 
 
 
@@ -32,7 +26,7 @@ namespace EventUpWebApp.Controllers
         {
             var userName = User.Identity.Name;
             EventUpLib.User user = db.Users.FirstOrDefault(u => u.Email == userName);
-            //User user = GetUserById(User.Identity.GetUserId());
+           
 
             if (user == null)
             {
@@ -82,7 +76,7 @@ namespace EventUpWebApp.Controllers
             {
                 var userName = User.Identity.Name;
                 EventUpLib.User user = db.Users.FirstOrDefault(u => u.Email == userName);
-                //User user = GetUserById(User.Identity.GetUserId());
+                
 
                 if (user == null)
                 {
@@ -95,8 +89,6 @@ namespace EventUpWebApp.Controllers
                     return View(eventViewModel);
                 }
                  
-
-                //mapeo de datos según el ViewModel antes de guardar los datos en sql
                 var @event = new Event
                 {
                     Id = eventViewModel.Id,
@@ -137,8 +129,6 @@ namespace EventUpWebApp.Controllers
             }
 
             var typEventOptions = GetTypEventOptions();
-
-            // Mapea los valores del servicio al modelo
             var eventViewModel = new EventViewModel
             {
                 Id = @event.Id,
@@ -154,8 +144,8 @@ namespace EventUpWebApp.Controllers
                 isPlannedById = @event.isPlannedBy.Id,
             };
 
-            // Asigna la lista desplegable al modelo
             eventViewModel.TypEventOptions = typEventOptions;
+            ViewBag.TypEventOptions = typEventOptions;
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", @event.isPlannedById);
             return View(eventViewModel);
         }
@@ -165,7 +155,7 @@ namespace EventUpWebApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EventViewModel eventViewModel)
+        public ActionResult Edit([Bind(Include = "Id,Name,City, Address, NumberOfGuest, Budget, Typ_Event, Start_DateTime, End_DateTime, isPlannedBy")] EventViewModel eventViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -183,7 +173,7 @@ namespace EventUpWebApp.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-
+           
                 existingEvent.isPlannedBy = user;
                 db.Entry(existingEvent).CurrentValues.SetValues(eventViewModel);
                 db.SaveChanges();
@@ -227,10 +217,10 @@ namespace EventUpWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Event @event = db.Events.Find(id);
-            // Accede a la propiedad isBookedFor a través de la instancia de ServiceViewModel
+           
             var reservedServices = @event.have.ToList();
 
-            // Elimina las reservas asociadas
+            
             foreach (var reservedService in reservedServices)
             {
                 @event.have.Remove(reservedService);
@@ -249,32 +239,7 @@ namespace EventUpWebApp.Controllers
             base.Dispose(disposing);
         }
 
-        /*private User GetUserById(string userId)
-        {
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var aspNetUser = userManager.FindById(userId);
-
-            if (aspNetUser != null)
-            {
-                var userEmail = aspNetUser.Email;
-                Debug.WriteLine($"userEmail: {userEmail}");
-
-                // Verificar si el usuario existe en la base de datos
-                var user = db.Users.FirstOrDefault(u => u.Email == userEmail);
-
-                if (user != null)
-                {
-                    Debug.WriteLine($"User found in the database. UserID: {user.Id}");
-                    return user;
-                }
-                else
-                {
-                    Debug.WriteLine("User not found in the database.");
-                }
-            }
-
-            return null;
-        }*/
+       
 
      
 

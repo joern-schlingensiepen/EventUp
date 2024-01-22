@@ -7,11 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EventUpWebApp.Models;
-using EventUpWebApp.Controllers;
-using EventUpWebApp;
 using EventUpWebApp.Controllers.Helpers;
 using System.Net;
-using System.Collections.Generic;
 using EventUpLib;
 
 

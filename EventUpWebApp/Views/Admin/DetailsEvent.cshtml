@@ -2,14 +2,14 @@
 @{
     ViewBag.Title = "DetailsEvent";
 }
-
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 <style>
     .about-planner {
         border: 2px solid purple;
         border-radius: 15px;
         padding: 15px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 20px; /* Agrega un margen superior según tus preferencias */
+        margin-top: 20px; 
     }
 
     .details-container {
@@ -23,7 +23,7 @@
     }
 
         .details-column h3 {
-            color: #632033; /* Color del texto del h3 */
+            color: #632033; 
         }
 
     .details-label {
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <!-- Agrega más campos según sea necesario -->
+       
     </div>
 
     <div class="details-column">
@@ -139,6 +139,8 @@
     </div>
 </div>
 
-<p>
-    @Html.ActionLink("Back to List", "Index", "Admin")
-</p>
+<div class="form-actions no-color">
+    <a href="@Url.Action("Index", "Admin")">
+        <i class="fa fa-arrow-left"></i> Back to list
+    </a>
+</div>

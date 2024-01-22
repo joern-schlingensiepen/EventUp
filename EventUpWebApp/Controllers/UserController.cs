@@ -1,20 +1,12 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 using EventUpLib;
-using EventUpWebApp.Models;
 using System.Net;
 using System.Collections.Generic;
-using System.Diagnostics;
 using EventUpWebApp.Controllers.Helpers;
-using System.Web.Services.Description;
 
 
 
@@ -33,6 +25,8 @@ namespace EventUpWebApp.Controllers
         {
             return View(db.Users.ToList());
         }
+
+      
 
         public UserController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -165,20 +159,17 @@ namespace EventUpWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             User user = db.Users.Find(id);
-            // Elimina las relaciones entre eventos y servicios asociados a este usuario
+           
             foreach (var service in user.offers.ToList())
             {
-                // Elimina las reservas asociadas a cada servicio
+                
                 foreach (var booking in service.isBookedFor.ToList())
                 {
                     service.isBookedFor.Remove(booking);
                 }
-
-                // Elimina el servicio
                 db.Services.Remove(service);
             }
 
-            // Elimina los eventos planeados por el usuario
             foreach (var plannedEvent in user.plans.ToList())
             {
                 db.Events.Remove(plannedEvent);
@@ -198,6 +189,21 @@ namespace EventUpWebApp.Controllers
             }
         }
 
-  
+        // GET: User/Details
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View("Details", user);
+        }
+
+
     }
 }

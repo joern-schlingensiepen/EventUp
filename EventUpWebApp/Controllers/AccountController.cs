@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,11 +6,7 @@ using EventUpLib;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin;
 using EventUpWebApp.Models;
-using System.Data.Entity.Validation;
-using System.Web.Helpers;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using System.Diagnostics;
 using EventUpWebApp.Controllers.Helpers;
 
@@ -74,7 +67,7 @@ namespace EventUpWebApp.Controllers
         // POST: /Account/SignIn
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> SignIn(SignInViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)

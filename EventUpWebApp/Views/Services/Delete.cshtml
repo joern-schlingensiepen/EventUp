@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Delete";
 }
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 @Html.HiddenFor(model => model.isOfferedById)
 
 <h2>Delete</h2>
@@ -19,9 +20,9 @@
         margin-right: 20px;
     }
 
-    .details-column h3 {
-        color: #632033; /*text color h3 */
-    }
+        .details-column h3 {
+            color: #632033; 
+        }
 
     .details-label {
         font-weight: bold;
@@ -96,7 +97,7 @@
             </div>
         </div>
 
-        <!-- Agrega más campos según sea necesario -->
+       
     </div>
 
     <div class="details-column">
@@ -174,16 +175,25 @@
     </div>
 </div>
 <div>
+
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
-    <div class="form-actions no-color">
-        <input type="submit" value="Delete" class="btn btn-primary" /> |
-        @Html.ActionLink("Back to List", "MyServices")
-    </div>
+        <div class="text-center">
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+            </div>
+        </div>
+        <br />
+        <div class="form-actions no-color">
+            <a href="@Url.Action("MyServices")">
+                <i class="fa fa-arrow-left"></i> Back to list
+            </a>
+        </div>
     }
 </div>
+
 
 
 

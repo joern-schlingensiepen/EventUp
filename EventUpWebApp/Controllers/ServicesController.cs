@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using EventUpLib;
 using EventUpWebApp.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
+
 
 namespace EventUpWebApp.Controllers
 {
@@ -29,7 +24,7 @@ namespace EventUpWebApp.Controllers
         {
             var userName = User.Identity.Name;
             User user = db.Users.FirstOrDefault(u => u.Email == userName);
-            //User user = GetUserById(User.Identity.GetUserId());
+            
 
             if (user == null)
             {
@@ -60,7 +55,7 @@ namespace EventUpWebApp.Controllers
         public ActionResult Create()
         {
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name");
-            // Crear las opciones solo si es una solicitud GET
+           
             ViewBag.TypServiceOptions = GetTypServiceOptions();
             ViewBag.TypEventOptions = GetTypEventOptions();
 
@@ -85,7 +80,7 @@ namespace EventUpWebApp.Controllers
             {
                 var userName = User.Identity.Name;
                 User user = db.Users.FirstOrDefault(u => u.Email == userName);
-                //User user = GetUserById(User.Identity.GetUserId());
+               
 
                 if (user == null)
                 {
@@ -119,8 +114,8 @@ namespace EventUpWebApp.Controllers
             }
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
-            ViewBag.TypServiceOptions = GetTypServiceOptions();  // Restaura las opciones de TypService
-            ViewBag.TypEventOptions = GetTypEventOptions();  // Restaura las opciones de TypEvent
+            ViewBag.TypServiceOptions = GetTypServiceOptions();  
+            ViewBag.TypEventOptions = GetTypEventOptions();  
             return View(serviceViewModel);
         }
 
@@ -136,11 +131,11 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            // Reutiliza la lógica de creación de opciones de la lista desplegable
+           
             var typServiceOptions = GetTypServiceOptions();
             var typEventOptions = GetTypEventOptions();
 
-            // Mapea los valores del servicio al modelo
+           
             var serviceViewModel = new ServiceViewModel
             {
                 Id = service.Id,
@@ -157,9 +152,12 @@ namespace EventUpWebApp.Controllers
                 isOfferedById = service.isOfferedBy.Id
             };
 
-            // Asigna la lista desplegable al modelo
+           
             serviceViewModel.TypServiceOptions = typServiceOptions;
             serviceViewModel.TypEventOptions = typEventOptions;
+
+            ViewBag.TypServiceOptions = GetTypServiceOptions();
+            ViewBag.TypEventOptions = GetTypEventOptions();
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", service.isOfferedById);
             return View(serviceViewModel);
@@ -222,7 +220,7 @@ namespace EventUpWebApp.Controllers
             };
         }
 
-        // Método para obtener las opciones de la lista desplegable
+       
         private List<SelectListItem> GetTypEventOptions()
         {
             return new List<SelectListItem>
@@ -261,10 +259,10 @@ namespace EventUpWebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Service service = db.Services.Find(id);
-            // Accede a la propiedad isBookedFor a través de la instancia de ServiceViewModel
+            
             var bookings = service.isBookedFor.ToList();
 
-            // Elimina las reservas asociadas
+            
             foreach (var booking in bookings)
             {
                 service.isBookedFor.Remove(booking);
@@ -284,48 +282,23 @@ namespace EventUpWebApp.Controllers
         }
        
 
-        /*private User GetUserById(string userId)
-        {
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var aspNetUser = userManager.FindById(userId);
-
-            if (aspNetUser != null)
-            {
-                var userEmail = aspNetUser.Email;
-                Debug.WriteLine($"userEmail: {userEmail}");
-
-                // Verificar si el usuario existe en la base de datos
-                var user = db.Users.FirstOrDefault(u => u.Email == userEmail);
-
-                if (user != null)
-                {
-                    Debug.WriteLine($"User found in the database. UserID: {user.Id}");
-                    return user;
-                }
-                else
-                {
-                    Debug.WriteLine("User not found in the database.");
-                }
-            }
-
-            return null;
-        }*/
+      
 
         public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter)
         {
-            // Obtener ciudades únicas de la base de datos
+            
             var uniqueCities = db.Services.Select(s => s.City).Distinct().ToList();
             ViewBag.CityList = new SelectList(uniqueCities);
 
-            // Obtener tipos de servicio únicos de la base de datos
+            
             var uniqueTypServices = db.Services.Select(s => s.Typ_Service).Distinct().ToList();
             ViewBag.Typ_ServiceList = new SelectList(uniqueTypServices);
 
-            // Obtener tipos de evento únicos de la base de datos
+          
             var uniqueTypEvents = db.Services.Select(s => s.Typ_Event).Distinct().ToList();
             ViewBag.Typ_EventList = new SelectList(uniqueTypEvents);
 
-            // Filtrar servicios según los parámetros de filtro
+            // filter services according parameters
             var filteredServices = db.Services.AsQueryable();
 
             if (!string.IsNullOrEmpty(cityFilter) && cityFilter != "All Cities")
@@ -343,7 +316,7 @@ namespace EventUpWebApp.Controllers
              filteredServices = filteredServices.Where(s => s.Typ_Event == typEventFilter);
             }
 
-            // Devolver la vista con los servicios filtrados
+            
             return View(filteredServices.ToList());
         }
     }

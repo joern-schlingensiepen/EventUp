@@ -7,7 +7,7 @@
 <br />
 
 <h2>Find the services you need for your event...</h2>
-<!--Esta vista es donde se ven los servicios disponibles y donde el role_planner puede escoger-->
+
 <br />
 
 @using (Html.BeginForm("ListServicesPost", "EventServices", FormMethod.Post))
@@ -38,7 +38,7 @@
     <br />
     <br />
     <input type="hidden" name="selectedEventId" value="@((int?)ViewBag.SelectedEventId ?? 0)" />
-    <!-- Esto es necesario para que el valor de selectedEventId se incluya en la solicitud POST cuando se envía el formulario. Dado que estás utilizando esta variable en tu acción [HttpPost], es apropiado mantener este campo oculto. -->
+    
 
     <h5>Select the events by clicking on the checkbox at the end of each row. To see other details associated with the service, click on "details".</h5>
     <br />
@@ -96,7 +96,7 @@
                     <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#details_@Model[i].Id">Details</button>
                     <div class="collapse details-container" id="details_@Model[i].Id">
                         <ul class="list-group">
-                            <!-- Agrega más detalles según sea necesario -->
+                           
                             <li class="list-group-item">
                                 <pre style="white-space: pre-wrap; max-width: 100%;">@Html.Raw(Model[i].Description)</pre>
                             </li>
@@ -125,7 +125,7 @@
     }
 }
 
-<!-- JavaScript para manejar el despliegue de detalles -->
+
 <script>
     function toggleDetails(serviceId) {
         var detailsContainer = document.getElementById('details_' + serviceId);
@@ -138,17 +138,17 @@
 </script>
 
 
-<!-- Estilo adicional con Bootstrap para que el contenedor tenga el mismo ancho que la fila -->
+
 <style>
     .details-container {
         border: 1px;
-        margin: 5px 0; /* Ajusta el margen según sea necesario */
+        margin: 5px 0; 
     }
 
         .details-container .list-group-item {
-            background-color: #ffcc80; /* Fondo color #CD5C5C para los elementos de la lista */
-            color: black; /* Texto blanco para los elementos de la lista */
-            border: none; /* Sin bordes para los elementos de la lista */
+            background-color: #ffcc80; 
+            color: black; 
+            border: none; 
             font-size: 20px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
         }

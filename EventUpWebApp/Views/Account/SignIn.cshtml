@@ -5,9 +5,9 @@
     ViewBag.Title = "SignIn";
 }
 <head>
-    <!-- Otros elementos en head -->
+   
 
-    <link rel="stylesheet" href="~/Content/Account.css" /> <!-- Cambia 'ruta_del_archivo_css' según la ubicación de tu archivo CSS -->
+    <link rel="stylesheet" href="~/Content/Account.css" /> 
     <link rel="stylesheet" href="~/Content/font-awesome.css" />
     
 </head>
@@ -15,7 +15,7 @@
 <body>
     <div class="outer-container">
         <div class="logo-container">
-            <!-- Aquí coloca tu logo -->
+           
             <img class="logo" src="~/Content/Images/logo1.png" alt="Logo de la empresa" />
         </div>
 
@@ -51,7 +51,7 @@
                 <input type="submit" value="SignIn" class="submit-button" />
             }
 
-            <p>Dont't have an account? <a href="@Url.Action("Email_Password", "User")">Signup here</a></p>
+            <p>Dont't have an account? <a href="@Url.Action("Register", "Account")">Signup here</a></p>
         </div>
   </div>
 

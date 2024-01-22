@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
-using System.Data.Entity.Core.Mapping;
 using System.Net;
 using EventUpLib;
 using EventUpWebApp.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Diagnostics;
-using System.Security.Cryptography;
+
 
 namespace EventUpWebApp.Controllers
 {
@@ -23,14 +19,11 @@ namespace EventUpWebApp.Controllers
         public ActionResult ListServices(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
         {
             
-            ViewBag.SelectedEventId = selectedEventId; //permite que la accion almacene el id del evento seleccionado
-            // Obtén todas las ciudades disponibles desde la base de datos
+            ViewBag.SelectedEventId = selectedEventId; 
             var allCities = db.Services.Select(s => s.City).Distinct().ToList();
-
-            // Si hay una ciudad filtrada, úsala; de lo contrario, usa la ciudad del evento seleccionado
             var selectedCity = string.IsNullOrEmpty(cityFilter) ? GetSelectedEvent(selectedEventId)?.City : cityFilter;
 
-            // Construye la lista de ciudades sin aplicar el filtro
+           
             ViewBag.CityList = new SelectList(allCities, selectedCity);
 
             return View(BuildServiceViewModels(cityFilter, typServiceFilter, typEventFilter, selectedEventId));
@@ -43,20 +36,20 @@ namespace EventUpWebApp.Controllers
             ViewBag.SelectedEventId = selectedEventId;
             ViewBag.SelectedEventName = GetSelectedEvent(selectedEventId)?.Name;
             
-            // Obtén todas las ciudades disponibles desde la base de datos
+           
             var allCities = db.Services.Select(s => s.City).Distinct().ToList();
 
-            // Restablece la lista de ciudades con el filtro aplicado
+            
             ViewBag.CityList = new SelectList(allCities);
 
-            // Filtra la lista de servicios según los filtros seleccionados
+          
             var serviceViewModels = BuildServiceViewModels(cityFilter, typServiceFilter, typEventFilter, selectedEventId);
             return View("ListServices", serviceViewModels);
         }
 
         private List<ServiceViewModel> BuildServiceViewModels(string cityFilter, string typServiceFilter, string typEventFilter, int selectedEventId)
         {
-            // Lógica común para obtener la lista de servicios
+           
             var filteredServices = db.Services.ToList();
 
             if (!string.IsNullOrEmpty(cityFilter) && cityFilter != "All Cities")
@@ -74,7 +67,7 @@ namespace EventUpWebApp.Controllers
                 filteredServices = filteredServices.Where(s => s.Typ_Event == typEventFilter).ToList();
             }
 
-            // Considera todos los filtros al mismo tiempo
+          
             if (!string.IsNullOrEmpty(cityFilter) && !string.IsNullOrEmpty(typServiceFilter) && !string.IsNullOrEmpty(typEventFilter))
             {
                 filteredServices = filteredServices
@@ -103,7 +96,8 @@ namespace EventUpWebApp.Controllers
                 isOfferedById = service.isOfferedById
             }).ToList();
         }
-        // Método para obtener las opciones de la lista desplegable
+
+        // Dropdown menu options for Typ_Service
         private List<SelectListItem> GetTypServiceOptions()
         {
             return new List<SelectListItem>
@@ -119,7 +113,7 @@ namespace EventUpWebApp.Controllers
             };
         }
 
-        // Método para obtener las opciones de la lista desplegable
+        // Dropdown menu options for Typ_Event
         private List<SelectListItem> GetTypEventOptions()
         {
             return new List<SelectListItem>
@@ -140,7 +134,7 @@ namespace EventUpWebApp.Controllers
         public ActionResult SaveServicesForEventPost(IEnumerable<ServiceViewModel> selectedServices, int selectedEventId)
         {
             
-            // Obtener el evento actual (puedes ajustar cómo obtienes el evento según tu lógica)
+           
             var currentEvent = GetSelectedEvent(selectedEventId);
            
             if (currentEvent == null)
@@ -150,10 +144,10 @@ namespace EventUpWebApp.Controllers
 
             if (selectedServices != null && selectedServices.Any())
             {
-                // Obtén las IDs de los servicios seleccionados
+                
                 var selectedServiceIds = selectedServices.Where(s => s.IsSelected).Select(s => s.Id).ToList();
 
-                // Obtén la lista de servicios seleccionados desde la base de datos
+                
                 var selectedServicesList = db.Services.Where(s => selectedServiceIds.Contains(s.Id)).ToList();
 
 
@@ -173,7 +167,7 @@ namespace EventUpWebApp.Controllers
 
         private Event GetSelectedEvent(int eventId)
         {
-            // Obtener el evento por el Id proporcionado
+            
             return db.Events.Find(eventId);
         }
 
@@ -182,18 +176,18 @@ namespace EventUpWebApp.Controllers
             var userName = User.Identity.Name;
             User user = db.Users.FirstOrDefault(u => u.Email == userName);
 
-            // Buscar el evento asociado al usuario actual
+            
             var userEvent = db.Events.FirstOrDefault(e => e.isPlannedBy != null && e.isPlannedBy.Id == user.Id);
 
             return userEvent;
         }
 
 
-        public ActionResult ReservedServices(int id) // muestra los servicios reservados para un evento
+        public ActionResult ReservedServices(int id) 
         {
             
             var selectedEvent = db.Events.Include(e => e.have).FirstOrDefault(e => e.Id == id);
-            // Aquí estableces la ViewBag.SelectedEventCity con la ciudad del evento actual
+           
             ViewBag.SelectedEventCity = selectedEvent?.City;
 
             if (selectedEvent == null)
@@ -202,7 +196,7 @@ namespace EventUpWebApp.Controllers
                 return HttpNotFound();
             }
 
-            // Mapear la lista de servicios a ServiceViewModel
+           
             var reservedServicesViewModel = selectedEvent.have.Select(service =>
             {
                
@@ -226,11 +220,11 @@ namespace EventUpWebApp.Controllers
                 return viewModel;
             }).ToList();
 
-            // Calcular el valor total del evento sumando los valores de todos los servicios
+            
             double totalEventValue = reservedServicesViewModel.Sum(service => service.TotalEventValue);
             ViewBag.TotalEventValue = totalEventValue;
             ViewBag.Budget = selectedEvent.Budget;
-            ViewBag.SelectedEventId = id; //permite que la accion almacene el id del evento seleccionado
+            ViewBag.SelectedEventId = id; 
             ViewBag.SelectedEventName = selectedEvent.Name;
 
           
@@ -242,18 +236,18 @@ namespace EventUpWebApp.Controllers
 
         private double CalculateTotalEventValue(Service service, Event selectedEvent)
         {
-            // Obtener los valores necesarios del servicio, si es null , retorna 0
+            
             double fixCost = service.FixCost ?? 0.0;
             double hourCost = service.HourCost ?? 0.0;
             double personCost = service.PersonCost ?? 0.0;
 
-            // Obtener los valores necesarios del evento
+            
             DateTime startDateTime = selectedEvent.Start_DateTime;
             DateTime endDateTime = selectedEvent.End_DateTime;
             int numberOfGuest = selectedEvent.NumberOfGuest;
 
-            // Realizar los cálculos necesarios
-            double totalValue = fixCost + (hourCost * (endDateTime - startDateTime).TotalHours) + (personCost * numberOfGuest); //calcula el valor total del evento sin problema
+            
+            double totalValue = fixCost + (hourCost * (endDateTime - startDateTime).TotalHours) + (personCost * numberOfGuest); 
 
             return totalValue;
         }
@@ -274,8 +268,8 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SelectedEventId = selectedEventId; //permite que la accion almacene el id del evento seleccionado
-            return View("Details", service);
+            ViewBag.SelectedEventId = selectedEventId; 
+            return View(service);
         }
 
         public ActionResult DetailsEvent(int? id)
@@ -291,7 +285,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-
+            
             return View(@event);
         }
         // GET: Services/Delete/5
@@ -306,7 +300,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SelectedEventId = selectedEventId; //permite que la accion almacene el id del evento seleccionado
+            ViewBag.SelectedEventId = selectedEventId; 
             return View("Delete", service);
         }
 
@@ -315,7 +309,7 @@ namespace EventUpWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            // Obtén el evento actual del usuario
+            
             var currentEvent = GetCurrentUserEvent();
 
             if (currentEvent == null)
@@ -323,22 +317,22 @@ namespace EventUpWebApp.Controllers
                 return HttpNotFound();
             }
 
-            // Busca el servicio en la lista de servicios del evento
+            
             var serviceToRemove = currentEvent.have.FirstOrDefault(s => s.Id == id);
 
             if (serviceToRemove != null)
             {
-                // Elimina el servicio solo del evento, no de la base de datos
+                
                 currentEvent.have.Remove(serviceToRemove);
-                db.SaveChanges(); // Guarda los cambios en la base de datos
+                db.SaveChanges(); 
 
                 return RedirectToAction("ReservedServices", new { id = currentEvent.Id });
             }
 
-            return HttpNotFound(); // El servicio no se encontró en la lista del evento
+            return HttpNotFound();
         }
 
-        public ActionResult ServiceIsBookedFor(int id) //muestra los eventos para los que ha sido reservado el servicio
+        public ActionResult ServiceIsBookedFor(int id) 
         {
             {
                 var service = db.Services.Find(id);
@@ -349,11 +343,11 @@ namespace EventUpWebApp.Controllers
                 }
 
                 ViewBag.SelectedServiceName = service.Name;
-                ViewBag.SelectedEventId = service.Id;
+                ViewBag.SelectedEventId = service.isBookedFor;
                 ViewBag.SelectedServiceId = id;
 
                 var events = service.isBookedFor.ToList();
-                // Calcular el valor total del servicio y guardarlo en ViewBag
+               
                 double totalServiceValue = CalculateTotalServiceValue(events, service);
                 ViewBag.TotalServiceValue = totalServiceValue;
 

@@ -15,15 +15,16 @@
 
 <ul class="navbar-nav flex-grow-1 justify-content-center">
 
-    @if (selectedRole == "Planner")
+    @if (selectedRole == "Planner" || selectedRole == "Supplier")
     {
         <li class="nav-item">@Html.ActionLink("My Events", "MyEvents", "Events", new { area = "" }, new { @class = "nav-link" })</li>
-    }
-
-    @if (selectedRole == "Supplier")
-    {
         <li class="nav-item">@Html.ActionLink("My Services", "MyServices", "Services", new { area = "" }, new { @class = "nav-link" })</li>
     }
+
+    <!--@if (selectedRole == "Supplier")
+    {
+        <li class="nav-item">@Html.ActionLink("My Services", "MyServices", "Services", new { area = "" }, new { @class = "nav-link" })</li>
+    }-->
 
     @if (selectedRole == "Admin")
     {

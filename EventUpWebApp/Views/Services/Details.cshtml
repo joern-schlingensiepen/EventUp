@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Details";
 }
-
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 <h2>Details</h2>
 @Html.HiddenFor(model => model.isOfferedById)
 
@@ -13,7 +13,7 @@
         border-radius: 15px;
         padding: 15px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 20px; /* Agrega un margen superior según tus preferencias */
+        margin-top: 20px; 
     }
 
     .details-container {
@@ -27,7 +27,7 @@
     }
 
         .details-column h3 {
-            color: #632033; /* Color del texto del h3 */
+            color: #632033; 
         }
 
     .details-label {
@@ -80,7 +80,7 @@
             <div class="details-value">@Html.DisplayFor(model => model.Typ_Service)</div>
         </div>
 
-        <!-- Agrega más campos según sea necesario -->
+       
     </div>
 
     <div class="details-column">
@@ -155,10 +155,18 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "MyServices")
-</p>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="form-actions no-color">
+        <a href="@Url.Action("MyServices")">
+            <i class="fa fa-arrow-left"></i> Back to list
+        </a>
+    </div>
+}
+

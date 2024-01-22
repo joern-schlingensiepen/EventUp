@@ -18,15 +18,15 @@
         <h2>Events already booked your service</h2>
     </div>
 
-    <!-- Contenedor para el valor total del evento -->
+   
     <div class="total-value-container">
         <strong>Total Service Value [Euro]:</strong>
         <span id="totalEventValue">@ViewBag.TotalServiceValue</span>
     </div>
 </div>
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 
 
-<!-- Muestra todos los eventos en los que se ha reservado el servicio -->
 
 @if (Model != null && Model.Any())
 {
@@ -56,9 +56,7 @@ else
         <th>
             @Html.DisplayNameFor(model => model.End_DateTime)
         </th>
-        <th>
-            Status
-        </th>
+       
         <th></th>
     </tr>
 
@@ -86,7 +84,7 @@ else
 
 
             <td>
-                @Html.ActionLink("Details Event", "DetailsEvent", "EventServices", new { id = @event.Id, selectedEventId = ViewBag.SelectedEventId }, null)
+                @Html.ActionLink("Details Event", "DetailsEvent", "EventServices", new { id = @event.Id, selectedServiceId = ViewBag.SelectedServiceId }, null)
 
             </td>
         </tr>
@@ -94,8 +92,12 @@ else
 
 </table>
 
-<div>
-    @Html.ActionLink("Back to My Services", "MyServices", "Services")
+<div class="form-actions no-color">
+    <a href="@Url.Action("MyServices", "Services", new { id = ViewBag.SelectedEventId })">
+        <i class="fa fa-arrow-left"></i> Back to list
+    </a>
 </div>
+
+
 
 

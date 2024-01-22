@@ -1,32 +1,26 @@
 ﻿using EventUpLib;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EventUpWebApp.Controllers
 {
     public class AdminController : Controller
     {
-        private Model1Container db = new Model1Container(); // Reemplaza YourDbContext con el nombre real de tu DbContext
+        private Model1Container db = new Model1Container(); 
 
         public AdminController()
         {
-            db = new Model1Container(); // Reemplaza YourDbContext con el nombre real de tu DbContext
+            db = new Model1Container(); 
         }
 
         // GET: Admin
         public ActionResult Index()
         {
-            // Obtener el número de servicios en la plataforma
+            
             ViewBag.NoOfServices = db.Services.Count();
-
-            // Obtener el número de eventos en la plataforma
             ViewBag.NoOfEvents = db.Events.Count();
 
-            // Obtener el número de coincidencias (matches)
             int noOfMatches = 0;
 
             var servicesWithReservedEvents = db.Services.Include("isBookedFor").OrderBy(service => service.Name).ToList();

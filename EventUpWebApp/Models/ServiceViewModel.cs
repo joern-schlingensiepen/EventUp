@@ -26,7 +26,7 @@ namespace EventUpWebApp.Models
         [Display(Name = "Service type")]
         public string Typ_Service { get; set; }
 
-        // Lista de opciones para Typ_Service
+       
         public List<SelectListItem> TypServiceOptions { get; set; }
 
         [Display(Name = "Event type")]
