@@ -55,13 +55,8 @@ namespace EventUpWebApp.Controllers
         public ActionResult Create()
         {
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name");
-           
             ViewBag.TypServiceOptions = GetTypServiceOptions();
             ViewBag.TypEventOptions = GetTypEventOptions();
-
-
-
-
             return View();
         }
 
@@ -170,6 +165,10 @@ namespace EventUpWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ServiceViewModel serviceViewModel)
         {
+            // Si hay un error, volvemos a cargar las opciones de la lista desplegable
+            serviceViewModel.TypServiceOptions = GetTypServiceOptions();
+            serviceViewModel.TypEventOptions = GetTypEventOptions();
+
             if (ModelState.IsValid)
             {
 
@@ -189,16 +188,17 @@ namespace EventUpWebApp.Controllers
                 }
 
                 existingService.isOfferedBy = user;
-                db.Entry(existingService).CurrentValues.SetValues(serviceViewModel);
-                db.SaveChanges();
 
+                // Actualizar el modelo existente con los valores del modelo vinculado
+                if (TryUpdateModel(existingService, "", new string[] { "Name", "Address", "Typ_Service", "Typ_Event", "Capacity", "FixCost", "HourCost", "PersonCost", "City", "More" }))
+                {
+                    db.SaveChanges();
+                    return RedirectToAction("MyServices");
+                }
 
-                return RedirectToAction("MyServices");
             }
 
-            // Si hay un error, volvemos a cargar las opciones de la lista desplegable
-            serviceViewModel.TypServiceOptions = GetTypServiceOptions();
-            serviceViewModel.TypEventOptions = GetTypEventOptions();
+            
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
             return View(serviceViewModel);

@@ -10,6 +10,7 @@ using EventUpWebApp.Models;
 using EventUpWebApp.Controllers.Helpers;
 using System.Net;
 using EventUpLib;
+using System.Collections.Generic;
 
 
 namespace EventUpWebApp.Controllers
@@ -126,7 +127,18 @@ namespace EventUpWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                int rolesSelected = new List<bool> { user.Role_Admin, user.Role_Supplier, user.Role_Planner }.Count(r => r);
 
+                if (rolesSelected == 0)
+                {
+                    ModelState.AddModelError("", "Please select a role.");
+                    return View(user);
+                }
+                if (rolesSelected != 1 && rolesSelected!=0 )
+                {
+                    ModelState.AddModelError("", "Select only one role.");
+                    return View(user);
+                }
                 db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 string selectedRole = UserRoleHelper.GetSelectedRole(user);

@@ -7,28 +7,28 @@ body {
 
 h2 {
     text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Cambia 'Segoe UI' a la fuente que desees */
-    font-size: 24px; /* Ajusta el tamaño de la fuente según sea necesario */
-    color: #333; /* Cambia el color del texto según sea necesario */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-size: 24px;
+    color: #333; 
 }
 
 h3 {
     text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Cambia 'Segoe UI' a la fuente que desees */
-    font-size: 20px; /* Ajusta el tamaño de la fuente según sea necesario */
-    color: #333; /* Cambia el color del texto según sea necesario */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-size: 20px; 
+    color: #333; 
 }
 
 
 .outer-container {
-    background-color: #632033; /* Fondo del rectángulo mayor */
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 20px; /* Espaciado interno para el contenido dentro del rectángulo mayor */
+    background-color: #632033; 
+    border-radius: 10px; 
+    padding: 20px; 
     width: 80%;
-    margin: auto; /* Centra el contenedor */
-    overflow: hidden; /* Evita desbordamientos */
-    display: table; /* Utiliza un diseño de tabla para centrar verticalmente */
-    height: 60vh; /* Establece la altura al 100% de la ventana */
+    margin: auto; 
+    overflow: hidden; 
+    display: table; 
+    height: 60vh; 
 }
 .login-container {
     max-width: 400px;
@@ -43,26 +43,23 @@ h3 {
     text-align: left;
     font-family: Tahoma;
     font-size: 16px;
-    overflow: hidden; /* Evita desbordamientos */
-    display: table-cell; /* Alinea al centro verticalmente */
-    vertical-align: middle; /* Alinea al centro verticalmente */
+    overflow: hidden; 
+    display: table-cell; 
+    vertical-align: middle; 
 }
 
 .logo-container {
-    display: table-cell; /* Alinea al centro verticalmente */
-    vertical-align: middle; /* Alinea al centro verticalmente */
-    margin-right: 20px; /* Espacio entre el logo y el área de inicio de sesión */
+    display: table-cell; 
+    vertical-align: middle; 
+    margin-right: 20px; 
 }
 
-.logo {
-    /* Estilos para tu logo, como tamaño y márgenes */
-}
 
 .login-form {
     display: flex;
     flex-direction: column;
-    border-radius: 10px; /* Bordes redondeados del formulario */
-    padding: 20px; /* Espaciado interno del formulario */
+    border-radius: 10px; 
+    padding: 20px; 
 }
 .login-form label {
         margin-bottom: 5px;
@@ -72,18 +69,18 @@ h3 {
         margin-bottom: 10px;
 }
 
-/* Ajuste para redondear ambos lados del borde */
+
 
 .submit-button {
-    background-color: #632033; /* Color de fondo del botón */
-    color: bisque; /* Color del texto del botón */
-    border: none; /* Quitado el borde del botón */
-    padding: 10px 20px; /* Espaciado interno del botón */
+    background-color: #632033; 
+    color: bisque; 
+    border: none;
+    padding: 10px 20px; 
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    border-radius: 5px; /* Bordes redondeados del botón */
+    border-radius: 5px; 
     cursor: pointer;
 }
 
@@ -108,7 +105,7 @@ h3 {
 
 .input-group-icon {
     position: absolute;
-    left: 5px; /* Ajusta según sea necesario */
+    left: 5px; 
     top: 40%;
     transform: translateY(-50%);
     z-index: 1;

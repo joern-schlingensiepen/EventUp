@@ -155,8 +155,9 @@ namespace EventUpWebApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,City, Address, NumberOfGuest, Budget, Typ_Event, Start_DateTime, End_DateTime, isPlannedBy")] EventViewModel eventViewModel)
+        public ActionResult Edit(EventViewModel eventViewModel)
         {
+            eventViewModel.TypEventOptions = GetTypEventOptions();
             if (ModelState.IsValid)
             {
                 var existingEvent= db.Events.Find(eventViewModel.Id); 
@@ -175,11 +176,15 @@ namespace EventUpWebApp.Controllers
                 }
            
                 existingEvent.isPlannedBy = user;
-                db.Entry(existingEvent).CurrentValues.SetValues(eventViewModel);
-                db.SaveChanges();
-                return RedirectToAction("MyEvents");
+                // Actualizar el modelo existente con los valores del modelo vinculado
+                if (TryUpdateModel(existingEvent, "", new string[] { "Name", "City", "Address", "NumberOfGuest", "Budget", "Typ_Event", "Start_DateTime", "End_DateTime" }))
+                {
+                    db.SaveChanges();
+                    return RedirectToAction("MyEvents");
+                }
+                
             }
-            eventViewModel.TypEventOptions = GetTypEventOptions();
+            
             ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
             return View(eventViewModel);
         }

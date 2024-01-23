@@ -106,7 +106,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.More, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.More, new { @class = "form-control", rows = 4 }) 
+                        @Html.TextAreaFor(model => model.More, new { @class = "form-control", rows = 4 })
                         @Html.ValidationMessageFor(model => model.More, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -114,24 +114,23 @@
                 <br />
 
             </div>
+            <div class="text-center">
+                <div class="form-actions no-color">
+                    <input type="submit" value="Edit" class="btn btn-primary" />
+                </div>
+            </div>
+            <br />
+            <div class="form-actions no-color">
+                <a href="@Url.Action("MyServices")">
+                    <i class="fa fa-arrow-left"></i> Back to list
+                </a>
+            </div>
         </div>
     </div>
-   
+
 
 }
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="text-center">
-        <div class="form-actions no-color">
-            <input type="submit" value="Edit" class="btn btn-primary" />
-        </div>
-    </div>
-    <br />
-    <div class="form-actions no-color">
-        <a href="@Url.Action("MyServices")">
-            <i class="fa fa-arrow-left"></i> Back to list
-        </a>
-    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
 }

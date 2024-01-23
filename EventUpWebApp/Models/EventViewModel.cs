@@ -12,11 +12,13 @@ namespace EventUpWebApp.Models
     public class EventViewModel
     {
         [Required(ErrorMessage = "Start hour is required")]
-        [DisplayName("When Starts?")] 
+        [DisplayName("When Starts?")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public DateTime Start_DateTime { get; set; }
 
         [Required(ErrorMessage = "End hour is required")]
-        [DisplayName("When Ends?")] 
+        [DisplayName("When Ends?")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddTHH:mm}")]
         public DateTime End_DateTime { get; set; }
 
 

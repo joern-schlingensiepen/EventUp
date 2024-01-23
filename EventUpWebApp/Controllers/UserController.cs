@@ -85,11 +85,11 @@ namespace EventUpWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                int rolesSeleccionados = new List<bool> { user.Role_Admin, user.Role_Supplier, user.Role_Planner }.Count(r => r);
+                int rolesSelected = new List<bool> { user.Role_Admin, user.Role_Supplier, user.Role_Planner }.Count(r => r);
 
-                if (rolesSeleccionados != 1)
+                if (rolesSelected != 1)
                 {
-                    ModelState.AddModelError("", "Debe seleccionar exactamente un rol.");
+                    ModelState.AddModelError("", "Select only one role.");
                     return View(user);
                 }
                                
@@ -132,6 +132,13 @@ namespace EventUpWebApp.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                int rolesSelected = new List<bool> { user.Role_Admin, user.Role_Supplier, user.Role_Planner }.Count(r => r);
+
+                if (rolesSelected != 1)
+                {
+                    ModelState.AddModelError("", "Select only one role.");
+                    return View(user);
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
