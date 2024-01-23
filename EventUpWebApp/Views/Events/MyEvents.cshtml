@@ -3,7 +3,9 @@
 
 <link rel="stylesheet" href="~/Content/Site.css" />
 <h2>My Events</h2>
+<hr />
 
+<br />
 
 <table class="table">
     <tr>
@@ -38,15 +40,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.End_DateTime)
             </td>
-
+            
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-            <td>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 @Html.ActionLink("See reserved services", "ReservedServices", "EventServices", new { id = item.Id, selectedEventId = ViewBag.SelectedEventId }, new { @class = "btn btn-primary" })
             </td>
+           
         </tr>
     }
 

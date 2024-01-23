@@ -4,71 +4,99 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>Details user</title>
+    <link rel="stylesheet" href="~/Content/font-awesome.css" />
+    <link rel="stylesheet" href="~/Content/DetailsAndDelete.css" />
+</head>
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<body>
+    <header>
+        <h2>Details user</h2>
+        <hr />
+    </header>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    <section>
+        <div class="details-container">
+            <div class="details-column">
+                <div class="details-item">
+                    <div class="details-label">Name:</div>
+                    <div class="details-value">
+                        @if (string.IsNullOrWhiteSpace(Model.Name))
+                        {
+                            @Html.Raw("----------")
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.Name)
+                        }
+                    </div>
+                </div>
+                <div class="details-item">
+                    <div class="details-label">Family Name:</div>
+                    <div class="details-value">
+                        @if (string.IsNullOrWhiteSpace(Model.FamilyName))
+                        {
+                            @Html.Raw("----------")
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.FamilyName)
+                        }
+                    </div>
+                </div>
+                <div class="details-item">
+                    <div class="details-label">Telephone number:</div>
+                    <div class="details-value">
+                        @if (string.IsNullOrWhiteSpace(Model.TelephoneNumber))
+                        {
+                            @Html.Raw("----------")
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.TelephoneNumber)
+                        }
+                    </div>
+                </div>
+                <br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FamilyName)
-        </dt>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FamilyName)
-        </dd>
+            <div class="details-column">
+                <div class="details-item">
+                    <div class="details-label">Email:</div>
+                    <div class="details-value">@Html.DisplayFor(model => model.Email)</div>
+                </div>
+                <div class="details-item">
+                    <div class="details-label">Role Planner:</div>
+                    <div class="details-value">@Html.DisplayFor(model => model.Role_Planner)</div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TelephoneNumber)
-        </dt>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.TelephoneNumber)
-        </dd>
+                <div class="details-item">
+                    <div class="details-label">Role Supplier:</div>
+                    <div class="details-value">@Html.DisplayFor(model => model.Role_Supplier)</div>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+                <div class="details-item">
+                    <div class="details-label">Role Supplier:</div>
+                    <div class="details-value">@Html.DisplayFor(model => model.Role_Admin)</div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Role_Admin)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Role_Admin)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Role_Supplier)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Role_Supplier)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Role_Planner)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Role_Planner)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    
-    @Html.ActionLink("Back to List", "Index")
-</p>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="form-actions no-color">
+            <a href="@Url.Action("Index")">
+                <i class="fa fa-arrow-left"></i> Back to user list
+            </a>
+        </div>
+        </section>
+    </body>
+</html>
