@@ -25,14 +25,22 @@ namespace EventUpWebApp.Models
         [Required(ErrorMessage = "Typ Service is required")]
         [Display(Name = "Service type")]
         public string Typ_Service { get; set; }
-
-       
         public List<SelectListItem> TypServiceOptions { get; set; }
+        public string SelectedTypService { get; set; }
+
 
         [Display(Name = "Event type")]
         public string Typ_Event { get; set; }
         public List<SelectListItem> TypEventOptions { get; set; }
         
+
+        // Constructor 
+        public ServiceViewModel()
+        {
+            TypServiceOptions = new List<SelectListItem>();
+            TypEventOptions = new List<SelectListItem>();
+        }
+
         public Nullable<int> Capacity { get; set; }
 
         [DisplayName("Fix cost [Euro]")]

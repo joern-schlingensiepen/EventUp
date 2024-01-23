@@ -40,12 +40,12 @@
                 </div>
                 <br />
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Typ_Service, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <p style="font-style: italic; font-size: small; margin-bottom: 5px;">(Please select the type of service you offer)</p>
+                    @Html.LabelFor(model => model.Typ_Service, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <p style="font-style: italic; font-size:small;margin-bottom: 5px;">(Please select the type of service)</p>
                         <div style="display: flex; align-items: center;">
                             <div style="flex-grow: 1;">
-                                @Html.DropDownListFor(model => model.Typ_Service, ((List<SelectListItem>)ViewBag.TypServiceOptions) ?? new List<SelectListItem>(), new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.Typ_Service, Model.TypServiceOptions, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Typ_Service, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -53,12 +53,12 @@
                 </div>
                 <br />
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Typ_Event, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <p style="font-style: italic; font-size:small; margin-bottom: 5px;">(Please select the type of event)</p>
+                    @Html.LabelFor(model => model.Typ_Event, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <p style="font-style: italic; font-size:small;margin-bottom: 5px;">(Please select the type of event)</p>
                         <div style="display: flex; align-items: center;">
                             <div style="flex-grow: 1;">
-                                @Html.DropDownListFor(model => model.Typ_Event, ((List<SelectListItem>)ViewBag.TypEventOptions) ?? new List<SelectListItem>(), new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.Typ_Event, Model.TypEventOptions, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Typ_Event, "", new { @class = "text-danger" })
                             </div>
                         </div>

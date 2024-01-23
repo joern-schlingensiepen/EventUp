@@ -531,6 +531,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\ImagesPanel\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Content\Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

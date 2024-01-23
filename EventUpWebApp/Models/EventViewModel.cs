@@ -41,7 +41,8 @@ namespace EventUpWebApp.Models
         [Display(Name = "Event type")]
         public string Typ_Event { get; set; }
         public List<SelectListItem> TypEventOptions { get; set; }
-        
+        public string SelectedTypEvent { get; set; }
+
         public int isPlannedById { get; set; }
 
 

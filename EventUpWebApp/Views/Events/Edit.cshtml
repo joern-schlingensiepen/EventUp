@@ -51,7 +51,7 @@
                     <p style="font-style: italic; font-size:small;margin-bottom: 5px;">(Please select the type of event)</p>
                     <div style="display: flex; align-items: center;">
                         <div style="flex-grow: 1;">
-                            @Html.DropDownListFor(model => model.Typ_Event, ((List<SelectListItem>)ViewBag.TypEventOptions) ?? new List<SelectListItem>(), new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.SelectedTypEvent, Model.TypEventOptions, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Typ_Event, "", new { @class = "text-danger" })
                         </div>
                     </div>

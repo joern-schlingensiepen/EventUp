@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using EventUpLib;
 using EventUpWebApp.Models;
 using System.Diagnostics;
+using System.Web.Hosting;
 
 
 
@@ -88,7 +89,16 @@ namespace EventUpWebApp.Controllers
                     ViewBag.TypEventOptions = GetTypEventOptions();
                     return View(eventViewModel);
                 }
-                 
+
+                if (!IsValidCity(eventViewModel.City))
+                {
+                    ModelState.AddModelError("City", "City is not valid.");
+                    ViewBag.TypEventOptions = GetTypEventOptions();
+                    ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
+                    return View(eventViewModel);
+                }
+
+
                 var @event = new Event
                 {
                     Id = eventViewModel.Id,
@@ -100,7 +110,6 @@ namespace EventUpWebApp.Controllers
                     Start_DateTime = eventViewModel.Start_DateTime,
                     End_DateTime = eventViewModel.End_DateTime,
                     City = eventViewModel.City,
-
                     isPlannedBy = user,
 
                 };
@@ -174,10 +183,17 @@ namespace EventUpWebApp.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-           
+
+                if (!IsValidCity(eventViewModel.City))
+                {
+                    ModelState.AddModelError("City", "City is not valid.");
+                    //ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
+                    return View(eventViewModel);
+                }
+
                 existingEvent.isPlannedBy = user;
                 // Actualizar el modelo existente con los valores del modelo vinculado
-                if (TryUpdateModel(existingEvent, "", new string[] { "Name", "City", "Address", "NumberOfGuest", "Budget", "Typ_Event", "Start_DateTime", "End_DateTime" }))
+                if (TryUpdateModel(existingEvent, "", new string[] { "Name", "City", "Address", "NumberOfGuest", "Budget", "Typ_Event", "Start_DateTime", "End_DateTime", "SelectedTypEvent" }))
                 {
                     db.SaveChanges();
                     return RedirectToAction("MyEvents");
@@ -244,9 +260,26 @@ namespace EventUpWebApp.Controllers
             base.Dispose(disposing);
         }
 
-       
 
-     
+        // read cities from a file
+        private List<string> LoadCitiesFromTextFile()
+        {
+            
+            var filePath = HostingEnvironment.MapPath("~/Content/Resources/cities.txt"); 
+            var citiesText = System.IO.File.ReadAllText(filePath);
+            var cities = citiesText.Split(new[] { "\", \"" }, StringSplitOptions.RemoveEmptyEntries)
+                                   .Select(city => city.Trim('\"'))
+                                   .ToList();
+            return cities;
+        }
+
+        //validation of city
+        private bool IsValidCity(string city)
+        {
+            var cities = LoadCitiesFromTextFile();
+            return cities.Contains(city);
+        }
+
 
     }
 }

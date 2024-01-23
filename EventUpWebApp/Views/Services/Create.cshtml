@@ -5,6 +5,7 @@
 }
 
 <h2>Create</h2>
+<link rel="stylesheet" href="~/Content/font-awesome.css" />
 
 @using (Html.BeginForm())
 {
@@ -67,8 +68,10 @@
         </div>
         <br />
         <br />
-        <div>
-            @Html.ActionLink("Back to List", "MyServices")
+        <div class="form-actions no-color">
+            <a href="@Url.Action("MyServices")">
+                <i class="fa fa-arrow-left"></i> Back to list
+            </a>
         </div>
     </div>
     <div class="col-md-6">

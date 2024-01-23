@@ -4,6 +4,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using EventUpLib;
 using EventUpWebApp.Models;
@@ -24,7 +25,6 @@ namespace EventUpWebApp.Controllers
         {
             var userName = User.Identity.Name;
             User user = db.Users.FirstOrDefault(u => u.Email == userName);
-            
 
             if (user == null)
             {
@@ -82,6 +82,15 @@ namespace EventUpWebApp.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
+                if (!IsValidCity(serviceViewModel.City))
+                {
+                    ModelState.AddModelError("City", "City is not valid.");
+                    serviceViewModel.TypServiceOptions = GetTypServiceOptions();
+                    serviceViewModel.TypEventOptions = GetTypEventOptions();
+                    ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
+                    return View(serviceViewModel);
+                }
+
                 var service = new Service
                 {
                     Id = serviceViewModel.Id,
@@ -99,6 +108,7 @@ namespace EventUpWebApp.Controllers
                     isOfferedBy = user,
 
                 };
+                
 
                 service.isOfferedBy = user;
                 db.Services.Add(service);
@@ -165,26 +175,32 @@ namespace EventUpWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ServiceViewModel serviceViewModel)
         {
-            // Si hay un error, volvemos a cargar las opciones de la lista desplegable
+            // Load options from the controller method
             serviceViewModel.TypServiceOptions = GetTypServiceOptions();
             serviceViewModel.TypEventOptions = GetTypEventOptions();
 
             if (ModelState.IsValid)
             {
-
                 var existingService = db.Services.Find(serviceViewModel.Id);
-
 
                 if (existingService == null)
                 {
                     return HttpNotFound();
                 }
+
                 var userName = User.Identity.Name;
                 User user = db.Users.FirstOrDefault(u => u.Email == userName);
-               
+
                 if (user == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                if (!IsValidCity(serviceViewModel.City))
+                {
+                    ModelState.AddModelError("City", "City is not valid.");
+                    ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
+                    return View(serviceViewModel);
                 }
 
                 existingService.isOfferedBy = user;
@@ -195,16 +211,13 @@ namespace EventUpWebApp.Controllers
                     db.SaveChanges();
                     return RedirectToAction("MyServices");
                 }
-
             }
-
-            
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
             return View(serviceViewModel);
         }
 
-        // Método para obtener las opciones de la lista desplegable
+        // Dropdown menu options
         private List<SelectListItem> GetTypServiceOptions()
         {
             return new List<SelectListItem>
@@ -318,6 +331,25 @@ namespace EventUpWebApp.Controllers
 
             
             return View(filteredServices.ToList());
+        }
+
+        // read cities from a file
+        private List<string> LoadCitiesFromTextFile()
+        {
+
+            var filePath = HostingEnvironment.MapPath("~/Content/Resources/cities.txt");
+            var citiesText = System.IO.File.ReadAllText(filePath);
+            var cities = citiesText.Split(new[] { "\", \"" }, StringSplitOptions.RemoveEmptyEntries)
+                                   .Select(city => city.Trim('\"'))
+                                   .ToList();
+            return cities;
+        }
+
+        //validation of city
+        private bool IsValidCity(string city)
+        {
+            var cities = LoadCitiesFromTextFile();
+            return cities.Contains(city);
         }
     }
 }
