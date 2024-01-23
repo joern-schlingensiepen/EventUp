@@ -90,6 +90,14 @@ namespace EventUpWebApp.Controllers
                     ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
                     return View(serviceViewModel);
                 }
+                // Service name already exists for this user?
+                if (db.Services.Any(e => e.Name == serviceViewModel.Name && e.isOfferedBy.Id == user.Id))
+                {
+                    ModelState.AddModelError("Name", "Event name already exists in your event list");
+                    ViewBag.TypEventOptions = GetTypEventOptions();
+                    ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
+                    return View(serviceViewModel);
+                }
 
                 var service = new Service
                 {
@@ -117,6 +125,7 @@ namespace EventUpWebApp.Controllers
                 return RedirectToAction("MyServices");
 
             }
+            
 
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
             ViewBag.TypServiceOptions = GetTypServiceOptions();  
@@ -199,6 +208,15 @@ namespace EventUpWebApp.Controllers
                 if (!IsValidCity(serviceViewModel.City))
                 {
                     ModelState.AddModelError("City", "City is not valid.");
+                    ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
+                    return View(serviceViewModel);
+                }
+
+                // Service name already exists for this user?
+                if (db.Services.Any(e => e.Name == serviceViewModel.Name && e.isOfferedBy.Id == user.Id && e.Id != serviceViewModel.Id))
+                {
+                    ModelState.AddModelError("Name", "Service name already exists for this user.");
+                    ViewBag.TypEventOptions = GetTypEventOptions();
                     ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
                     return View(serviceViewModel);
                 }

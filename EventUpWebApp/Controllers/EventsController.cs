@@ -10,8 +10,6 @@ using System.Diagnostics;
 using System.Web.Hosting;
 
 
-
-
 namespace EventUpWebApp.Controllers
 {
     public class EventsController : Controller
@@ -98,6 +96,14 @@ namespace EventUpWebApp.Controllers
                     return View(eventViewModel);
                 }
 
+                // Event name already exists for this user?
+                if (db.Events.Any(e => e.Name == eventViewModel.Name && e.isPlannedBy.Id == user.Id))
+                {
+                    ModelState.AddModelError("Name", "Event name already exists in your event list");
+                    ViewBag.TypEventOptions = GetTypEventOptions();
+                    ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
+                    return View(eventViewModel);
+                }
 
                 var @event = new Event
                 {
@@ -187,7 +193,16 @@ namespace EventUpWebApp.Controllers
                 if (!IsValidCity(eventViewModel.City))
                 {
                     ModelState.AddModelError("City", "City is not valid.");
-                    //ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
+                    ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
+                    return View(eventViewModel);
+                }
+
+                // Event name already exists for this user?
+                if (db.Events.Any(e => e.Name == eventViewModel.Name && e.isPlannedBy.Id == user.Id && e.Id != eventViewModel.Id))
+                {
+                    ModelState.AddModelError("Name", "Event name already exists for this user.");
+                    ViewBag.TypEventOptions = GetTypEventOptions();
+                    ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", eventViewModel.isPlannedById);
                     return View(eventViewModel);
                 }
 
@@ -280,6 +295,6 @@ namespace EventUpWebApp.Controllers
             return cities.Contains(city);
         }
 
-
+        
     }
 }
