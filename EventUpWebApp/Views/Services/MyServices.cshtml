@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "MySevices";
 }
+<style>
+    .service-cell {
+        border-right: 1px solid #ccc;
+    }
+</style>
 
 <h2>My Services</h2>
 
@@ -36,6 +41,12 @@
         <th>
             @Html.DisplayNameFor(model => model.City)
         </th>
+        <td class="service-cell">
+            
+        </td>
+        <td style="font-weight: bold;">
+            Booked Events
+        </td>
 
         <th></th>
     </tr>
@@ -68,12 +79,19 @@
                 @Html.DisplayFor(modelItem => item.City)
             </td>
 
-            <td>
+            <td class="service-cell">
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+
+            </td>
+            <td>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                @Html.ActionLink("See events", "ServiceIsBookedFor", "EventServices", new { id = item.Id, selectedEventId = ViewBag.SelectedEventId }, new { @class = "btn btn-primary" })
+                @item.isBookedFor.Count
+
+            </td>
+            <td>
+                @Html.ActionLink("See events", "ServiceIsBookedFor", "EventServices", new { id = item.Id, selectedServiceId = ViewBag.SelectedServiceId }, new { @class = "btn btn-primary" })
             </td>
         </tr>
     }

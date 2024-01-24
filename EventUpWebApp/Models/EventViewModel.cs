@@ -46,6 +46,8 @@ namespace EventUpWebApp.Models
 
         public int isPlannedById { get; set; }
 
+        public double ServiceValue { get; set; }
+
 
     }
 }

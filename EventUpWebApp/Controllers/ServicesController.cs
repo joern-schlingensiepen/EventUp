@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using EventUpLib;
 using EventUpWebApp.Models;
 
@@ -21,10 +22,11 @@ namespace EventUpWebApp.Controllers
         {
             return View(db.Services.ToList());
         }
-        public ActionResult MyServices()
+        public ActionResult MyServices(int? selectedServiceId)
         {
             var userName = User.Identity.Name;
             User user = db.Users.FirstOrDefault(u => u.Email == userName);
+            
 
             if (user == null)
             {
@@ -32,8 +34,16 @@ namespace EventUpWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            // Ordenar los servicios por el número de eventos reservados en orden descendente
+            //var sortedServices = user.offers.OrderByDescending(s => s.isBookedFor.Count).ToList();
+
+            //ViewBag.OffersIds = sortedServices.Select(o => o.Id).ToList();
+            //return View("MyServices", sortedServices);
             ViewBag.OffersIds = user.offers.Select(o => o.Id).ToList();
+            // Pasa el selectedEventId directamente a la vista
+            ViewBag.SelectedServiceId = selectedServiceId;
             return View("MyServices", user.offers.ToList());
+
         }
 
         // GET: Services/Details/5
@@ -43,7 +53,8 @@ namespace EventUpWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Service service = db.Services.Find(id);
+
+            EventUpLib.Service service = db.Services.Find(id);
             if (service == null)
             {
                 return HttpNotFound();
@@ -99,7 +110,16 @@ namespace EventUpWebApp.Controllers
                     return View(serviceViewModel);
                 }
 
-                var service = new Service
+                // Validar que al menos uno de los costos sea diferente de null y mayor a cero
+                if ((serviceViewModel.FixCost == null || serviceViewModel.FixCost <= 0) &&
+                    (serviceViewModel.HourCost == null || serviceViewModel.HourCost <= 0) &&
+                    (serviceViewModel.PersonCost == null || serviceViewModel.PersonCost <= 0))
+                {
+                    ModelState.AddModelError("", "At least one cost (FixCost, HourCost, or PersonCost) must be provided and greater than zero.");
+                    return View(serviceViewModel);
+                }
+
+                var service = new EventUpLib.Service
                 {
                     Id = serviceViewModel.Id,
                     Name = serviceViewModel.Name,
@@ -140,7 +160,7 @@ namespace EventUpWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Service service = db.Services.Find(id);
+            EventUpLib.Service service = db.Services.Find(id);
             if (service == null)
             {
                 return HttpNotFound();
@@ -220,6 +240,14 @@ namespace EventUpWebApp.Controllers
                     ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
                     return View(serviceViewModel);
                 }
+                // Validar que al menos uno de los costos sea diferente de null y mayor a cero
+                if ((serviceViewModel.FixCost == null || serviceViewModel.FixCost <= 0) &&
+                    (serviceViewModel.HourCost == null || serviceViewModel.HourCost <= 0) &&
+                    (serviceViewModel.PersonCost == null || serviceViewModel.PersonCost <= 0))
+                {
+                    ModelState.AddModelError("", "At least one cost (FixCost, HourCost, or PersonCost) must be provided and greater than zero.");
+                    return View(serviceViewModel);
+                }
 
                 existingService.isOfferedBy = user;
 
@@ -276,7 +304,7 @@ namespace EventUpWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Service service = db.Services.Find(id);
+            EventUpLib.Service service = db.Services.Find(id);
             if (service == null)
             {
                 return HttpNotFound();
@@ -289,7 +317,7 @@ namespace EventUpWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Service service = db.Services.Find(id);
+            EventUpLib.Service service = db.Services.Find(id);
             
             var bookings = service.isBookedFor.ToList();
 

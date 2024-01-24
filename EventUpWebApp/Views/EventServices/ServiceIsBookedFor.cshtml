@@ -13,6 +13,7 @@
 </style>
 
 <br />
+
 <div style="overflow: hidden;">
     <div style="float: left;">
         <h2>Events already booked your service</h2>
@@ -93,7 +94,7 @@ else
 </table>
 
 <div class="form-actions no-color">
-    <a href="@Url.Action("MyServices", "Services", new { id = ViewBag.SelectedEventId })">
+    <a href="@Url.Action("MyServices", "Services", new { id = ViewBag.SelectedServiceId })">
         <i class="fa fa-arrow-left"></i> Back to list
     </a>
 </div>

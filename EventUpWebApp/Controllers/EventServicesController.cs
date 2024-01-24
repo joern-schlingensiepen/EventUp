@@ -272,7 +272,7 @@ namespace EventUpWebApp.Controllers
             return View(service);
         }
 
-        public ActionResult DetailsEvent(int? id)
+        public ActionResult DetailsEvent(int? id, int? selectedServiceId)
         {
             if (id == null)
             {
@@ -285,7 +285,7 @@ namespace EventUpWebApp.Controllers
             {
                 return HttpNotFound();
             }
-            
+            ViewBag.SelectedServiceId = selectedServiceId;
             return View(@event);
         }
         // GET: Services/Delete/5
@@ -345,9 +345,10 @@ namespace EventUpWebApp.Controllers
                 ViewBag.SelectedServiceName = service.Name;
                 ViewBag.SelectedEventId = service.isBookedFor;
                 ViewBag.SelectedServiceId = id;
+                
 
                 var events = service.isBookedFor.ToList();
-               
+
                 double totalServiceValue = CalculateTotalServiceValue(events, service);
                 ViewBag.TotalServiceValue = totalServiceValue;
 
