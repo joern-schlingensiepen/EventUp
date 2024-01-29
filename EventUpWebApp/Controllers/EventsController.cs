@@ -88,6 +88,7 @@ namespace EventUpWebApp.Controllers
                     return View(eventViewModel);
                 }
 
+                
                 if (!IsValidCity(eventViewModel.City))
                 {
                     ModelState.AddModelError("City", "City is not valid.");
@@ -197,6 +198,7 @@ namespace EventUpWebApp.Controllers
                     return View(eventViewModel);
                 }
 
+               
                 // Event name already exists for this user?
                 if (db.Events.Any(e => e.Name == eventViewModel.Name && e.isPlannedBy.Id == user.Id && e.Id != eventViewModel.Id))
                 {
@@ -228,6 +230,7 @@ namespace EventUpWebApp.Controllers
                 new SelectListItem { Text = "Children's birthday", Value = "Children's birthday" },
                 new SelectListItem { Text = "Concerts", Value = "Concerts" },
                 new SelectListItem { Text = "Corporate event", Value = "Corporate event" },
+                new SelectListItem { Text = "Wedding", Value = "Wedding" },
                 new SelectListItem { Text = "All", Value = "All" },
                 new SelectListItem { Text = "Other", Value = "Other" },
             };
@@ -256,7 +259,6 @@ namespace EventUpWebApp.Controllers
            
             var reservedServices = @event.have.ToList();
 
-            
             foreach (var reservedService in reservedServices)
             {
                 @event.have.Remove(reservedService);

@@ -96,8 +96,8 @@ namespace EventUpWebApp.Controllers
                 if (!IsValidCity(serviceViewModel.City))
                 {
                     ModelState.AddModelError("City", "City is not valid.");
-                    serviceViewModel.TypServiceOptions = GetTypServiceOptions();
-                    serviceViewModel.TypEventOptions = GetTypEventOptions();
+                    ViewBag.TypServiceOptions = GetTypServiceOptions();
+                    ViewBag.TypEventOptions = GetTypEventOptions();
                     ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
                     return View(serviceViewModel);
                 }
@@ -105,6 +105,7 @@ namespace EventUpWebApp.Controllers
                 if (db.Services.Any(e => e.Name == serviceViewModel.Name && e.isOfferedBy.Id == user.Id))
                 {
                     ModelState.AddModelError("Name", "Event name already exists in your event list");
+                    ViewBag.TypServiceOptions = GetTypServiceOptions();
                     ViewBag.TypEventOptions = GetTypEventOptions();
                     ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
                     return View(serviceViewModel);
@@ -116,6 +117,8 @@ namespace EventUpWebApp.Controllers
                     (serviceViewModel.PersonCost == null || serviceViewModel.PersonCost <= 0))
                 {
                     ModelState.AddModelError("", "At least one cost (FixCost, HourCost, or PersonCost) must be provided and greater than zero.");
+                    ViewBag.TypServiceOptions = GetTypServiceOptions();
+                    ViewBag.TypEventOptions = GetTypEventOptions();
                     return View(serviceViewModel);
                 }
 
@@ -186,10 +189,10 @@ namespace EventUpWebApp.Controllers
                 isOfferedById = service.isOfferedBy.Id
             };
 
-           
-            serviceViewModel.TypServiceOptions = typServiceOptions;
-            serviceViewModel.TypEventOptions = typEventOptions;
 
+
+            serviceViewModel.TypEventOptions = typEventOptions;
+            serviceViewModel.TypServiceOptions = typEventOptions;
             ViewBag.TypServiceOptions = GetTypServiceOptions();
             ViewBag.TypEventOptions = GetTypEventOptions();
 
@@ -228,6 +231,8 @@ namespace EventUpWebApp.Controllers
                 if (!IsValidCity(serviceViewModel.City))
                 {
                     ModelState.AddModelError("City", "City is not valid.");
+                    ViewBag.TypServiceOptions = GetTypServiceOptions();
+                    ViewBag.TypEventOptions = GetTypEventOptions();
                     ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
                     return View(serviceViewModel);
                 }
@@ -237,6 +242,7 @@ namespace EventUpWebApp.Controllers
                 {
                     ModelState.AddModelError("Name", "Service name already exists for this user.");
                     ViewBag.TypEventOptions = GetTypEventOptions();
+                    ViewBag.TypServiceOptions = GetTypServiceOptions();
                     ViewBag.isPlannedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
                     return View(serviceViewModel);
                 }
@@ -246,6 +252,8 @@ namespace EventUpWebApp.Controllers
                     (serviceViewModel.PersonCost == null || serviceViewModel.PersonCost <= 0))
                 {
                     ModelState.AddModelError("", "At least one cost (FixCost, HourCost, or PersonCost) must be provided and greater than zero.");
+                    ViewBag.TypEventOptions = GetTypEventOptions();
+                    ViewBag.TypServiceOptions = GetTypServiceOptions();
                     return View(serviceViewModel);
                 }
 
@@ -258,7 +266,7 @@ namespace EventUpWebApp.Controllers
                     return RedirectToAction("MyServices");
                 }
             }
-
+            
             ViewBag.isOfferedById = new SelectList(db.Users, "Id", "Name", serviceViewModel.isOfferedById);
             return View(serviceViewModel);
         }
@@ -289,6 +297,7 @@ namespace EventUpWebApp.Controllers
                 new SelectListItem { Text = "Children's birthday", Value = "Children's birthday" },
                 new SelectListItem { Text = "Concerts", Value = "Concerts" },
                 new SelectListItem { Text = "Corporate event", Value = "Corporate event" },
+                new SelectListItem { Text = "Wedding", Value = "Wedding" },
 
                 new SelectListItem { Text = "All", Value = "All" },
                 new SelectListItem { Text = "Other", Value = "Other" },

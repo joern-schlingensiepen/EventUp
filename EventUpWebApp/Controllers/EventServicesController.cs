@@ -123,7 +123,7 @@ namespace EventUpWebApp.Controllers
                 new SelectListItem { Text = "Children's birthday", Value = "Children's birthday" },
                 new SelectListItem { Text = "Concerts", Value = "Concerts" },
                 new SelectListItem { Text = "Corporate event", Value = "Corporate event" },
-
+                new SelectListItem { Text = "Wedding", Value = "Wedding" },
                 new SelectListItem { Text = "All", Value = "All" },
                 new SelectListItem { Text = "Other", Value = "Other" },
             };
@@ -183,23 +183,23 @@ namespace EventUpWebApp.Controllers
         }
 
 
-        public ActionResult ReservedServices(int id) 
+        public ActionResult ReservedServices(int id)
         {
-            
+
             var selectedEvent = db.Events.Include(e => e.have).FirstOrDefault(e => e.Id == id);
-           
+
             ViewBag.SelectedEventCity = selectedEvent?.City;
 
             if (selectedEvent == null)
             {
-                
+
                 return HttpNotFound();
             }
 
-           
+
             var reservedServicesViewModel = selectedEvent.have.Select(service =>
             {
-               
+
                 var viewModel = new ServiceViewModel
                 {
                     Id = service.Id,
@@ -216,22 +216,22 @@ namespace EventUpWebApp.Controllers
                     isOfferedById = service.isOfferedById,
                     TotalEventValue = CalculateTotalEventValue(service, selectedEvent)
                 };
-                
+
                 return viewModel;
             }).ToList();
 
-            
+
             double totalEventValue = reservedServicesViewModel.Sum(service => service.TotalEventValue);
             ViewBag.TotalEventValue = totalEventValue;
             ViewBag.Budget = selectedEvent.Budget;
-            ViewBag.SelectedEventId = id; 
+            ViewBag.SelectedEventId = id;
             ViewBag.SelectedEventName = selectedEvent.Name;
 
-          
+
 
             return View(reservedServicesViewModel);
-            
-            
+
+
         }
 
         private double CalculateTotalEventValue(Service service, Event selectedEvent)
@@ -332,7 +332,7 @@ namespace EventUpWebApp.Controllers
             return HttpNotFound();
         }
 
-        public ActionResult ServiceIsBookedFor(int id) 
+        public ActionResult ServiceIsBookedFor(int id)
         {
             {
                 var service = db.Services.Find(id);
@@ -345,7 +345,7 @@ namespace EventUpWebApp.Controllers
                 ViewBag.SelectedServiceName = service.Name;
                 ViewBag.SelectedEventId = service.isBookedFor;
                 ViewBag.SelectedServiceId = id;
-                
+
 
                 var events = service.isBookedFor.ToList();
 
@@ -356,6 +356,8 @@ namespace EventUpWebApp.Controllers
 
             }
         }
+
+
         private double CalculateTotalServiceValue(List<Event> events, Service selectedService)
         {
             double totalValue = 0.0;
@@ -375,5 +377,7 @@ namespace EventUpWebApp.Controllers
 
             return totalValue;
         }
+
+        
     }
 }

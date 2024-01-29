@@ -72,10 +72,9 @@ namespace EventUpWebApp.Models
 
         private string BuildDescription()
         {
-            // Lógica para construir la descripción según tus necesidades
+            
             StringBuilder descriptionBuilder = new StringBuilder();
 
-            // Agregar los parámetros que no estén vacíos
             if (!string.IsNullOrEmpty(Address))
             {
                 descriptionBuilder.AppendLine($"Address: {Address}<br/>");
@@ -95,12 +94,10 @@ namespace EventUpWebApp.Models
             {
                 descriptionBuilder.AppendLine($"Person Cost[Euro/Person]: {PersonCost}<br/>");
             }
-
-            // Agregar otros parámetros según sea necesario
-
-            // Retornar la descripción construida
             return descriptionBuilder.ToString();
         }
+
+        
 
 
     }
